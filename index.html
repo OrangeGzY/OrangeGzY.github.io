@@ -340,7 +340,7 @@
 <h3 id="一些解释"><a href="#一些解释" class="headerlink" title="一些解释"></a>一些解释</h3><ul>
 <li>asm代表开始程序，<strong>volatail</strong>是一个可选参数，他告诉编译器：“你不要乱动我这里的代码啊！”防止由于gcc自身的优化而导致代码移动或改变位置等。( )中是我们具体的代码，其中：数字加%表示寄存器样板操作数，如：%1 换句话说，就是给寄存器起一个别名，这个别名是自然数标识的，最大到几取决于通用寄存器的数量。而我们在使用具体的寄存器时，格式为：%%寄存器，如 %%rax</li>
 <li>Output Operands这一部分是指定输出的，比如输出到我们指定的变量中。当然了，输出部分要符合一定的约束或者格式：  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:<span class="string">"=r"</span> (__var)</span><br></pre></td></tr></table></figure>
- 这算是比较常见的一种格式。”=r” 代表目标操作数即 %0 它可以是任意一个通用寄存器，%0是他的别名，并且变量__var 放在这个寄存器中。当然了我们的约束不仅有”=r”一种，<strong>其中，=是约束符号：只能写入，r代表约束代码：使用任何可用的通用寄存器</strong>，下面是一些总结。应当说明的是，这些约束的方式或写法仍然适合<em>Input Operands</em><br> <img src="/Users/apple/Desktop/1.png" alt="avatar"><br> <img src="/Users/apple/Desktop/2.png" alt="avatar2"></li>
+ 这算是比较常见的一种格式。”=r” 代表目标操作数即 %0 它可以是任意一个通用寄存器，%0是他的别名，并且变量__var 放在这个寄存器中。当然了我们的约束不仅有”=r”一种，<strong>其中，=是约束符号：只能写入，r代表约束代码：使用任何可用的通用寄存器</strong>，下面是一些总结。应当说明的是，这些约束的方式或写法仍然适合<em>Input Operands</em><br> <img src="https://github.com/OrangeGzY/OrangeGzY.github.io/blob/master/2020/04/03/%E4%BB%8E%E4%B8%80%E6%AC%A1%E5%81%B7%E6%87%92%E5%AD%A6%E4%B9%A0%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/1.png" alt="avatar"><br> <img src="https://github.com/OrangeGzY/OrangeGzY.github.io/blob/master/2020/04/03/%E4%BB%8E%E4%B8%80%E6%AC%A1%E5%81%B7%E6%87%92%E5%AD%A6%E4%B9%A0%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/2.png" alt="avatar2"></li>
 <li>Clobbers告诉系统：“我要修改、破坏某个寄存器的值，你不要乱用它”，如：%eax告诉GCC %eax的值将会在“asm”里被修改，所以GCC不会使用这个寄存器去存储其它的数值。</li>
 </ul>
 <h3 id="一些例子"><a href="#一些例子" class="headerlink" title="一些例子"></a>一些例子</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> data1 = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> data2 = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">int</span> result;</span><br><span class="line"></span><br><span class="line"><span class="keyword">asm</span>( <span class="string">"imull %%edx, %%ecx\n\t"</span></span><br><span class="line">      <span class="string">"movl %%ecx, %%eax"</span></span><br><span class="line">      : <span class="string">"=a"</span> ( result )             <span class="comment">//最终的结果放在result变量中，使用eax且只写</span></span><br><span class="line">      : <span class="string">"d"</span> (data1), <span class="string">"c"</span> (data2)    <span class="comment">//data1使用edx，data2使用ecx</span></span><br><span class="line">                                    <span class="comment">//我们没有修改某一个寄存器的值，换句话说，我们只定了要使用的寄存器</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>( <span class="string">"The result is %d\n"</span>, result );</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -366,138 +366,6 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">asm</span> ( <span class="string">"fild %1\n\t"</span></span><br><span class="line">      <span class="string">"fimul %1\n\t"</span></span><br><span class="line">      <span class="string">"fldpi\n\t"</span></span><br><span class="line">      <span class="string">"fmul %%st(1), %%st(0)"</span></span><br><span class="line">      : <span class="string">"=t"</span> ( area )</span><br><span class="line">      : <span class="string">"m"</span> ( radius )  </span><br><span class="line">      : <span class="string">"%st(1)"</span> );           <span class="comment">//因为使用了ST(1)寄存器，但是没有把它赋值为输出值，所以必须在改动的寄存器列表中列出它，以便编译器直到在处理完成之后情况它.</span></span><br><span class="line"><span class="built_in">printf</span>( <span class="string">"The result is %f\n"</span>, area );</span><br></pre></td></tr></table></figure>
 <p>最后就是我为了偷懒写的程序，写成了一个内联汇编宏函数</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GETPSW(a,b,flags)(&#123;\</span></span><br><span class="line">    <span class="keyword">asm</span>(<span class="string">"add %[b], %[a]\n\t"</span> \</span><br><span class="line">        <span class="string">"pushfq\n\t"</span>         \</span><br><span class="line">        <span class="string">"pop %[f1]"</span>          \</span><br><span class="line">        : [f1] <span class="string">"=m"</span>(flags)   \</span><br><span class="line">        : [b] <span class="string">"r"</span>(b), [a]<span class="string">"r"</span>(a) \</span><br><span class="line">        );&#125;)</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/28/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/28/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-28T01:30:14+08:00">
-                2020-03-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
           
         
       
@@ -578,7 +446,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">1</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
