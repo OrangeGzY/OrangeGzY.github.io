@@ -104,7 +104,7 @@
 <meta property="og:image" content="https://s1.ax1x.com/2020/04/03/Gtorgs.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/04/03/GtocD0.png">
 <meta property="article:published_time" content="2020-04-02T17:15:34.000Z">
-<meta property="article:modified_time" content="2020-04-02T18:55:43.384Z">
+<meta property="article:modified_time" content="2020-04-03T02:09:15.197Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s1.ax1x.com/2020/04/03/Gtorgs.png">
@@ -305,6 +305,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Assembler/" itemprop="url" rel="index">
+                    <span itemprop="name">Assembler</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -360,7 +382,7 @@
 <li>t引用顶部的浮点寄存器</li>
 <li>f引用任何可用的浮点寄存器</li>
 <li>u引用第二个浮点寄存器</li>
-<li><strong>从FPU获得输出值的时候，不能使用约束f，必须声明约束t或者u来指定输出值所在的FPU</strong><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">asm</span> ( <span class="string">"fsincos"</span></span><br><span class="line">    : <span class="string">"=t"</span> (cosine), <span class="string">"=u"</span> ( sine )</span><br><span class="line">    : <span class="string">"0"</span> ( radian ) );</span><br></pre></td></tr></table></figure>
+<li><strong>从FPU获得输出值的时候，不能使用约束f，必须声明约束t或者u来指定输出值所在的FPU</strong><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">asm</span> ( <span class="string">"fsincos"</span></span><br><span class="line">      : <span class="string">"=t"</span> (cosine), <span class="string">"=u"</span> ( sine )</span><br><span class="line">      : <span class="string">"0"</span> ( radian ) );</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -386,6 +408,22 @@
       
       
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/03/categories/" rel="prev" title="categories">
+                categories <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
@@ -459,12 +497,21 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
 
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">categories</span>
+              
+            </div>
           
 
           
