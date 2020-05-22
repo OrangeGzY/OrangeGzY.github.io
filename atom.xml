@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-12T18:30:10.741Z</updated>
+  <updated>2020-05-22T03:21:48.996Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>从网鼎杯白虎组pwn（云盾）学习UAF与fastbin attack</title>
+    <link href="http://yoursite.com/2020/05/21/%E4%BB%8E%E7%BD%91%E9%BC%8E%E6%9D%AF%E7%99%BD%E8%99%8E%E7%BB%84pwn%EF%BC%88%E4%BA%91%E7%9B%BE%EF%BC%89%E5%AD%A6%E4%B9%A0UAF%E4%B8%8Efastbin-attack/"/>
+    <id>http://yoursite.com/2020/05/21/从网鼎杯白虎组pwn（云盾）学习UAF与fastbin-attack/</id>
+    <published>2020-05-21T15:07:43.000Z</published>
+    <updated>2020-05-22T03:21:48.996Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;0x00-知识点概览&quot;&gt;&lt;a href=&quot;#0x00-知识点概览&quot; class=&quot;headerlink&quot; title=&quot;0x00 知识点概览&quot;&gt;&lt;/a&gt;0x00
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="http://yoursite.com/categories/CTF/"/>
+    
+    
+      <category term="网鼎杯 &amp;&amp; fastbin &amp;&amp; UAF" scheme="http://yoursite.com/tags/%E7%BD%91%E9%BC%8E%E6%9D%AF-fastbin-UAF/"/>
+    
+  </entry>
   
   <entry>
     <title>canary绕过与ROP.md</title>
