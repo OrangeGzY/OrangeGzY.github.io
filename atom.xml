@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-22T14:02:02.367Z</updated>
+  <updated>2020-06-02T07:31:52.331Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ptmalloc2学习_1</title>
+    <link href="http://yoursite.com/2020/06/02/ptmalloc2%E5%AD%A6%E4%B9%A0-1/"/>
+    <id>http://yoursite.com/2020/06/02/ptmalloc2学习-1/</id>
+    <published>2020-06-02T04:45:42.000Z</published>
+    <updated>2020-06-02T07:31:52.331Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;0x0-写在前面&quot;&gt;&lt;a href=&quot;#0x0-写在前面&quot; class=&quot;headerlink&quot; title=&quot;0x0 写在前面&quot;&gt;&lt;/a&gt;0x0
+        
+      
+    
+    </summary>
+    
+      <category term="ptmalloc" scheme="http://yoursite.com/categories/ptmalloc/"/>
+    
+    
+      <category term="ptmalloc2" scheme="http://yoursite.com/tags/ptmalloc2/"/>
+    
+  </entry>
   
   <entry>
     <title>主动SSP覆盖argv[0]</title>

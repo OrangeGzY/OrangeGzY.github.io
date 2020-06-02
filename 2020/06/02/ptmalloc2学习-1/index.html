@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ptmalloc2," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ScUpax0s" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="0x0 写在前面 最近状态特别不好，感觉很累又没什么动力，可能也是前一段时间熬夜太多了。昨天跟学长交流了一下，觉得自己还是要专心补一下基础部分，尤其是在接触了堆以后，基础真的很重要。。所以就开一个ptmalloc学习的坑，希望能好好督促自己。主要我还是太菜了。校赛输出也是倒一，全靠队友带飞。不过我是爱二进制的，也希望自己可以好好坚持。跟外校的大佬们比真的太菜了。。 关于如何学习ptmlloac2，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ptmalloc2学习_1">
+<meta property="og:url" content="http://yoursite.com/2020/06/02/ptmalloc2%E5%AD%A6%E4%B9%A0-1/index.html">
+<meta property="og:site_name" content="ScUpax0s">
+<meta property="og:description" content="0x0 写在前面 最近状态特别不好，感觉很累又没什么动力，可能也是前一段时间熬夜太多了。昨天跟学长交流了一下，觉得自己还是要专心补一下基础部分，尤其是在接触了堆以后，基础真的很重要。。所以就开一个ptmalloc学习的坑，希望能好好督促自己。主要我还是太菜了。校赛输出也是倒一，全靠队友带飞。不过我是爱二进制的，也希望自己可以好好坚持。跟外校的大佬们比真的太菜了。。 关于如何学习ptmlloac2，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/02/tYxCU1.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/02/ttmLwt.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/02/ttmRdx.png">
+<meta property="article:published_time" content="2020-06-02T04:45:42.000Z">
+<meta property="article:modified_time" content="2020-06-02T07:31:52.331Z">
+<meta property="article:author" content="Paxos">
+<meta property="article:tag" content="ptmalloc2">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/06/02/tYxCU1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/06/02/ptmalloc2学习-1/"/>
+
+
+
+
+
+  <title>ptmalloc2学习_1 | ScUpax0s</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ScUpax0s</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/02/ptmalloc2%E5%AD%A6%E4%B9%A0-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ptmalloc2学习_1</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-02T12:45:42+08:00">
+                2020-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ptmalloc/" itemprop="url" rel="index">
+                    <span itemprop="name">ptmalloc</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="0x0-写在前面"><a href="#0x0-写在前面" class="headerlink" title="0x0 写在前面"></a>0x0 写在前面</h2><ul>
+<li>最近状态特别不好，感觉很累又没什么动力，可能也是前一段时间熬夜太多了。昨天跟学长交流了一下，觉得自己还是要专心补一下基础部分，尤其是在接触了堆以后，基础真的很重要。。所以就开一个ptmalloc学习的坑，希望能好好督促自己。主要我还是太菜了。校赛输出也是倒一，全靠队友带飞。不过我是爱二进制的，也希望自己可以好好坚持。跟外校的大佬们比真的太菜了。。</li>
+<li>关于如何学习ptmlloac2，我是这样想的，如果直接去硬刚源码，也有一些枯燥乏味，对于我可能不是有效的方法。我准备以解决问题为导向，然后对于要解决的问题深入分析源码，我个人觉得是比较合适的。</li>
+</ul>
+<h2 id="0x1-什么是ptmalloc2"><a href="#0x1-什么是ptmalloc2" class="headerlink" title="0x1 什么是ptmalloc2"></a>0x1 什么是ptmalloc2</h2><ul>
+<li><em>This is the memory manager used by GNU C library on Linux. The library glibc has a global “struct malloc_state” object, named main_arena, which is the root of all managed heap memory.</em></li>
+<li><em>ptmalloc 实现了 malloc()，free()以及一组其它的函数. 以提供动态内存管理的支持。分 配器处在用户程序和内核之间，它响应用户的分配请求，向操作系统申请内存，然后将其返 回给用户程序，为了保持高效的分配，分配器一般都会预先分配一块大于用户请求的内存， 并通过某种算法管理这块内存。来满足用户的内存分配要求，用户释放掉的内存也并不是立 即就返回给操作系统，相反，分配器会管理这些被释放掉的空闲空间，以应对用户以后的内 存分配要求。也就是说，分配器不但要管理已分配的内存块，还需要管理空闲的内存块，当 响应用户分配要求时，分配器会首先在空闲空间中寻找一块合适的内存给用户，在空闲空间 中找不到的情况下才分配一块新的内存。为实现一个高效的分配器，需要考虑很多的因素。 比如，分配器本身管理内存块所占用的内存空间必须很小，分配算法必须要足够的快。</em></li>
+<li>简单的说，ptmalloc作为linux中的一个堆分配，管理的“装置”，可以通过不同的管理策略与算法满足用户、操作系统对于堆内存的分配、管理需求。</li>
+<li>但是由于ptmalloc2的一些固有的内在逻辑的问题，我们可以针对这些漏洞进行堆上的攻击，包括但不仅限于：<img src="https://s1.ax1x.com/2020/06/02/tYxCU1.png" alt=""></li>
+</ul>
+<h2 id="0x2-main-arena是什么？他在干嘛？"><a href="#0x2-main-arena是什么？他在干嘛？" class="headerlink" title="0x2 main_arena是什么？他在干嘛？"></a>0x2 main_arena是什么？他在干嘛？</h2><h3 id="引出"><a href="#引出" class="headerlink" title="引出"></a>引出</h3><p>最先看到main_arena是在一个堆题中，拿到&lt;main_arena+88&gt;然后反推heap_base。当时那个chunk应该是在unsortedbin里。然后我尝试打印了一下main_arena，发现输出了很多的变量。类似于这个：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">gdb-peda$ p main_arena</span><br><span class="line">$1 &#x3D; &#123;</span><br><span class="line">    mutex &#x3D; 0x0, </span><br><span class="line">    flags &#x3D; 0x0, </span><br><span class="line">    fastbinsY &#x3D; &#123;0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0&#125;, </span><br><span class="line">    top &#x3D; 0x0, </span><br><span class="line">    last_remainder &#x3D; 0x0, </span><br><span class="line">    bins &#x3D; &#123;0x0 &lt;repeats 254 times&gt;&#125;, </span><br><span class="line">    binmap &#x3D; &#123;0x0, 0x0, 0x0, 0x0&#125;, </span><br><span class="line">    next &#x3D; 0x7ffff7dd1b20 &lt;main_arena&gt;, </span><br><span class="line">    next_free &#x3D; 0x0, </span><br><span class="line">    attached_threads &#x3D; 0x1, </span><br><span class="line">    system_mem &#x3D; 0x0, </span><br><span class="line">    max_system_mem &#x3D; 0x0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>原问题在<a href="https://stackoverflow.com/questions/37960788/why-there-isnt-main-arena-in-libc-so-symbol-table-while-there-is-one-in-malloc" target="_blank" rel="noopener">stackoverflow</a></p>
+<h3 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h3><ul>
+<li><strong>什么是main_arena和non_main_arena(dynamic_arena)</strong>：可以说main_arena是堆内存的根。或者叫做一个进程的<strong>主分配区</strong>，当然了，有主分配区就有<strong>非主分配区</strong>，Glibc的malloc可以支持多线程，主分配区和非主分配区形成一个<strong>环形链表</strong>进行管理。每一个分配区使用互斥锁使多线程对于该分配区的访问互斥。<img src="https://s1.ax1x.com/2020/06/02/ttmLwt.png" alt=""></li>
+<li><strong>主分配区与非主分配区的区别</strong>：主要在于他们是如何向kernel请求内存的，main_arena主要调用sbrk()；non_main_arena<strong>只</strong>调用mmap(). 而sbrk()分配的内存直接从<code>programm break</code>连续向上开，或者说是连着（相邻）数据段的；而mmap()主要用于动态分配的arena（non_main_arena）mmap()可以指定分配的位置和大小、权限等。自然就不一定是连着program break了。<img src="https://s1.ax1x.com/2020/06/02/ttmRdx.png" alt=""></li>
+<li><strong>什么使用用主分配区什么时候非主</strong>：由于非主分配区采用mmap拿内存，且是有一个固定的大小的比如64MB，所以这就导致，当用户向非主分配区请求分配内存时再切成小块“零售”出去。调用效率是比较低的，接从用户空间分配内存效率会比较高。所以ptmalloc在必要的情况下才会调用mmap()向操作系统申请内存。</li>
+</ul>
+<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><p>参考malloc.h和malloc.c  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Internal routines, operating on "arenas".  */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">malloc_state</span>;</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">malloc_state</span> *<span class="title">mstate</span>;</span></span><br></pre></td></tr></table></figure>
+<p>在malloc.c中,就是main_arena的真正数据结构</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">malloc_state</span> &#123;</span></span><br><span class="line">  <span class="comment">/* 锁*/</span></span><br><span class="line">  <span class="keyword">mutex_t</span> mutex;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Statistics for locking.  Only used if THREAD_STATS is defined.  */</span></span><br><span class="line">  <span class="keyword">long</span> stat_lock_direct, stat_lock_loop, stat_lock_wait;</span><br><span class="line">  <span class="keyword">long</span> pad0_[<span class="number">1</span>]; <span class="comment">/* try to give the mutex its own cacheline */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* The maximum chunk size to be eligible for fastbin */</span></span><br><span class="line">  INTERNAL_SIZE_T  max_fast;   <span class="comment">/* low 2 bits used as flags */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Fastbins */</span></span><br><span class="line">  mfastbinptr      fastbins[NFASTBINS]; <span class="comment">//fastbins的管理头</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Base of the topmost chunk -- not otherwise kept in a bin */</span></span><br><span class="line">  mchunkptr        top;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* The remainder from the most recent split of a small request */</span></span><br><span class="line">  mchunkptr        last_remainder;  <span class="comment">//切割后剩下的chunk链接到last_remainder</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Normal bins packed as described above */</span></span><br><span class="line">  mchunkptr        bins[NBINS * <span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Bitmap of bins */</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span>     binmap[BINMAPSIZE];  <span class="comment">//位图，标识该bit对应的bin中是否包含空闲的chunk</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Linked list */</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">malloc_state</span> *<span class="title">next</span>;</span>    <span class="comment">//指向下一个arena</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Memory allocated from the system in this arena.  */</span></span><br><span class="line">  INTERNAL_SIZE_T system_mem;       <span class="comment">//记录当前分配区已经分配的内存大小</span></span><br><span class="line">  INTERNAL_SIZE_T max_system_mem;   <span class="comment">//记录当前分配区最大能分配的内存大小</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>其中mchunkptr、mfastbinptr是指向这个结构体(实际就是chunk本体<a href="#1">malloc_chunk详细</a>)的指针：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">malloc_chunk</span> &#123;</span></span><br><span class="line"></span><br><span class="line">  INTERNAL_SIZE_T      prev_size;  <span class="comment">/* Size of previous chunk (if free).  */</span></span><br><span class="line">  INTERNAL_SIZE_T      <span class="built_in">size</span>;       <span class="comment">/* Size in bytes, including overhead. */</span></span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">malloc_chunk</span>* <span class="title">fd</span>;</span>         <span class="comment">/* double links -- used only if free. */</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">malloc_chunk</span>* <span class="title">bk</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>接下来定义了main_arena。<code>static struct malloc_state main_arena;</code></p>
+<h3 id="总结一下main-arena"><a href="#总结一下main-arena" class="headerlink" title="总结一下main_arena"></a>总结一下main_arena</h3><ul>
+<li>集中管理bins链的结构体，使用含fd和bk的bin头一对一管理各个free的chunk</li>
+<li>分释放配堆块是基于main_arena来寻址的，首先找的是fastbin，其次再找bins</li>
+<li>main_arena存储在libc上，用以管理所有bins的头和尾，每个bins链头的fd和尾的bk与之连接</li>
+</ul>
+<p><span id = "1">malloc_chunk详细</span></p>
+<ul>
+<li>在程序的执行过程中，我们称malloc申请的内存为chunk。这块内存在ptmalloc内部用malloc_chunk结构体来表示。</li>
+<li>当程序申请的chunk被free后，会被加入到相应的空闲管理列表中。</li>
+<li>无论一个chunk的大小如何，处于分配状态还是释放状态，它们都使用一个统一的结构。但根据是否被释放，结构会有所更改。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">   malloc_chunk details:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    (The following includes lightly edited explanations by Colin Plumb.)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    Chunks of memory are maintained using a `boundary tag' method as</span></span><br><span class="line"><span class="comment">    described in e.g., Knuth or Standish.  (See the paper by Paul</span></span><br><span class="line"><span class="comment">    Wilson ftp://ftp.cs.utexas.edu/pub/garbage/allocsrv.ps for a</span></span><br><span class="line"><span class="comment">    survey of such techniques.)  Sizes of free chunks are stored both</span></span><br><span class="line"><span class="comment">    in the front of each chunk and at the end.  This makes</span></span><br><span class="line"><span class="comment">    consolidating fragmented chunks into bigger chunks very fast.  The</span></span><br><span class="line"><span class="comment">    size fields also hold bits representing whether chunks are free or</span></span><br><span class="line"><span class="comment">    in use.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    An allocated chunk looks like this:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    chunk-&gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span></span><br><span class="line"><span class="comment">            |             Size of previous chunk, if allocated            | |</span></span><br><span class="line"><span class="comment">            +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span></span><br><span class="line"><span class="comment">            |             Size of chunk, in bytes                         |P|</span></span><br><span class="line"><span class="comment">      mem-&gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span></span><br><span class="line"><span class="comment">            |             User data starts here...                          .</span></span><br><span class="line"><span class="comment">            .                                                               .</span></span><br><span class="line"><span class="comment">            .             (malloc_usable_space() bytes)                     .</span></span><br><span class="line"><span class="comment">            .                                                               |</span></span><br><span class="line"><span class="comment">nextchunk-&gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span></span><br><span class="line"><span class="comment">            |             Size of chunk                                     |</span></span><br><span class="line"><span class="comment">            +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    Where "chunk" is the front of the chunk for the purpose of most of</span></span><br><span class="line"><span class="comment">    the malloc code, but "mem" is the pointer that is returned to the</span></span><br><span class="line"><span class="comment">    user.  "Nextchunk" is the beginning of the next contiguous chunk.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    Chunks always begin on even word boundries, so the mem portion</span></span><br><span class="line"><span class="comment">    (which is returned to the user) is also on an even word boundary, and</span></span><br><span class="line"><span class="comment">    thus at least double-word aligned.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    Free chunks are stored in circular doubly-linked lists, and look like this:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    chunk-&gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span></span><br><span class="line"><span class="comment">            |             Size of previous chunk                            |</span></span><br><span class="line"><span class="comment">            +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span></span><br><span class="line"><span class="comment">    `head:' |             Size of chunk, in bytes                         |P|</span></span><br><span class="line"><span class="comment">      mem-&gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span></span><br><span class="line"><span class="comment">            |             Forward pointer to next chunk in list             |</span></span><br><span class="line"><span class="comment">            +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span></span><br><span class="line"><span class="comment">            |             Back pointer to previous chunk in list            |</span></span><br><span class="line"><span class="comment">            +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span></span><br><span class="line"><span class="comment">            |             Unused space (may be 0 bytes long)                .</span></span><br><span class="line"><span class="comment">            .                                                               .</span></span><br><span class="line"><span class="comment">            .                                                               |</span></span><br><span class="line"><span class="comment">nextchunk-&gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span></span><br><span class="line"><span class="comment">    `foot:' |             Size of chunk, in bytes                           |</span></span><br><span class="line"><span class="comment">            +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    The P (PREV_INUSE) bit, stored in the unused low-order bit of the</span></span><br><span class="line"><span class="comment">    chunk size (which is always a multiple of two words), is an in-use</span></span><br><span class="line"><span class="comment">    bit for the *previous* chunk.  If that bit is *clear*, then the</span></span><br><span class="line"><span class="comment">    word before the current chunk size contains the previous chunk</span></span><br><span class="line"><span class="comment">    size, and can be used to find the front of the previous chunk.</span></span><br><span class="line"><span class="comment">    The very first chunk allocated always has this bit set,</span></span><br><span class="line"><span class="comment">    preventing access to non-existent (or non-owned) memory. If</span></span><br><span class="line"><span class="comment">    prev_inuse is set for any given chunk, then you CANNOT determine</span></span><br><span class="line"><span class="comment">    the size of the previous chunk, and might even get a memory</span></span><br><span class="line"><span class="comment">    addressing fault when trying to do so.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    Note that the `foot' of the current chunk is actually represented</span></span><br><span class="line"><span class="comment">    as the prev_size of the NEXT chunk. This makes it easier to</span></span><br><span class="line"><span class="comment">    deal with alignments etc but can be very confusing when trying</span></span><br><span class="line"><span class="comment">    to extend or adapt this code.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    The two exceptions to all this are</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">     1. The special chunk `top' doesn't bother using the</span></span><br><span class="line"><span class="comment">        trailing size field since there is no next contiguous chunk</span></span><br><span class="line"><span class="comment">        that would have to index off it. After initialization, `top'</span></span><br><span class="line"><span class="comment">        is forced to always exist.  If it would become less than</span></span><br><span class="line"><span class="comment">        MINSIZE bytes long, it is replenished.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">     2. Chunks allocated via mmap, which have the second-lowest-order</span></span><br><span class="line"><span class="comment">        bit (IS_MMAPPED) set in their size fields.  Because they are</span></span><br><span class="line"><span class="comment">        allocated one-by-one, each must contain its own trailing size field.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> A:倒数第三位表示当前chunk属于主分配区(0)还是非主分配区(1)</span></span><br><span class="line"><span class="comment"> M:倒数第二位表示当前chunk是从mmap(1)[多线程]分配的，还是从brk(0)[子线程]分配的</span></span><br><span class="line"><span class="comment"> P:最低为表示前一块是否在使用中</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ptmalloc2/" rel="tag"># ptmalloc2</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/22/%E4%B8%BB%E5%8A%A8SSP%E8%A6%86%E7%9B%96argv-0/" rel="next" title="主动SSP覆盖argv[0]">
+                <i class="fa fa-chevron-left"></i> 主动SSP覆盖argv[0]
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4"
+               alt="Paxos" />
+          <p class="site-author-name" itemprop="name">Paxos</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/OrangeGzY" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:guoziyi114@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://stevelee477.github.io/" title="Stevelee477" target="_blank">Stevelee477</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0-写在前面"><span class="nav-number">1.</span> <span class="nav-text">0x0 写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x1-什么是ptmalloc2"><span class="nav-number">2.</span> <span class="nav-text">0x1 什么是ptmalloc2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x2-main-arena是什么？他在干嘛？"><span class="nav-number">3.</span> <span class="nav-text">0x2 main_arena是什么？他在干嘛？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引出"><span class="nav-number">3.1.</span> <span class="nav-text">引出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解释"><span class="nav-number">3.2.</span> <span class="nav-text">解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码分析"><span class="nav-number">3.3.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结一下main-arena"><span class="nav-number">3.4.</span> <span class="nav-text">总结一下main_arena</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paxos</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: ,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
