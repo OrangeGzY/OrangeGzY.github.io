@@ -98,7 +98,7 @@
 
 <meta name="description" content="这次周赛真的学到许多，其中64位ret2dl还应当再研究一下（没做出来），这道经典的堆题整理一下思路 0x0 考察内容 fastbin attack UAF double free got 表劫持 unsortedbin切割 realloc调整栈空间构造ogg条件0x1 题目概览 经典64位菜单堆没去符号表没开PIE，出题大师傅：“不开PIE的堆就是裸题”，之前还没体会到这句话，这道题确实体会了一">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TaLpwn fastbin+duoblefree">
+<meta property="og:title" content="TaLpwn UAF">
 <meta property="og:url" content="http://yoursite.com/2020/06/08/TaLpwn_UAF/index.html">
 <meta property="og:site_name" content="ScUpax0s">
 <meta property="og:description" content="这次周赛真的学到许多，其中64位ret2dl还应当再研究一下（没做出来），这道经典的堆题整理一下思路 0x0 考察内容 fastbin attack UAF double free got 表劫持 unsortedbin切割 realloc调整栈空间构造ogg条件0x1 题目概览 经典64位菜单堆没去符号表没开PIE，出题大师傅：“不开PIE的堆就是裸题”，之前还没体会到这句话，这道题确实体会了一">
@@ -117,7 +117,7 @@
 <meta property="og:image" content="https://s1.ax1x.com/2020/06/09/t4bC0e.jpg">
 <meta property="og:image" content="https://s1.ax1x.com/2020/06/09/t4HOYR.png">
 <meta property="article:published_time" content="2020-06-08T14:28:27.000Z">
-<meta property="article:modified_time" content="2020-06-09T05:16:08.782Z">
+<meta property="article:modified_time" content="2020-06-09T05:18:11.160Z">
 <meta property="article:author" content="Paxos">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s1.ax1x.com/2020/06/08/thdoon.png">
@@ -155,7 +155,7 @@
 
 
 
-  <title>TaLpwn fastbin+duoblefree | ScUpax0s</title>
+  <title>TaLpwn UAF | ScUpax0s</title>
   
 
 
@@ -315,7 +315,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">TaLpwn fastbin+duoblefree</h1>
+          <h1 class="post-title" itemprop="name headline">TaLpwn UAF</h1>
         
 
         <div class="post-meta">

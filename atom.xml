@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-09T05:16:08.782Z</updated>
+  <updated>2020-06-09T05:18:11.160Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>TaLpwn fastbin+duoblefree</title>
+    <title>TaLpwn UAF</title>
     <link href="http://yoursite.com/2020/06/08/TaLpwn_UAF/"/>
     <id>http://yoursite.com/2020/06/08/TaLpwn_UAF/</id>
     <published>2020-06-08T14:28:27.000Z</published>
-    <updated>2020-06-09T05:16:08.782Z</updated>
+    <updated>2020-06-09T05:18:11.160Z</updated>
     
     <summary type="html">
     
