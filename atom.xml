@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-09T08:19:36.866Z</updated>
+  <updated>2020-06-13T07:01:50.303Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,59 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>TaLpwn-learning-ret2dl-64_tmp</title>
+    <link href="http://yoursite.com/2020/06/13/TaLpwn-learning-ret2dl-64_tmp/"/>
+    <id>http://yoursite.com/2020/06/13/TaLpwn-learning-ret2dl-64_tmp/</id>
+    <published>2020-06-13T07:01:50.255Z</published>
+    <updated>2020-06-13T07:01:50.303Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;TaLpwn-learning-ret2dl-64.md&lt;/title&gt;
+&lt;meta http-equiv=&quot;Content-type&quot;
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TaLCTF ret2dl_resolve_x86-64</title>
+    <link href="http://yoursite.com/2020/06/10/TaLpwn-learning-ret2dl-64/"/>
+    <id>http://yoursite.com/2020/06/10/TaLpwn-learning-ret2dl-64/</id>
+    <published>2020-06-10T15:14:48.000Z</published>
+    <updated>2020-06-13T07:01:54.595Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;del&gt;当时没做出来的一道题，赛后再静下心研究一下，ret2dl 64位模版题，一瞬把我秒了。。&lt;/del&gt;&lt;/p&gt;
+&lt;h2 id=&quot;什么是ret2dl攻击&quot;&gt;&lt;a href=&quot;#什么是ret2dl攻击&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="TaL第一次周赛" scheme="http://yoursite.com/categories/TaL%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%91%A8%E8%B5%9B/"/>
+    
+    
+      <category term="ret2dl_resolve" scheme="http://yoursite.com/tags/ret2dl-resolve/"/>
+    
+  </entry>
   
   <entry>
     <title>TaLpwn UAF</title>
