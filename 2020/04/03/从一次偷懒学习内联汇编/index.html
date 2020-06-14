@@ -1,240 +1,409 @@
 <!DOCTYPE html>
-<html lang="en">
 
 
 
+  
 
 
+<html class="theme-next gemini use-motion" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
-  <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
-  <meta name="author" content="Paxos">
-  <meta name="keywords" content="">
-  <title>从一次偷懒学习内联汇编 - ScUpax0s</title>
-
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
 
   
-    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+  
+  
   
 
   
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
 
 
-<!-- 主题依赖的图标库，不要自行修改 -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-<link  rel="stylesheet" href="/css/main.css" />
-
-<!-- 自定义样式保持在最底部 -->
+  <meta name="keywords" content="Hexo, NexT" />
 
 
-  <script  src="/js/utils.js" ></script>
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ScUpax0s" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="从一次偷懒学习内联汇编 上一节汇编语言课上，老师让写出两个数做加法，最终PSW各个标志位，于是就想能不能偷个懒，写一段程序来自动输出PSW 环境：MacOS 10.15&#x2F;gcc  一.基本格式123456asm [volatile] ( Assembler Template                : Output Operands   &#x2F;* Optional *&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从一次偷懒学习内联汇编">
+<meta property="og:url" content="http://yoursite.com/2020/04/03/%E4%BB%8E%E4%B8%80%E6%AC%A1%E5%81%B7%E6%87%92%E5%AD%A6%E4%B9%A0%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/index.html">
+<meta property="og:site_name" content="ScUpax0s">
+<meta property="og:description" content="从一次偷懒学习内联汇编 上一节汇编语言课上，老师让写出两个数做加法，最终PSW各个标志位，于是就想能不能偷个懒，写一段程序来自动输出PSW 环境：MacOS 10.15&#x2F;gcc  一.基本格式123456asm [volatile] ( Assembler Template                : Output Operands   &#x2F;* Optional *&#x2F;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/03/Gtorgs.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/03/GtocD0.png">
+<meta property="article:published_time" content="2020-04-02T17:15:34.000Z">
+<meta property="article:modified_time" content="2020-04-03T02:51:46.825Z">
+<meta property="article:author" content="Paxos">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/04/03/Gtorgs.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/04/03/从一次偷懒学习内联汇编/"/>
+
+
+
+
+
+  <title>从一次偷懒学习内联汇编 | ScUpax0s</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <meta name="generator" content="Hexo 4.2.0"></head>
 
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
-<body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+  
+  
+    
+  
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                Home
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                Archives
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                Categories
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                Tags
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                About
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
-          </li>
-        
-      </ul>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ScUpax0s</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
-  </div>
-</nav>
-
-    <div class="view intro-2" id="background" parallax=true
-         style="background: url('/img/default.png') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="container text-center white-text fadeInUp">
-            <span class="h2" id="subtitle">
-              
-            </span>
-
-            
-              
-  <div class="mt-3 post-meta">
-    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-04-03 01:15">
-      April 3, 2020 am
-    </time>
+      
+        <p class="site-subtitle"></p>
+      
   </div>
 
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      1.4k 字
-    </span>
-  
-
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      16
-       分钟
-    </span>
-  
-
-  
-  
-    
-      <!-- 不蒜子统计文章PV -->
-      <span id="busuanzi_container_page_pv" style="display: none">
-        <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="busuanzi_value_page_pv"></span> 次
-      </span>
-    
-  
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
             
-          </div>
-
-          
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
       
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="container nopadding-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <div class="post-content mx-auto" id="post">
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
             
-            <article class="markdown-body">
-              <h1 id="从一次偷懒学习内联汇编"><a href="#从一次偷懒学习内联汇编" class="headerlink" title="从一次偷懒学习内联汇编"></a>从一次偷懒学习内联汇编</h1><ul>
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/03/%E4%BB%8E%E4%B8%80%E6%AC%A1%E5%81%B7%E6%87%92%E5%AD%A6%E4%B9%A0%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从一次偷懒学习内联汇编</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-03T01:15:34+08:00">
+                2020-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Assembler/" itemprop="url" rel="index">
+                    <span itemprop="name">Assembler</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="从一次偷懒学习内联汇编"><a href="#从一次偷懒学习内联汇编" class="headerlink" title="从一次偷懒学习内联汇编"></a>从一次偷懒学习内联汇编</h1><ul>
 <li>上一节汇编语言课上，老师让写出两个数做加法，最终PSW各个标志位，于是就想能不能偷个懒，写一段程序来自动输出PSW</li>
 <li>环境：MacOS 10.15/gcc</li>
 </ul>
-<h2 id="一-基本格式"><a href="#一-基本格式" class="headerlink" title="一.基本格式"></a>一.基本格式</h2><figure class="highlight c"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="keyword">asm</span> [<span class="keyword">volatile</span>] ( Assembler Template</span><br><span class="line"></span><br><span class="line">                : Output Operands   <span class="comment">/* Optional */</span></span><br><span class="line">                : Input Operands    <span class="comment">/* Optional */</span></span><br><span class="line">                : Clobbers          <span class="comment">/* Optional */</span></span><br><span class="line">   )</span><br></pre></div></td></tr></table></figure>
+<h2 id="一-基本格式"><a href="#一-基本格式" class="headerlink" title="一.基本格式"></a>一.基本格式</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">asm</span> [<span class="keyword">volatile</span>] ( Assembler Template</span><br><span class="line"></span><br><span class="line">                : Output Operands   <span class="comment">/* Optional */</span></span><br><span class="line">                : Input Operands    <span class="comment">/* Optional */</span></span><br><span class="line">                : Clobbers          <span class="comment">/* Optional */</span></span><br><span class="line">   )</span><br></pre></td></tr></table></figure>
 <h2 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h2><p>在基本的内联汇编中，我们只有指令。但是当我们想进行更高级的操作比如：使用一些已经定义好的变量、输入一些指定的寄存器、或者输出到某些指定的寄存器，扩展内联汇编可以极大的简化我们的工作。（虽然他看起来有些晦涩</p>
 <h3 id="一些解释"><a href="#一些解释" class="headerlink" title="一些解释"></a>一些解释</h3><ul>
 <li>asm代表开始程序，<strong>volatile</strong>是一个可选参数，他告诉编译器：“你不要乱动我这里的代码啊！”防止由于gcc自身的优化而导致代码移动或改变位置等。( )中是我们具体的代码，其中：数字加%表示寄存器样板操作数，如：%1 换句话说，就是给寄存器起一个别名，这个别名是自然数标识的，最大到几取决于通用寄存器的数量。而我们在使用具体的寄存器时，格式为：%%寄存器，如 %%rax</li>
-<li>Output Operands这一部分是指定输出的，比如输出到我们指定的变量中。当然了，输出部分要符合一定的约束或者格式：  <figure class="highlight c"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line">:<span class="string">"=r"</span> (__var)</span><br></pre></div></td></tr></table></figure>
- 这算是比较常见的一种格式。”=r” 代表目标操作数即 %0 它可以是任意一个通用寄存器，%0是他的别名，并且变量__var 放在这个寄存器中。当然了我们的约束不仅有”=r”一种，<strong>其中，=是约束符号：只能写入，r代表约束代码：使用任何可用的通用寄存器</strong>，下面是一些总结。应当说明的是，这些约束的方式或写法仍然适合<em>Input Operands</em><br> <img src="https://s1.ax1x.com/2020/04/03/Gtorgs.png" srcset="/img/loading.gif" alt="avatar"><br> <img src="https://s1.ax1x.com/2020/04/03/GtocD0.png" srcset="/img/loading.gif" alt="avatar2"></li>
+<li>Output Operands这一部分是指定输出的，比如输出到我们指定的变量中。当然了，输出部分要符合一定的约束或者格式：  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:<span class="string">"=r"</span> (__var)</span><br></pre></td></tr></table></figure>
+ 这算是比较常见的一种格式。”=r” 代表目标操作数即 %0 它可以是任意一个通用寄存器，%0是他的别名，并且变量__var 放在这个寄存器中。当然了我们的约束不仅有”=r”一种，<strong>其中，=是约束符号：只能写入，r代表约束代码：使用任何可用的通用寄存器</strong>，下面是一些总结。应当说明的是，这些约束的方式或写法仍然适合<em>Input Operands</em><br> <img src="https://s1.ax1x.com/2020/04/03/Gtorgs.png" alt="avatar"><br> <img src="https://s1.ax1x.com/2020/04/03/GtocD0.png" alt="avatar2"></li>
 <li>Clobbers告诉系统：“我要修改、破坏某个寄存器的值，你不要乱用它”，如：%eax告诉GCC %eax的值将会在“asm”里被修改，所以GCC不会使用这个寄存器去存储其它的数值。</li>
 </ul>
-<h3 id="一些例子"><a href="#一些例子" class="headerlink" title="一些例子"></a>一些例子</h3><figure class="highlight c"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> data1 = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> data2 = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">int</span> result;</span><br><span class="line"></span><br><span class="line"><span class="keyword">asm</span>( <span class="string">"imull %%edx, %%ecx\n\t"</span></span><br><span class="line">      <span class="string">"movl %%ecx, %%eax"</span></span><br><span class="line">      : <span class="string">"=a"</span> ( result )             <span class="comment">//最终的结果放在result变量中，使用eax且只写</span></span><br><span class="line">      : <span class="string">"d"</span> (data1), <span class="string">"c"</span> (data2)    <span class="comment">//data1使用edx，data2使用ecx</span></span><br><span class="line">                                    <span class="comment">//我们没有修改某一个寄存器的值，换句话说，我们只定了要使用的寄存器</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>( <span class="string">"The result is %d\n"</span>, result );</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></div></td></tr></table></figure>
+<h3 id="一些例子"><a href="#一些例子" class="headerlink" title="一些例子"></a>一些例子</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> data1 = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> data2 = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">int</span> result;</span><br><span class="line"></span><br><span class="line"><span class="keyword">asm</span>( <span class="string">"imull %%edx, %%ecx\n\t"</span></span><br><span class="line">      <span class="string">"movl %%ecx, %%eax"</span></span><br><span class="line">      : <span class="string">"=a"</span> ( result )             <span class="comment">//最终的结果放在result变量中，使用eax且只写</span></span><br><span class="line">      : <span class="string">"d"</span> (data1), <span class="string">"c"</span> (data2)    <span class="comment">//data1使用edx，data2使用ecx</span></span><br><span class="line">                                    <span class="comment">//我们没有修改某一个寄存器的值，换句话说，我们只定了要使用的寄存器</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>( <span class="string">"The result is %d\n"</span>, result );</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>   我们定义了data1和data2，想对他们做乘法同时使用指定的寄存器。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">10</span>, b;</span><br><span class="line"><span class="keyword">asm</span> (<span class="string">"movl %1, %%eax;</span></span><br><span class="line"><span class="string">    movl %%eax, %0;"</span></span><br><span class="line">    :<span class="string">"=r"</span>(b)       <span class="comment">//输出到b变量，使用任意的通用寄存器，在代码中使用 %0 代替储存b变量的寄存器</span></span><br><span class="line">    :<span class="string">"r"</span>(a)        <span class="comment">//输入的是a变量，使用任意的通用寄存器，在代码中用 %1 来代替储存a变量的寄存器</span></span><br><span class="line">    :<span class="string">"%eax"</span>        <span class="comment">//我们破坏了%eax的值所以要告诉系统，这里不需要使用两个%%  </span></span><br><span class="line">    );</span><br></pre></div></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">10</span>, b;</span><br><span class="line"><span class="keyword">asm</span> (<span class="string">"movl %1, %%eax;</span></span><br><span class="line"><span class="string">    movl %%eax, %0;"</span></span><br><span class="line">    :<span class="string">"=r"</span>(b)       <span class="comment">//输出到b变量，使用任意的通用寄存器，在代码中使用 %0 代替储存b变量的寄存器</span></span><br><span class="line">    :<span class="string">"r"</span>(a)        <span class="comment">//输入的是a变量，使用任意的通用寄存器，在代码中用 %1 来代替储存a变量的寄存器</span></span><br><span class="line">    :<span class="string">"%eax"</span>        <span class="comment">//我们破坏了%eax的值所以要告诉系统，这里不需要使用两个%%  </span></span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
 <p> 那么出现了一个问题，如果一个变量既充当输入操作数，又充当输出操作数，应该怎么写呢？</p>
-<figure class="highlight c"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="keyword">asm</span> ( <span class="string">"imull %1, %0"</span></span><br><span class="line">  : <span class="string">"=r"</span> ( data2 )</span><br><span class="line">  : <span class="string">"r"</span> ( data1 ), <span class="string">"0"</span> ( data2 ) ); <span class="comment">//标记“0” 告诉编译器使用第一个命名的寄存器存放data2即%0，这样确保将使用相同的寄存器保存输入值和输出值</span></span><br></pre></div></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">asm</span> ( <span class="string">"imull %1, %0"</span></span><br><span class="line">  : <span class="string">"=r"</span> ( data2 )</span><br><span class="line">  : <span class="string">"r"</span> ( data1 ), <span class="string">"0"</span> ( data2 ) ); <span class="comment">//标记“0” 告诉编译器使用第一个命名的寄存器存放data2即%0，这样确保将使用相同的寄存器保存输入值和输出值</span></span><br></pre></td></tr></table></figure>
 <p>  当然了，你可能觉得使用%0，%1….很难区分到底是哪个变量，我们可以使用<strong>替换占位符</strong>解决这个问题，就是给变量来个别名。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line">%[name] <span class="string">"constrint"</span> (variable)</span><br></pre></div></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="keyword">asm</span> ( <span class="string">"imul %[value1], %[value2]"</span></span><br><span class="line">      : [value2] <span class="string">"=r"</span> ( data2 )     <span class="comment">//[value2]是data2变量在代码中的别名，引用时加上%符号使用</span></span><br><span class="line">      : [value1] <span class="string">"r"</span> ( data1 ), <span class="string">"0"</span> ( data2 ) );</span><br></pre></div></td></tr></table></figure>
-<h3 id="深入一些"><a href="#深入一些" class="headerlink" title="深入一些"></a>深入一些</h3><figure class="highlight c"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line">    <span class="keyword">asm</span> ( <span class="string">"divib %2\n\t"</span></span><br><span class="line">          <span class="string">"movl %%eax, %0"</span></span><br><span class="line">          : <span class="string">"=m"</span> ( result )                       <span class="comment">//写入result的内存位置</span></span><br><span class="line">          : <span class="string">"a"</span> ( dividend ), <span class="string">"m"</span> ( divisor ) );  <span class="comment">//被除数在eax中，除数使用内存位置，确定结果之后，他被传送到中它的内存位置中，而不是寄存器。</span></span><br><span class="line"><span class="built_in">printf</span>( <span class="string">"The result is %d\n"</span>, result );</span><br></pre></div></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%[name] <span class="string">"constrint"</span> (variable)</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">asm</span> ( <span class="string">"imul %[value1], %[value2]"</span></span><br><span class="line">      : [value2] <span class="string">"=r"</span> ( data2 )     <span class="comment">//[value2]是data2变量在代码中的别名，引用时加上%符号使用</span></span><br><span class="line">      : [value1] <span class="string">"r"</span> ( data1 ), <span class="string">"0"</span> ( data2 ) );</span><br></pre></td></tr></table></figure>
+<h3 id="深入一些"><a href="#深入一些" class="headerlink" title="深入一些"></a>深入一些</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">asm</span> ( <span class="string">"divib %2\n\t"</span></span><br><span class="line">          <span class="string">"movl %%eax, %0"</span></span><br><span class="line">          : <span class="string">"=m"</span> ( result )                       <span class="comment">//写入result的内存位置</span></span><br><span class="line">          : <span class="string">"a"</span> ( dividend ), <span class="string">"m"</span> ( divisor ) );  <span class="comment">//被除数在eax中，除数使用内存位置，确定结果之后，他被传送到中它的内存位置中，而不是寄存器。</span></span><br><span class="line"><span class="built_in">printf</span>( <span class="string">"The result is %d\n"</span>, result );</span><br></pre></td></tr></table></figure>
 <p> 这里我们并非直接使用寄存器，而是使用变量的内存位置</p>
-<figure class="highlight c"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">float</span> angle = <span class="number">90</span>;  </span><br><span class="line"><span class="keyword">float</span> radian, cosine, sine;</span><br><span class="line"></span><br><span class="line">radian = angle / <span class="number">180</span> * <span class="number">3.14159</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">asm</span> ( <span class="string">"fsincos"</span></span><br><span class="line">        : <span class="string">"=t"</span> (cosine), <span class="string">"=u"</span> ( sine )  <span class="comment">//指定输出值所在的FPU</span></span><br><span class="line">        : <span class="string">"0"</span> ( radian ) );</span><br><span class="line"><span class="built_in">printf</span>( <span class="string">"The cosine is %f, and the sine is %f\n"</span>, cosine, sine );</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></div></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">float</span> angle = <span class="number">90</span>;  </span><br><span class="line"><span class="keyword">float</span> radian, cosine, sine;</span><br><span class="line"></span><br><span class="line">radian = angle / <span class="number">180</span> * <span class="number">3.14159</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">asm</span> ( <span class="string">"fsincos"</span></span><br><span class="line">        : <span class="string">"=t"</span> (cosine), <span class="string">"=u"</span> ( sine )  <span class="comment">//指定输出值所在的FPU</span></span><br><span class="line">        : <span class="string">"0"</span> ( radian ) );</span><br><span class="line"><span class="built_in">printf</span>( <span class="string">"The cosine is %f, and the sine is %f\n"</span>, cosine, sine );</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>  这里我们对浮点数进行处理，浮点数有如下约束</p>
 <ul>
 <li>t引用顶部的浮点寄存器</li>
@@ -242,255 +411,462 @@
 <li>u引用第二个浮点寄存器</li>
 <li><strong>从FPU获得输出值的时候，不能使用约束f，必须声明约束t或者u来指定输出值所在的FPU</strong></li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="keyword">asm</span> ( <span class="string">"fsincos"</span></span><br><span class="line">      : <span class="string">"=t"</span> (cosine), <span class="string">"=u"</span> ( sine )</span><br><span class="line">      : <span class="string">"0"</span> ( radian ) );</span><br></pre></div></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">asm</span> ( <span class="string">"fsincos"</span></span><br><span class="line">      : <span class="string">"=t"</span> (cosine), <span class="string">"=u"</span> ( sine )</span><br><span class="line">      : <span class="string">"0"</span> ( radian ) );</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight c"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="keyword">asm</span> ( <span class="string">"fild %1\n\t"</span></span><br><span class="line">      <span class="string">"fimul %1\n\t"</span></span><br><span class="line">      <span class="string">"fldpi\n\t"</span></span><br><span class="line">      <span class="string">"fmul %%st(1), %%st(0)"</span></span><br><span class="line">      : <span class="string">"=t"</span> ( area )</span><br><span class="line">      : <span class="string">"m"</span> ( radius )  </span><br><span class="line">      : <span class="string">"%st(1)"</span> );           <span class="comment">//因为使用了ST(1)寄存器，但是没有把它赋值为输出值，所以必须在改动的寄存器列表中列出它，以便编译器直到在处理完成之后情况它.</span></span><br><span class="line"><span class="built_in">printf</span>( <span class="string">"The result is %f\n"</span>, area );</span><br></pre></div></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">asm</span> ( <span class="string">"fild %1\n\t"</span></span><br><span class="line">      <span class="string">"fimul %1\n\t"</span></span><br><span class="line">      <span class="string">"fldpi\n\t"</span></span><br><span class="line">      <span class="string">"fmul %%st(1), %%st(0)"</span></span><br><span class="line">      : <span class="string">"=t"</span> ( area )</span><br><span class="line">      : <span class="string">"m"</span> ( radius )  </span><br><span class="line">      : <span class="string">"%st(1)"</span> );           <span class="comment">//因为使用了ST(1)寄存器，但是没有把它赋值为输出值，所以必须在改动的寄存器列表中列出它，以便编译器直到在处理完成之后情况它.</span></span><br><span class="line"><span class="built_in">printf</span>( <span class="string">"The result is %f\n"</span>, area );</span><br></pre></td></tr></table></figure>
 <p>最后就是我为了偷懒写的程序，写成了一个内联汇编宏函数</p>
-<figure class="highlight c"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GETPSW(a,b,flags)(&#123;\</span></span><br><span class="line">    <span class="keyword">asm</span>(<span class="string">"add %[b], %[a]\n\t"</span> \</span><br><span class="line">        <span class="string">"pushfq\n\t"</span>         \</span><br><span class="line">        <span class="string">"pop %[f1]"</span>          \</span><br><span class="line">        : [f1] <span class="string">"=m"</span>(flags)   \</span><br><span class="line">        : [b] <span class="string">"r"</span>(b), [a]<span class="string">"r"</span>(a) \</span><br><span class="line">        );&#125;)</span><br></pre></div></td></tr></table></figure>
-            </article>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/Assembler/">Assembler</a>
-                    
-                  </div>
-                
-                
-              </div>
-              
-                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
-              
-              
-                <div class="post-prevnext row">
-                  <div class="post-prev col-6">
-                    
-                    
-                      <a href="/2020/04/25/%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84ret2lib/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">一道经典的ret2lib</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
-                  </div>
-                  <div class="post-next col-6">
-                    
-                    
-                  </div>
-                </div>
-              
-            </div>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GETPSW(a,b,flags)(&#123;\</span></span><br><span class="line">    <span class="keyword">asm</span>(<span class="string">"add %[b], %[a]\n\t"</span> \</span><br><span class="line">        <span class="string">"pushfq\n\t"</span>         \</span><br><span class="line">        <span class="string">"pop %[f1]"</span>          \</span><br><span class="line">        : [f1] <span class="string">"=m"</span>(flags)   \</span><br><span class="line">        : [b] <span class="string">"r"</span>(b), [a]<span class="string">"r"</span>(a) \</span><br><span class="line">        );&#125;)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/25/%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84ret2lib/" rel="prev" title="一道经典的ret2lib">
+                一道经典的ret2lib <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
-      </div>
-    </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
-  <div id="tocbot"></div>
-</div>
-
-      </div>
-    
-  </div>
-</div>
-
-<!-- Custom -->
-
-
-    
-  </main>
-
-  
-    <a id="scroll-top-button" href="#" role="button">
-      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-    </a>
-  
-
-  
-    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">keyword</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-  
-
-  
-
-  
-
-  <footer class="mt-5">
-  <div class="text-center py-3">
-    <div>
-      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
-      <i class="iconfont icon-love"></i>
-      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
-        <span>Fluid</span></a>
-    </div>
-    
-
-    
-
-    
-  </div>
-</footer>
-
-<!-- SCRIPTS -->
-<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="/js/debouncer.js" ></script>
-<script  src="/js/main.js" ></script>
-
-<!-- Plugins -->
-
-
-  
-    <script  src="/js/lazyload.js" ></script>
-  
-
-
-
-  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="/js/clipboard-use.js" ></script>
-
-
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-
-  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
-  <script>
-    $(document).ready(function () {
-      var boardCtn = $('#board-ctn');
-      var boardTop = boardCtn.offset().top;
-
-      tocbot.init({
-        tocSelector: '#tocbot',
-        contentSelector: 'article.markdown-body',
-        headingSelector: 'h1,h2,h3,h4,h5,h6',
-        linkClass: 'tocbot-link',
-        activeLinkClass: 'tocbot-active-link',
-        listClass: 'tocbot-list',
-        isCollapsedClass: 'tocbot-is-collapsed',
-        collapsibleClass: 'tocbot-is-collapsible',
-        collapseDepth: 0,
-        scrollSmooth: true,
-        headingsOffset: -boardTop
-      });
-      if ($('.toc-list-item').length > 0) {
-        $('#toc').css('visibility', 'visible');
-      }
-    });
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
-  <script>
-    var typed = new Typed('#subtitle', {
-      strings: [
-        '  ',
-        "从一次偷懒学习内联汇编&nbsp;",
-      ],
-      cursorChar: "_",
-      typeSpeed: 70,
-      loop: false,
-    });
-    typed.stop();
-    $(document).ready(function () {
-      $(".typed-cursor").addClass("h2");
-      typed.start();
-    });
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
-  <script>
-    anchors.options = {
-      placement: "right",
-      visible: "hover",
       
-    };
-    var el = "h1,h2,h3,h4,h5,h6".split(",");
-    var res = [];
-    for (item of el) {
-      res.push(".markdown-body > " + item)
-    }
-    anchors.add(res.join(", "))
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4"
+               alt="Paxos" />
+          <p class="site-author-name" itemprop="name">Paxos</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/OrangeGzY" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:guoziyi114@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://stevelee477.github.io/" title="Stevelee477(全栈大佬)" target="_blank">Stevelee477(全栈大佬)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://minhal.me" title="Minhal(二进制爷爷👴)" target="_blank">Minhal(二进制爷爷👴)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://a2u13.com" title="A2u13(web爷爷👴)" target="_blank">A2u13(web爷爷👴)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://zhiaowei.github.io/" title="uranus(web姐姐🧍)" target="_blank">uranus(web姐姐🧍)</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#从一次偷懒学习内联汇编"><span class="nav-number">1.</span> <span class="nav-text">从一次偷懒学习内联汇编</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-基本格式"><span class="nav-number">1.1.</span> <span class="nav-text">一.基本格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Overall"><span class="nav-number">1.2.</span> <span class="nav-text">Overall</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一些解释"><span class="nav-number">1.2.1.</span> <span class="nav-text">一些解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些例子"><span class="nav-number">1.2.2.</span> <span class="nav-text">一些例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深入一些"><span class="nav-number">1.2.3.</span> <span class="nav-text">深入一些</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paxos</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: ,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
   </script>
 
 
+  
 
-  <script  src="/js/local-search.js" ></script>
-  <script>
-    var path = "/local-search.xml";
-    var inputArea = document.querySelector("#local-search-input");
-    inputArea.onclick = function () {
-      searchFunc(path, 'local-search-input', 'local-search-result');
-      this.onclick = null
-    }
-  </script>
+  
 
-
-
-  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-  <script>
-    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
-      function () {
-        var element = document.createElement('a');
-        $(element).attr('data-fancybox', 'images');
-        $(element).attr('href', $(this).attr('src'));
-        $(this).wrap(element);
-      }
-    );
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>

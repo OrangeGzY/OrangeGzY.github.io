@@ -1,229 +1,531 @@
 <!DOCTYPE html>
-<html lang="en">
 
 
 
-
-
-<head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
-  <meta name="author" content="Paxos">
-  <meta name="keywords" content="">
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ScUpax0s" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="ScUpax0s">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="ScUpax0s">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Paxos">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/"/>
+
+
+
+
+
   <title>ScUpax0s</title>
-
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+  
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
 
 
-<link  rel="stylesheet" href="/css/main.css" />
-
-<!-- 自定义样式保持在最底部 -->
 
 
-  <script  src="/js/utils.js" ></script>
+
+
+
+
+
+
+
 <meta name="generator" content="Hexo 4.2.0"></head>
 
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
-<body>
-  <header style="height: 100vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+  
+  
+    
+  
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
+  <div class="container sidebar-position-left 
+   page-home 
+ ">
+    <div class="headband"></div>
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                Home
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                Archives
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                Categories
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                Tags
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                About
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
-          </li>
-        
-      </ul>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ScUpax0s</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
+      
+        <p class="site-subtitle"></p>
+      
   </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
 </nav>
 
-    <div class="view intro-2" id="background" parallax=true
-         style="background: url('/img/default.png') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="container text-center white-text fadeInUp">
-            <span class="h2" id="subtitle">
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/10/TaLpwn-learning-ret2dl-64/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/10/TaLpwn-learning-ret2dl-64/" itemprop="url">TaLCTF ret2dl_resolve_x86-64</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-10T23:14:48+08:00">
+                2020-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TaL%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%91%A8%E8%B5%9B/" itemprop="url" rel="index">
+                    <span itemprop="name">TaL第一次周赛</span>
+                  </a>
+                </span>
+
+                
+                
               
             </span>
+          
 
+          
             
-          </div>
+          
 
           
-            <div class="scroll-down-bar">
-              <i class="iconfont icon-arrowdown"></i>
-            </div>
           
+
+          
+
+          
+
+          
+
         </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
+      </header>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          style=margin-top:0>
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
 
-
-  <div class="row mx-auto index-card">
     
     
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/06/10/TaLpwn-learning-ret2dl-64/" target="_self">
-          <img src="/img/1.JPG" srcset="/img/loading.gif" alt="TaLCTF ret2dl_resolve_x86-64">
-        </a>
-      </div>
     
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2020/06/10/TaLpwn-learning-ret2dl-64/">TaLCTF ret2dl_resolve_x86-64</a>
+    <div class="post-body" itemprop="articleBody">
 
-      <a href="/2020/06/10/TaLpwn-learning-ret2dl-64/" class="index-excerpt">
-        
+      
+      
+
+      
         
           
-        
-        <div>当时没做出来的一道题，赛后再静下心研究一下，ret2dl 64位模版题，一瞬把我秒了。。
+          当时没做出来的一道题，赛后再静下心研究一下，ret2dl 64位模版题，一瞬把我秒了。。
 什么是ret2dl攻击
-当程序在第一次加载某个函数的时候，got表中对应的表项还没有写入真实的地址（因为是第一次调用），所以这个时候就需要调用_dl_runtime_resolve函数将真实的地址写入got表对应的表项中，然后将控制权交还这个函数，此时就完成了第一次的调用，got表中也有了对应的真实地址。整个</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-06-10
+当程序在第一次加载某个函数的时候，got表中对应的表项还没有写入真实的地址（因为是第一次调用），所以这个时候就需要调用_dl_runtime_resolve函数将真实的地址写入got表对
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/10/TaLpwn-learning-ret2dl-64/#more" rel="contents">
+              Read more &raquo;
+            </a>
           </div>
+          <!--/noindex-->
         
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/TaL%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%91%A8%E8%B5%9B/">TaL第一次周赛</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/ret2dl-resolve/">ret2dl_resolve</a>
-            
-          </div>
-        
-      </div>
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/06/08/TaLpwn_UAF/">TaLpwn UAF</a>
 
-      <a href="/2020/06/08/TaLpwn_UAF/" class="index-excerpt">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/08/TaLpwn_UAF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
         
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/08/TaLpwn_UAF/" itemprop="url">TaLpwn UAF</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-08T22:28:27+08:00">
+                2020-06-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TaL%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%91%A8%E8%B5%9B/" itemprop="url" rel="index">
+                    <span itemprop="name">TaL第一次周赛</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         
           
-        
-        <div>这次周赛真的学到许多，其中64位ret2dl还应当再研究一下（没做出来），这道经典的堆题整理一下思路
+          这次周赛真的学到许多，其中64位ret2dl还应当再研究一下（没做出来），这道经典的堆题整理一下思路
 0x0 考察内容
 fastbin attack
 UAF
@@ -231,258 +533,909 @@ double free
 got 表劫持
 unsortedbin切割
 realloc调整栈空间构造ogg条件0x1 题目概览
-经典64位菜单堆没去符号表没开PIE，出题大师傅：“不开PIE的堆就是裸题”，之前还没体会到这句话，这道题确实体会了一</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-06-08
+经典64位菜单堆没
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/08/TaLpwn_UAF/#more" rel="contents">
+              Read more &raquo;
+            </a>
           </div>
+          <!--/noindex-->
         
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/TaL%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%91%A8%E8%B5%9B/">TaL第一次周赛</a>
-            
-          </div>
-        
-        
-      </div>
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/06/02/ptmalloc2%E5%AD%A6%E4%B9%A0-1/">ptmalloc2学习_1</a>
 
-      <a href="/2020/06/02/ptmalloc2%E5%AD%A6%E4%B9%A0-1/" class="index-excerpt">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/02/ptmalloc2%E5%AD%A6%E4%B9%A0-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
         
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/02/ptmalloc2%E5%AD%A6%E4%B9%A0-1/" itemprop="url">ptmalloc2学习_1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-02T12:45:42+08:00">
+                2020-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ptmalloc/" itemprop="url" rel="index">
+                    <span itemprop="name">ptmalloc</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         
           
-        
-        <div>0x0 写在前面
-最近状态特别不好，感觉很累又没什么动力，可能也是前一段时间熬夜太多了。昨天跟学长交流了一下，觉得自己还是要专心补一下基础部分，尤其是在接触了堆以后，基础真的很重要。。所以就开一个ptmalloc学习的坑，希望能好好督促自己。主要我还是太菜了。校赛输出也是倒一，全靠队友带飞。不过我是爱二进制的，也希望自己可以好好坚持。跟外校的大佬们比真的太菜了。。
-关于如何学习ptmlloac2，</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-06-02
+          0x0 写在前面
+最近状态特别不好，感觉很累又没什么动力，可能也是前一段时间熬夜太多了。昨天跟学长交流了一下，觉得自己还是要专心补一下基础部分，尤其是在接触了堆以后，基础真的很重要。。所以就开一个ptmalloc学习的坑，希望能好好督促自己。主要我还是太菜了。校赛输出也是倒一，全靠队友带飞。不过我是
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/02/ptmalloc2%E5%AD%A6%E4%B9%A0-1/#more" rel="contents">
+              Read more &raquo;
+            </a>
           </div>
+          <!--/noindex-->
         
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/ptmalloc/">ptmalloc</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/ptmalloc2/">ptmalloc2</a>
-            
-          </div>
-        
-      </div>
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/05/22/%E4%B8%BB%E5%8A%A8SSP%E8%A6%86%E7%9B%96argv-0/">主动SSP覆盖argv[0]</a>
 
-      <a href="/2020/05/22/%E4%B8%BB%E5%8A%A8SSP%E8%A6%86%E7%9B%96argv-0/" class="index-excerpt">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/22/%E4%B8%BB%E5%8A%A8SSP%E8%A6%86%E7%9B%96argv-0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
         
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/22/%E4%B8%BB%E5%8A%A8SSP%E8%A6%86%E7%9B%96argv-0/" itemprop="url">主动SSP覆盖argv[0]</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-22T21:30:51+08:00">
+                2020-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index">
+                    <span itemprop="name">CTF</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         
           
-        
-        <div>日常刷题，马上Jarvis的就刷完啦！准备转战buuoj，加油。
+          日常刷题，马上Jarvis的就刷完啦！准备转战buuoj，加油。
 0x01 题目概览
 64位程序，开了canary，去掉了符号表
 使用gets进行读取，可以进行栈溢出，溢出后触发stack smashing
-这个地方很有意思。先看一下发现题目中有个flag。)但是有一个问题是这里)如果程序正常执行到这里，flag会被改掉，那么实际上这个位置的flag就不能用了，这里有一个知识点:当ELF文件比较小</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-05-22
+这个地方很有意思。先看一下发现题目中有个flag。)但是有一个问题是这里)如果程序正常执行到
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/22/%E4%B8%BB%E5%8A%A8SSP%E8%A6%86%E7%9B%96argv-0/#more" rel="contents">
+              Read more &raquo;
+            </a>
           </div>
+          <!--/noindex-->
         
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/CTF/">CTF</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Canary-argv-0/">Canary && argv[0]</a>
-            
-          </div>
-        
-      </div>
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/05/21/%E4%BB%8E%E7%BD%91%E9%BC%8E%E6%9D%AF%E7%99%BD%E8%99%8E%E7%BB%84pwn%EF%BC%88%E4%BA%91%E7%9B%BE%EF%BC%89%E5%AD%A6%E4%B9%A0UAF%E4%B8%8Efastbin-attack/">从网鼎杯白虎组pwn（云盾）学习UAF与fastbin attack</a>
 
-      <a href="/2020/05/21/%E4%BB%8E%E7%BD%91%E9%BC%8E%E6%9D%AF%E7%99%BD%E8%99%8E%E7%BB%84pwn%EF%BC%88%E4%BA%91%E7%9B%BE%EF%BC%89%E5%AD%A6%E4%B9%A0UAF%E4%B8%8Efastbin-attack/" class="index-excerpt">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/21/%E4%BB%8E%E7%BD%91%E9%BC%8E%E6%9D%AF%E7%99%BD%E8%99%8E%E7%BB%84pwn%EF%BC%88%E4%BA%91%E7%9B%BE%EF%BC%89%E5%AD%A6%E4%B9%A0UAF%E4%B8%8Efastbin-attack/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
         
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/21/%E4%BB%8E%E7%BD%91%E9%BC%8E%E6%9D%AF%E7%99%BD%E8%99%8E%E7%BB%84pwn%EF%BC%88%E4%BA%91%E7%9B%BE%EF%BC%89%E5%AD%A6%E4%B9%A0UAF%E4%B8%8Efastbin-attack/" itemprop="url">从网鼎杯白虎组pwn（云盾）学习UAF与fastbin attack</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-21T23:07:43+08:00">
+                2020-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index">
+                    <span itemprop="name">CTF</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         
           
-        
-        <div>0x00 知识点概览
+          0x00 知识点概览
 fastbin结构，fd指针
 UAF的原理
 one_gadget0x01 题目概览
-他这个实际上就是模拟了linux下的几个操作：vim、cat、rm之类的，然后在这背后实际上vim是新开一个堆（有两种，vim 2开0x30的小chunk；vim 1开0x60的大chunk）。然后rm就是free，不过free后没有置空，给了我们UAF的机会 
-有一个需要格外注意的一点，这里</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-05-21
+他这个实际上就是模拟了linux下的几个操作：vim、cat、rm之类的，然后在这背后实际上vim是新开一个堆（有两种，vim 2开0x30的小chunk；vim 1开0x60的大chunk）。
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/21/%E4%BB%8E%E7%BD%91%E9%BC%8E%E6%9D%AF%E7%99%BD%E8%99%8E%E7%BB%84pwn%EF%BC%88%E4%BA%91%E7%9B%BE%EF%BC%89%E5%AD%A6%E4%B9%A0UAF%E4%B8%8Efastbin-attack/#more" rel="contents">
+              Read more &raquo;
+            </a>
           </div>
+          <!--/noindex-->
         
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/CTF/">CTF</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%BD%91%E9%BC%8E%E6%9D%AF-fastbin-UAF/">网鼎杯 && fastbin && UAF</a>
-            
-          </div>
-        
-      </div>
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/05/13/canary%E7%BB%95%E8%BF%87%E4%B8%8EROP-md/">canary绕过与ROP.md</a>
 
-      <a href="/2020/05/13/canary%E7%BB%95%E8%BF%87%E4%B8%8EROP-md/" class="index-excerpt">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/13/canary%E7%BB%95%E8%BF%87%E4%B8%8EROP-md/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
         
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/13/canary%E7%BB%95%E8%BF%87%E4%B8%8EROP-md/" itemprop="url">canary绕过与ROP.md</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-13T00:32:14+08:00">
+                2020-05-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index">
+                    <span itemprop="name">CTF</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         
           
-        
-        <div>0x01 考查知识点
+          0x01 考查知识点
 Canary的泄露与绕过
 开启PIE后地址的确定0x02 程序概览
-我们先读了一个255到recvbuf，注意这里的recvbuf是一个bss段上的变量（未初始化全局），不是在栈上。然后从&amp;recvbuf拷贝256个字节到&amp;s，这里我们第一次的输入就被放到栈上了（因为s在栈上）。接下来使用write将s输出，这里可以用来泄露Canary。接下来他有读取了512</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-05-13
+我们先读了一个255到recvbuf，注意这里的recvbuf是一个bss段上的变量（未初始化全局），不是在栈上。然后从&amp;recvbuf拷贝256个字节到&amp;s，这里我们第一次的输入就被放到栈上了
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/13/canary%E7%BB%95%E8%BF%87%E4%B8%8EROP-md/#more" rel="contents">
+              Read more &raquo;
+            </a>
           </div>
+          <!--/noindex-->
         
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/CTF/">CTF</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Canary-PIE/">Canary && PIE</a>
-            
-          </div>
-        
-      </div>
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/05/09/%E4%BB%8E%E4%B8%80%E9%81%93%E8%8F%9C%E5%8D%95%E9%A2%98%E9%94%BB%E7%82%BCpwn%E4%B8%AD%E7%9A%84%E5%A0%86%E6%8A%80%E8%83%BD/">从一道菜单题锻炼pwn中的堆技能</a>
 
-      <a href="/2020/05/09/%E4%BB%8E%E4%B8%80%E9%81%93%E8%8F%9C%E5%8D%95%E9%A2%98%E9%94%BB%E7%82%BCpwn%E4%B8%AD%E7%9A%84%E5%A0%86%E6%8A%80%E8%83%BD/" class="index-excerpt">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/09/%E4%BB%8E%E4%B8%80%E9%81%93%E8%8F%9C%E5%8D%95%E9%A2%98%E9%94%BB%E7%82%BCpwn%E4%B8%AD%E7%9A%84%E5%A0%86%E6%8A%80%E8%83%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
         
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/09/%E4%BB%8E%E4%B8%80%E9%81%93%E8%8F%9C%E5%8D%95%E9%A2%98%E9%94%BB%E7%82%BCpwn%E4%B8%AD%E7%9A%84%E5%A0%86%E6%8A%80%E8%83%BD/" itemprop="url">从一道菜单题锻炼pwn中的堆技能</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-09T13:00:12+08:00">
+                2020-05-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index">
+                    <span itemprop="name">CTF</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         
           
-        
-        <div>0x0 写在前面
+          0x0 写在前面
 如果你已经pwn中的堆有了一个基本的认识，但是你不知道如何将这些知识应用起来，以至于做题、看wp的无从下手，也看不懂别的师傅的题解，那么希望我这篇文章可以帮助到你。
-如果你还没有对pwn中的堆有一个大概的认识，那么这篇文章可能看的有些早了，我向你推荐如下的资料，相信你能收获很多，到时候再尝试这道题应该比较合适。
-堆的基本结构,以及一些堆的攻击方式,来自CTF_wiki
-堆溢出,来</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-05-09
+如果你还没有对pwn中的堆有一个大概的认识，那么这篇文章可能看的有些早了，我向你推荐如下的资料，相信你能收获很多，到
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/09/%E4%BB%8E%E4%B8%80%E9%81%93%E8%8F%9C%E5%8D%95%E9%A2%98%E9%94%BB%E7%82%BCpwn%E4%B8%AD%E7%9A%84%E5%A0%86%E6%8A%80%E8%83%BD/#more" rel="contents">
+              Read more &raquo;
+            </a>
           </div>
+          <!--/noindex-->
         
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/CTF/">CTF</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/CTF-heap/">CTF && heap</a>
-            
-          </div>
-        
-      </div>
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/04/30/%E4%BB%8E%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84x64pwn%E5%AD%A6%E4%B9%A0mprotect%E4%B8%8EGOT%E8%A1%A8%E8%A6%86%E5%86%99/">从一道经典的x64pwn学习mprotect与GOT表覆写</a>
 
-      <a href="/2020/04/30/%E4%BB%8E%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84x64pwn%E5%AD%A6%E4%B9%A0mprotect%E4%B8%8EGOT%E8%A1%A8%E8%A6%86%E5%86%99/" class="index-excerpt">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/30/%E4%BB%8E%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84x64pwn%E5%AD%A6%E4%B9%A0mprotect%E4%B8%8EGOT%E8%A1%A8%E8%A6%86%E5%86%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
         
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/30/%E4%BB%8E%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84x64pwn%E5%AD%A6%E4%B9%A0mprotect%E4%B8%8EGOT%E8%A1%A8%E8%A6%86%E5%86%99/" itemprop="url">从一道经典的x64pwn学习mprotect与GOT表覆写</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-30T16:38:37+08:00">
+                2020-04-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index">
+                    <span itemprop="name">CTF</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         
           
-        
-        <div>写在前面（考察知识点）
+          写在前面（考察知识点）
 x64通用ROPgadget构造传参
 libc_base地址计算
 mprotect函数基本用法（.bss段权限调整）
@@ -491,245 +1444,698 @@ shellcode注入.bss段
 
 程序分析
 给出了一个64为可执行程序和一个相应的libc
-system、exec函数族函数被禁用（实际没有，但是题目要求我们按照禁用的做，不可使用system和exec族函数）
-没有可使用的现成的shellc</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-04-30
+system、exec函数族函数被禁用（实际没有，
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/30/%E4%BB%8E%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84x64pwn%E5%AD%A6%E4%B9%A0mprotect%E4%B8%8EGOT%E8%A1%A8%E8%A6%86%E5%86%99/#more" rel="contents">
+              Read more &raquo;
+            </a>
           </div>
+          <!--/noindex-->
         
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/CTF/">CTF</a>
-            
-          </div>
-        
-        
-      </div>
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/04/25/%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84ret2lib/">一道经典的ret2lib</a>
 
-      <a href="/2020/04/25/%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84ret2lib/" class="index-excerpt">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/25/%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84ret2lib/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
         
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/25/%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84ret2lib/" itemprop="url">一道经典的ret2lib</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-25T12:20:34+08:00">
+                2020-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Pwn/" itemprop="url" rel="index">
+                    <span itemprop="name">Pwn</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         
           
-        
-        <div>最近心血来潮突然想整理一道经典的ret2libc  
+          最近心血来潮突然想整理一道经典的ret2libc  
 废话不多说，直接开始
 预备知识在gdb中disas我们会看到这样一项
 1call 0x8048340 &lt;write@plt&gt;
-这个&lt;write@plt&gt;实际并不是write的地址，只是一个过度的地址，这一项指向write在plt(Procedure Linkage Table)表中的地址，然后从plt表跳到got(Glo</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-04-25
+这个&lt;write@plt&gt;实际并不是write的地址，只是一个过度的地址，这一项指向write在
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/25/%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84ret2lib/#more" rel="contents">
+              Read more &raquo;
+            </a>
           </div>
+          <!--/noindex-->
         
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Pwn/">Pwn</a>
-            
-          </div>
-        
-        
-      </div>
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/04/03/%E4%BB%8E%E4%B8%80%E6%AC%A1%E5%81%B7%E6%87%92%E5%AD%A6%E4%B9%A0%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/">从一次偷懒学习内联汇编</a>
 
-      <a href="/2020/04/03/%E4%BB%8E%E4%B8%80%E6%AC%A1%E5%81%B7%E6%87%92%E5%AD%A6%E4%B9%A0%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" class="index-excerpt">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/03/%E4%BB%8E%E4%B8%80%E6%AC%A1%E5%81%B7%E6%87%92%E5%AD%A6%E4%B9%A0%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
         
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/03/%E4%BB%8E%E4%B8%80%E6%AC%A1%E5%81%B7%E6%87%92%E5%AD%A6%E4%B9%A0%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" itemprop="url">从一次偷懒学习内联汇编</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-03T01:15:34+08:00">
+                2020-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Assembler/" itemprop="url" rel="index">
+                    <span itemprop="name">Assembler</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         
           
-        
-        <div>从一次偷懒学习内联汇编
+          从一次偷懒学习内联汇编
 上一节汇编语言课上，老师让写出两个数做加法，最终PSW各个标志位，于是就想能不能偷个懒，写一段程序来自动输出PSW
 环境：MacOS 10.15/gcc
 
-一.基本格式123456asm [volatile] ( Assembler Template                : Output Operands   /* Optional */             </div>
-      </a>
+一.基本格式123456asm [volatile] ( Assembler Template             
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/03/%E4%BB%8E%E4%B8%80%E6%AC%A1%E5%81%B7%E6%87%92%E5%AD%A6%E4%B9%A0%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
 
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-04-03
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+
+
           </div>
+          
+
+
+          
+
+        </div>
         
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Assembler/">Assembler</a>
-            
-          </div>
-        
-        
-      </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
 
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
 
+      
 
+      
 
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4"
+               alt="Paxos" />
+          <p class="site-author-name" itemprop="name">Paxos</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
 
-              </div>
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
             </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
           </div>
-        </div>
-      </div>
-    
-  </main>
+        
 
-  
-    <a id="scroll-top-button" href="#" role="button">
-      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-    </a>
-  
-
-  
-    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">keyword</label>
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/OrangeGzY" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:guoziyi114@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
         </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://stevelee477.github.io/" title="Stevelee477(全栈大佬)" target="_blank">Stevelee477(全栈大佬)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://minhal.me" title="Minhal(二进制爷爷👴)" target="_blank">Minhal(二进制爷爷👴)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://a2u13.com" title="A2u13(web爷爷👴)" target="_blank">A2u13(web爷爷👴)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://zhiaowei.github.io/" title="uranus(web姐姐🧍)" target="_blank">uranus(web姐姐🧍)</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
     </div>
-  </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paxos</span>
 </div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
   
 
   
-
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
   
+</div>
 
-  <footer class="mt-5">
-  <div class="text-center py-3">
-    <div>
-      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
-      <i class="iconfont icon-love"></i>
-      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
-        <span>Fluid</span></a>
-    </div>
-    
+
+        
+      </div>
+    </footer>
 
     
-
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
     
+
   </div>
-</footer>
 
-<!-- SCRIPTS -->
-<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="/js/debouncer.js" ></script>
-<script  src="/js/main.js" ></script>
+  
 
-<!-- Plugins -->
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
 
 
   
-    <script  src="/js/lazyload.js" ></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
   
 
 
 
-  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="/js/clipboard-use.js" ></script>
 
-
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+	
 
 
 
 
 
-
-
-  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
-  <script>
-    var typed = new Typed('#subtitle', {
-      strings: [
-        '  ',
-        "An elegant Material-Design theme for Hexo&nbsp;",
-      ],
-      cursorChar: "_",
-      typeSpeed: 70,
-      loop: false,
-    });
-    typed.stop();
-    $(document).ready(function () {
-      $(".typed-cursor").addClass("h2");
-      typed.start();
-    });
-  </script>
+  
 
 
 
 
 
-  <script  src="/js/local-search.js" ></script>
-  <script>
-    var path = "/local-search.xml";
-    var inputArea = document.querySelector("#local-search-input");
-    inputArea.onclick = function () {
-      searchFunc(path, 'local-search-input', 'local-search-result');
-      this.onclick = null
-    }
-  </script>
+  
 
 
 
 
 
 
+  
 
 
 
 
 
+  
 
+  
 
+  
 
+  
 
+  
 
-
-
-
-
-
+  
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>

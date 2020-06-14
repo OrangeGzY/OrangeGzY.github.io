@@ -1,221 +1,411 @@
 <!DOCTYPE html>
-<html lang="en">
 
 
 
+  
 
 
+<html class="theme-next gemini use-motion" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
-  <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
-  <meta name="author" content="Paxos">
-  <meta name="keywords" content="">
-  <title>TaLCTF ret2dl_resolve_x86-64 - ScUpax0s</title>
-
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
 
   
-    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+  
+  
   
 
   
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
 
 
-<!-- 主题依赖的图标库，不要自行修改 -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-<link  rel="stylesheet" href="/css/main.css" />
-
-<!-- 自定义样式保持在最底部 -->
+  <meta name="keywords" content="ret2dl_resolve," />
 
 
-  <script  src="/js/utils.js" ></script>
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ScUpax0s" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="当时没做出来的一道题，赛后再静下心研究一下，ret2dl 64位模版题，一瞬把我秒了。。 什么是ret2dl攻击 当程序在第一次加载某个函数的时候，got表中对应的表项还没有写入真实的地址（因为是第一次调用），所以这个时候就需要调用_dl_runtime_resolve函数将真实的地址写入got表对应的表项中，然后将控制权交还这个函数，此时就完成了第一次的调用，got表中也有了对应的真实地址。整个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TaLCTF ret2dl_resolve_x86-64">
+<meta property="og:url" content="http://yoursite.com/2020/06/10/TaLpwn-learning-ret2dl-64/index.html">
+<meta property="og:site_name" content="ScUpax0s">
+<meta property="og:description" content="当时没做出来的一道题，赛后再静下心研究一下，ret2dl 64位模版题，一瞬把我秒了。。 什么是ret2dl攻击 当程序在第一次加载某个函数的时候，got表中对应的表项还没有写入真实的地址（因为是第一次调用），所以这个时候就需要调用_dl_runtime_resolve函数将真实的地址写入got表对应的表项中，然后将控制权交还这个函数，此时就完成了第一次的调用，got表中也有了对应的真实地址。整个">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/10/t70ca8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/10/t70LiF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/10/t7DzE6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/11/t7sey9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/11/t76sqs.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/11/t76hzF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/11/t7gFB9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/11/tHDPq1.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/11/tHrf1g.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/11/tHsoxe.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/11/tH6mkt.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/11/tHWJJI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/11/tbs9ot.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/11/tbqwNV.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/11/tbqWAx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/13/tvPj1g.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/13/tviI8U.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/13/tvF5dI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/13/tvk16e.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/13/tvkvcD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/13/tvAyvD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/13/tvAWVA.png">
+<meta property="article:published_time" content="2020-06-10T15:14:48.000Z">
+<meta property="article:modified_time" content="2020-06-14T17:49:39.905Z">
+<meta property="article:author" content="Paxos">
+<meta property="article:tag" content="ret2dl_resolve">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/06/10/t70ca8.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/06/10/TaLpwn-learning-ret2dl-64/"/>
+
+
+
+
+
+  <title>TaLCTF ret2dl_resolve_x86-64 | ScUpax0s</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <meta name="generator" content="Hexo 4.2.0"></head>
 
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
-<body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+  
+  
+    
+  
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                Home
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                Archives
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                Categories
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                Tags
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                About
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
-          </li>
-        
-      </ul>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ScUpax0s</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
-  </div>
-</nav>
-
-    <div class="view intro-2" id="background" parallax=true
-         style="background: url('/img/default.png') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="container text-center white-text fadeInUp">
-            <span class="h2" id="subtitle">
-              
-            </span>
-
-            
-              
-  <div class="mt-3 post-meta">
-    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-06-10 23:14">
-      June 10, 2020 pm
-    </time>
+      
+        <p class="site-subtitle"></p>
+      
   </div>
 
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      3.9k 字
-    </span>
-  
-
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      56
-       分钟
-    </span>
-  
-
-  
-  
-    
-      <!-- 不蒜子统计文章PV -->
-      <span id="busuanzi_container_page_pv" style="display: none">
-        <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="busuanzi_value_page_pv"></span> 次
-      </span>
-    
-  
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
             
-          </div>
-
-          
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
       
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="container nopadding-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <div class="post-content mx-auto" id="post">
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
             
-            <article class="markdown-body">
-              <p><del>当时没做出来的一道题，赛后再静下心研究一下，ret2dl 64位模版题，一瞬把我秒了。。</del></p>
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/10/TaLpwn-learning-ret2dl-64/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Paxos">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ScUpax0s">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">TaLCTF ret2dl_resolve_x86-64</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-10T23:14:48+08:00">
+                2020-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TaL%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%91%A8%E8%B5%9B/" itemprop="url" rel="index">
+                    <span itemprop="name">TaL第一次周赛</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><del>当时没做出来的一道题，赛后再静下心研究一下，ret2dl 64位模版题，一瞬把我秒了。。</del></p>
 <h2 id="什么是ret2dl攻击"><a href="#什么是ret2dl攻击" class="headerlink" title="什么是ret2dl攻击"></a>什么是ret2dl攻击</h2><ul>
 <li>当程序在第一次加载某个函数的时候，got表中对应的表项还没有写入真实的地址（因为是第一次调用），所以这个时候就需要调用<code>_dl_runtime_resolve</code>函数将真实的地址写入got表对应的表项中，然后将控制权交还这个函数，此时就完成了第一次的调用，got表中也有了对应的真实地址。<h2 id="整个调用过程梳理"><a href="#整个调用过程梳理" class="headerlink" title="整个调用过程梳理"></a>整个调用过程梳理</h2><h3 id="dl-fixup之前"><a href="#dl-fixup之前" class="headerlink" title="_dl_fixup之前"></a>_dl_fixup之前</h3></li>
-<li>当我们第一调用read时，他的跳转过程是<code>read@plt -&gt; read@got -&gt; read@plt -&gt; plt[0] -&gt; _dl_runtime_resolve_xsave -&gt; _dl_fixup</code><img src="https://s1.ax1x.com/2020/06/10/t70ca8.png" srcset="/img/loading.gif" alt="">)我们可以再看一下0x4004e0到底是什么。<img src="https://s1.ax1x.com/2020/06/10/t70LiF.png" srcset="/img/loading.gif" alt="">已知 &lt;read@plt&gt;  是plt中的第一个函数，那么0x4004e0就是plt[0]即plt的首项。这里对应两条汇编，第一条实际上做了一个push操作，他负责将一个参数压栈。这里需要实际解释一下：在<code>_dl_runtime_resolve_xsave</code>中实际调用了<code>_dl_fixup</code>而忽略掉宏定义，这个函数是:  <div class="hljs"><pre><code class="hljs c"><span class="hljs-comment">/* This function is called through a special trampoline from the PLT the</span>
+<li>当我们第一调用read时，他的跳转过程是<code>read@plt -&gt; read@got -&gt; read@plt -&gt; plt[0] -&gt; _dl_runtime_resolve_xsave -&gt; _dl_fixup</code><img src="https://s1.ax1x.com/2020/06/10/t70ca8.png" srcset="/img/loading.gif" alt="">)我们可以再看一下0x4004e0到底是什么。<img src="https://s1.ax1x.com/2020/06/10/t70LiF.png" srcset="/img/loading.gif" alt="">已知 &lt;read@plt&gt;  是plt中的第一个函数，那么0x4004e0就是plt[0]即plt的首项。这里对应两条汇编，第一条实际上做了一个push操作，他负责将一个参数压栈。这里需要实际解释一下：在<code>_dl_runtime_resolve_xsave</code>中实际调用了<code>_dl_fixup</code>而忽略掉宏定义，这个函数是:  <pre><code class="hljs c"><span class="hljs-comment">/* This function is called through a special trampoline from the PLT the</span>
 <span class="hljs-comment">first time each PLT entry is called.  We must perform the relocation</span>
 <span class="hljs-comment">specified in the PLT of the given shared object, and return the resolved</span>
 <span class="hljs-comment">function address to the trampoline, which will restart the original call</span>
@@ -224,13 +414,13 @@
 
 DL_FIXUP_VALUE_TYPE
 attribute_hidden __attribute ((noinline)) ARCH_FIXUP_ATTRIBUTE
-_dl_fixup (struct link_map *l, ElfW(Word) reloc_arg)</code></pre></div>
+_dl_fixup (struct link_map *l, ElfW(Word) reloc_arg)</code></pre>
 
 </li>
 </ul>
 <p>可以看到一共有两个参数：<code>struct link_map *l, ElfW(Word) reloc_arg</code>，然后我们再回过来看刚刚的代码，<strong>其实两个push就是做了参数压栈</strong>：<img src="https://s1.ax1x.com/2020/06/10/t7DzE6.png" srcset="/img/loading.gif" alt=""></p>
 <h3 id="dl-fixup进入以后"><a href="#dl-fixup进入以后" class="headerlink" title="_dl_fixup进入以后"></a>_dl_fixup进入以后</h3><ul>
-<li>嗯这、这里是关键，我们一步步分析一下<code>_dl_fixup</code>源代码。在这之前，我们先要研究一下几个重要的section和段。<h4 id="dynamic"><a href="#dynamic" class="headerlink" title=".dynamic"></a>.dynamic</h4><img src="https://s1.ax1x.com/2020/06/11/t7sey9.png" srcset="/img/loading.gif" alt="">.dynamic是动态链接中非常重要和经典的一个段。首先看一下<code>ELF64_Dyn</code>的结构如下：<div class="hljs"><pre><code class="hljs c"><span class="hljs-comment">// 该结构都有 64 位程序和 32 位程序的区别，不过大致结构相似，此处只讨论 64 位程序中的</span>
+<li>嗯这、这里是关键，我们一步步分析一下<code>_dl_fixup</code>源代码。在这之前，我们先要研究一下几个重要的section和段。<h4 id="dynamic"><a href="#dynamic" class="headerlink" title=".dynamic"></a>.dynamic</h4><img src="https://s1.ax1x.com/2020/06/11/t7sey9.png" srcset="/img/loading.gif" alt="">.dynamic是动态链接中非常重要和经典的一个段。首先看一下<code>ELF64_Dyn</code>的结构如下：<pre><code class="hljs c"><span class="hljs-comment">// 该结构都有 64 位程序和 32 位程序的区别，不过大致结构相似，此处只讨论 64 位程序中的</span>
 <span class="hljs-comment">// /usr/include/elf.h</span>
 <span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span></span>
 <span class="hljs-class">&#123;</span>
@@ -243,7 +433,7 @@ Elf64_Sxword d_tag; <span class="hljs-comment">/* Dynamic entry type */</span>
         Elf64_Addr d_ptr; <span class="hljs-comment">/* Address value */</span>
     &#125; d_un;
 
-&#125; Elf64_Dyn;</code></pre></div>
+&#125; Elf64_Dyn;</code></pre>
 而在.dynamic之中有几个<strong>重要的section如下</strong>：<table>
 <thead>
 <tr>
@@ -271,7 +461,7 @@ Elf64_Sxword d_tag; <span class="hljs-comment">/* Dynamic entry type */</span>
 </li>
 </ul>
 <h4 id="dynsym"><a href="#dynsym" class="headerlink" title=".dynsym"></a>.dynsym</h4><p><img src="https://s1.ax1x.com/2020/06/11/t76sqs.png" srcset="/img/loading.gif" alt=""><br>其中，ELF64_Sym结构体为：</p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span></span>
+<pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span></span>
 <span class="hljs-class">&#123;</span>
 Elf64_Word st_name; <span class="hljs-comment">/* Symbol name (string tbl index) */</span>
 <span class="hljs-comment">// 保存着该函数函数名在 .dynstr 中的偏移，可以结合 .dynstr 找到准确函数名。</span>
@@ -281,51 +471,51 @@ Elf64_Section st_shndx; <span class="hljs-comment">/* Section index */</span>
 Elf64_Addr st_value; <span class="hljs-comment">/* Symbol value */</span>
 <span class="hljs-comment">// 如果这个符号被导出，则存有这个导出函数的虚拟地址，否则为NULL.</span>
 Elf64_Xword st_size; <span class="hljs-comment">/* Symbol size */</span>
-&#125; Elf64_Sym;</code></pre></div>
+&#125; Elf64_Sym;</code></pre>
 <h4 id="dynstr"><a href="#dynstr" class="headerlink" title=".dynstr"></a>.dynstr</h4><p><img src="https://s1.ax1x.com/2020/06/11/t76hzF.png" srcset="/img/loading.gif" alt=""></p>
 <h4 id="rel-plt"><a href="#rel-plt" class="headerlink" title=".rel.plt"></a>.rel.plt</h4><p><img src="https://s1.ax1x.com/2020/06/11/t7gFB9.png" srcset="/img/loading.gif" alt=""><br>其中，ELF64_Rela结构体为：</p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span>
+<pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span>
            Elf64_Addr r_offset; <span class="hljs-comment">//保存的是应用重定位操作的偏移量。对于一个重定位文件，这个值是从节开始到受重定位影响的存储单元的偏移量。对于一个可执行或共享目标文件，这个值是受重定位影响的存储单元的虚拟地址。</span>
            <span class="hljs-keyword">uint64_t</span>   r_info;   <span class="hljs-comment">//This member gives both the symbol table index with respect to which the relocation must be made and the type of relocation to apply. </span>
            <span class="hljs-keyword">int64_t</span>    r_addend; <span class="hljs-comment">//指定了一个附加的常数用来去计算保存在重定位位置的值。</span>
-       &#125; Elf64_Rela;</code></pre></div>
-<h4 id="link-map结构"><a href="#link-map结构" class="headerlink" title="link_map结构"></a>link_map结构</h4><div class="hljs"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">link_map</span></span>
+       &#125; Elf64_Rela;</code></pre>
+<h4 id="link-map结构"><a href="#link-map结构" class="headerlink" title="link_map结构"></a>link_map结构</h4><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">link_map</span></span>
 <span class="hljs-class">  &#123;</span>
     ElfW(Addr) l_addr;                <span class="hljs-comment">/* Base address shared object is loaded at.  */</span>
     <span class="hljs-keyword">char</span> *l_name;                     <span class="hljs-comment">/* Absolute file name object was found in.  */</span>
     ElfW(Dyn) *l_ld;                  <span class="hljs-comment">/* Dynamic section of the shared object.  */</span>
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">link_map</span> *<span class="hljs-title">l_next</span>, *<span class="hljs-title">l_prev</span>;</span> <span class="hljs-comment">/* Chain of loaded objects.  */</span>
     <span class="hljs-comment">//省略，后面还有很多</span>
-  &#125;;</code></pre></div>
-<h4 id="D-PTR宏"><a href="#D-PTR宏" class="headerlink" title="D_PTR宏"></a>D_PTR宏</h4><div class="hljs"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">ifdef</span> DL_RO_DYN_SECTION</span>
+  &#125;;</code></pre>
+<h4 id="D-PTR宏"><a href="#D-PTR宏" class="headerlink" title="D_PTR宏"></a>D_PTR宏</h4><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">ifdef</span> DL_RO_DYN_SECTION</span>
 <span class="hljs-meta"># <span class="hljs-meta-keyword">define</span> D_PTR(map, i) ((map)-&gt;i-&gt;d_un.d_ptr + (map)-&gt;l_addr)</span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
 <span class="hljs-meta"># <span class="hljs-meta-keyword">define</span> D_PTR(map, i) (map)-&gt;i-&gt;d_un.d_ptr</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></code></pre></div>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></code></pre>
 
-<h4 id="ELFW宏"><a href="#ELFW宏" class="headerlink" title="ELFW宏"></a>ELFW宏</h4><div class="hljs"><pre><code class="hljs c"><span class="hljs-comment">/* We use this macro to refer to ELF macros independent of the native</span>
+<h4 id="ELFW宏"><a href="#ELFW宏" class="headerlink" title="ELFW宏"></a>ELFW宏</h4><pre><code class="hljs c"><span class="hljs-comment">/* We use this macro to refer to ELF macros independent of the native</span>
 <span class="hljs-comment">   wordsize.  `ELFW(R_TYPE)' is used in place of `ELF32_R_TYPE' or</span>
 <span class="hljs-comment">   `ELF64_R_TYPE'.  */</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> ELFW(type)	_ElfW (ELF, __ELF_NATIVE_CLASS, type)</span></code></pre></div>
-<h4 id="DL-FIXUP-MAKE-VALUE宏"><a href="#DL-FIXUP-MAKE-VALUE宏" class="headerlink" title="DL_FIXUP_MAKE_VALUE宏"></a>DL_FIXUP_MAKE_VALUE宏</h4><div class="hljs"><pre><code class="hljs c"><span class="hljs-comment">/* Construct a value of type DL_FIXUP_VALUE_TYPE from a code address</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> ELFW(type)	_ElfW (ELF, __ELF_NATIVE_CLASS, type)</span></code></pre>
+<h4 id="DL-FIXUP-MAKE-VALUE宏"><a href="#DL-FIXUP-MAKE-VALUE宏" class="headerlink" title="DL_FIXUP_MAKE_VALUE宏"></a>DL_FIXUP_MAKE_VALUE宏</h4><pre><code class="hljs c"><span class="hljs-comment">/* Construct a value of type DL_FIXUP_VALUE_TYPE from a code address</span>
 <span class="hljs-comment">   and a link map.  */</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> DL_FIXUP_MAKE_VALUE(map, addr) (addr)</span></code></pre></div>
-<h4 id="SYMBOL-ADDRESS宏"><a href="#SYMBOL-ADDRESS宏" class="headerlink" title="SYMBOL_ADDRESS宏"></a>SYMBOL_ADDRESS宏</h4><div class="hljs"><pre><code class="hljs c"><span class="hljs-comment">/* Calculate the address of symbol REF using the base address from map MAP,</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> DL_FIXUP_MAKE_VALUE(map, addr) (addr)</span></code></pre>
+<h4 id="SYMBOL-ADDRESS宏"><a href="#SYMBOL-ADDRESS宏" class="headerlink" title="SYMBOL_ADDRESS宏"></a>SYMBOL_ADDRESS宏</h4><pre><code class="hljs c"><span class="hljs-comment">/* Calculate the address of symbol REF using the base address from map MAP,</span>
 <span class="hljs-comment">   if non-NULL.  Don't check for NULL map if MAP_SET is TRUE.  */</span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> SYMBOL_ADDRESS(map, ref, map_set)				\</span>
   ((ref) == <span class="hljs-literal">NULL</span> ? <span class="hljs-number">0</span>							\
    : (__glibc_unlikely ((ref)-&gt;st_shndx == SHN_ABS) ? <span class="hljs-number">0</span>			\
-      : LOOKUP_VALUE_ADDRESS (<span class="hljs-built_in">map</span>, map_set)) + (ref)-&gt;st_value)</code></pre></div>
-<h4 id="LOOKUP-VALUE-ADDRESS宏"><a href="#LOOKUP-VALUE-ADDRESS宏" class="headerlink" title="LOOKUP_VALUE_ADDRESS宏"></a>LOOKUP_VALUE_ADDRESS宏</h4><div class="hljs"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> LOOKUP_VALUE_ADDRESS(map, set) ((set) || (map) ? (map)-&gt;l_addr : 0)</span></code></pre></div>
-<h4 id="elf-machine-fixup-plt函数"><a href="#elf-machine-fixup-plt函数" class="headerlink" title="elf_machine_fixup_plt函数"></a>elf_machine_fixup_plt函数</h4><div class="hljs"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-title">ElfW</span><span class="hljs-params">(Addr)</span></span>
+      : LOOKUP_VALUE_ADDRESS (<span class="hljs-built_in">map</span>, map_set)) + (ref)-&gt;st_value)</code></pre>
+<h4 id="LOOKUP-VALUE-ADDRESS宏"><a href="#LOOKUP-VALUE-ADDRESS宏" class="headerlink" title="LOOKUP_VALUE_ADDRESS宏"></a>LOOKUP_VALUE_ADDRESS宏</h4><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> LOOKUP_VALUE_ADDRESS(map, set) ((set) || (map) ? (map)-&gt;l_addr : 0)</span></code></pre>
+<h4 id="elf-machine-fixup-plt函数"><a href="#elf-machine-fixup-plt函数" class="headerlink" title="elf_machine_fixup_plt函数"></a>elf_machine_fixup_plt函数</h4><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">inline</span> <span class="hljs-title">ElfW</span><span class="hljs-params">(Addr)</span></span>
 <span class="hljs-function"><span class="hljs-title">elf_machine_fixup_plt</span> <span class="hljs-params">(struct link_map *<span class="hljs-built_in">map</span>, <span class="hljs-keyword">lookup_t</span> t,</span></span>
 <span class="hljs-function"><span class="hljs-params">		       <span class="hljs-keyword">const</span> ElfW(Sym) *refsym, <span class="hljs-keyword">const</span> ElfW(Sym) *sym,</span></span>
 <span class="hljs-function"><span class="hljs-params">		       <span class="hljs-keyword">const</span> ElfW(Rela) *reloc,</span></span>
 <span class="hljs-function"><span class="hljs-params">		       ElfW(Addr) *reloc_addr, ElfW(Addr) value)</span></span>
 <span class="hljs-function"></span>&#123;
   <span class="hljs-keyword">return</span> *reloc_addr = value;
-&#125;</code></pre></div>
-<h4 id="x86-64下对于reloc-arg的特殊define"><a href="#x86-64下对于reloc-arg的特殊define" class="headerlink" title="x86-64下对于reloc_arg的特殊define"></a>x86-64下对于reloc_arg的特殊define</h4><div class="hljs"><pre><code class="hljs c"><span class="hljs-comment">/* The ABI calls for the PLT stubs to pass the index of the relocation</span>
+&#125;</code></pre>
+<h4 id="x86-64下对于reloc-arg的特殊define"><a href="#x86-64下对于reloc-arg的特殊define" class="headerlink" title="x86-64下对于reloc_arg的特殊define"></a>x86-64下对于reloc_arg的特殊define</h4><pre><code class="hljs c"><span class="hljs-comment">/* The ABI calls for the PLT stubs to pass the index of the relocation</span>
 <span class="hljs-comment">   and not its offset.  In _dl_profile_fixup and _dl_call_pltexit we</span>
 <span class="hljs-comment">   also use the index.  Therefore it is wasteful to compute the offset</span>
 <span class="hljs-comment">   in the trampoline just to reverse the operation immediately</span>
@@ -333,8 +523,8 @@ Elf64_Xword st_size; <span class="hljs-comment">/* Symbol size */</span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> reloc_offset reloc_arg * sizeof (PLTREL)</span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> reloc_index  reloc_arg</span>
 
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;elf/dl-runtime.c&gt;</span></span></code></pre></div>
-<h4 id="dl-fixup源码阅读"><a href="#dl-fixup源码阅读" class="headerlink" title="_dl_fixup源码阅读"></a>_dl_fixup源码阅读</h4><div class="hljs"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> ELF64_R_SYM(i)            ((i) &gt;&gt; 32)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;elf/dl-runtime.c&gt;</span></span></code></pre>
+<h4 id="dl-fixup源码阅读"><a href="#dl-fixup源码阅读" class="headerlink" title="_dl_fixup源码阅读"></a>_dl_fixup源码阅读</h4><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> ELF64_R_SYM(i)            ((i) &gt;&gt; 32)</span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> ELF64_R_TYPE(i)            ((i) &amp; 0xffffffff)</span>
 
 <span class="hljs-comment">/*这里由于我们是64位下的，请看：x86-64下对于reloc_arg的特殊define*/</span>
@@ -468,7 +658,7 @@ _dl_fixup (
 
 <span class="hljs-comment">/* 将函数的真实地址写入got表对应的表项，value为真实地址、rel_addr为需要写入的got表地址 */</span>
   <span class="hljs-keyword">return</span> elf_machine_fixup_plt (l, result, refsym, sym, reloc, rel_addr, value);
-&#125;</code></pre></div>
+&#125;</code></pre>
 <h4 id="ret2dl-resolve-x86-64-重定向流程"><a href="#ret2dl-resolve-x86-64-重定向流程" class="headerlink" title="ret2dl_resolve_x86-64 重定向流程"></a>ret2dl_resolve_x86-64 重定向流程</h4><ul>
 <li>通过struct link_map *l获取 <em>.dynsym  .dynstr  .rel.plt</em> 地址</li>
 <li>将.rel.plt地址与reloc_offset相加，得到函数所对应的Elf64_Rel指针，记作reloc </li>
@@ -482,7 +672,7 @@ _dl_fixup (
 <h3 id="vmmap"><a href="#vmmap" class="headerlink" title="vmmap"></a>vmmap</h3><p><img src="https://s1.ax1x.com/2020/06/11/tHrf1g.png" srcset="/img/loading.gif" alt=""></p>
 <h3 id="进入-dl-fixup"><a href="#进入-dl-fixup" class="headerlink" title="进入_dl_fixup"></a>进入_dl_fixup</h3><p><img src="https://s1.ax1x.com/2020/06/11/tHsoxe.png" srcset="/img/loading.gif" alt=""><br><img src="https://s1.ax1x.com/2020/06/11/tH6mkt.png" srcset="/img/loading.gif" alt=""><br>这里拿到函数对应的Elf64_Sym地址<br><img src="https://s1.ax1x.com/2020/06/11/tHWJJI.png" srcset="/img/loading.gif" alt=""><br>看雪上有师傅计算过，当作为数组下标时（64位），很容易出现非法内存访问。这里我就不算了。<br>贴上大师傅的解释：<br><em>const ElfW(Sym) const symtab = 0x400280<br>const ElfW(Half) vernum = 0x4003d8<br>(r_info&gt;&gt;32)作为symtab的下标时，其值大于0x600000小于0x601000,也就是说0x1553a&lt;(r_info&gt;&gt;32)≤0x15fe5<br>(r_info&gt;&gt;32)作为vernum下标时，要使得不产生非法内存访问，需要0≤(r_info&gt;&gt;32)≤0x614或者0xffe14≤(r_info&gt;&gt;32)≤0x100614<br>无法找到同时满足二者的(r_info&gt;&gt;32)的值</em></p>
 <h2 id="伪造link-map攻击"><a href="#伪造link-map攻击" class="headerlink" title="伪造link_map攻击"></a>伪造link_map攻击</h2><h3 id="绕过检查"><a href="#绕过检查" class="headerlink" title="绕过检查"></a>绕过检查</h3><p>64位和32位比，最容易出问题的就是这里</p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-keyword">if</span> (l-&gt;l_info[VERSYMIDX (DT_VERSYM)] != <span class="hljs-literal">NULL</span>)
+<pre><code class="hljs c"><span class="hljs-keyword">if</span> (l-&gt;l_info[VERSYMIDX (DT_VERSYM)] != <span class="hljs-literal">NULL</span>)
 	&#123;
 	  <span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">ElfW</span><span class="hljs-params">(Half)</span> *vernum </span>=
 	    (<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *) D_PTR (l, l_info[VERSYMIDX (DT_VERSYM)]);
@@ -497,11 +687,11 @@ _dl_fixup (
 	  version = &amp;l-&gt;l_versions[ndx];
 	  <span class="hljs-keyword">if</span> (version-&gt;hash == <span class="hljs-number">0</span>)
 	    version = <span class="hljs-literal">NULL</span>;
-	&#125;</code></pre></div>
+	&#125;</code></pre>
 <p>而<code>l-&gt;l_info[VERSYMIDX (DT_VERSYM)]</code>对应的就是</p>
-<div class="hljs"><pre><code class="hljs asm">mov rax, qword ptr [r10 + 0x1c8]</code></pre></div>
+<pre><code class="hljs asm">mov rax, qword ptr [r10 + 0x1c8]</code></pre>
 <p>那么我们通过控制<em>link_map + 0x1c8</em>的值就可以绕过这个if，再来看一下这一段整个的情况：</p>
-<div class="hljs"><pre><code class="hljs c">   <span class="hljs-comment">/* Look up the target symbol.  If the normal lookup rules are not</span>
+<pre><code class="hljs c">   <span class="hljs-comment">/* Look up the target symbol.  If the normal lookup rules are not</span>
 <span class="hljs-comment">      used don't look in the global scope.  */</span>
 <span class="hljs-keyword">if</span> (__builtin_expect (ELFW(ST_VISIBILITY) (sym-&gt;st_other), <span class="hljs-number">0</span>) == <span class="hljs-number">0</span>)<span class="hljs-comment">//判断(sym-&gt;st_other)&amp;0x03是否为0</span>
     &#123;
@@ -519,29 +709,29 @@ _dl_fixup (
 <span class="hljs-comment">	 address) is also known.  */</span>
       value = DL_FIXUP_MAKE_VALUE (l, SYMBOL_ADDRESS (l, sym, <span class="hljs-literal">true</span>));
       result = l;
-    &#125;</code></pre></div>
+    &#125;</code></pre>
 <p>当我们将(sym-&gt;st_other)&amp;0x03设置为非0时，会进入else语句，此时else中通过<code>DL_FIXUP_MAKE_VALUE</code>来获取函数的真实地址，所以<strong>我们只需要将l-&gt;l_addr + sym-&gt;st_value指向system语句即可进入system函数（具体可以看我前面总结的那几个关键的宏，他们是一层一层调用的，最终简化出来就是这个式子）</strong></p>
 <hr>
 <p><strong>PS:</strong><br>可能到这里很多人都忘了l和sym到底是什么了。。来复习一下，l是指向link_map的指针，sym是</p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">ElfW</span><span class="hljs-params">(Sym)</span> *sym </span>
+<pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">const</span> <span class="hljs-title">ElfW</span><span class="hljs-params">(Sym)</span> *sym </span>
 <span class="hljs-function">  </span>= &amp;symtab[ELFW(R_SYM) (reloc-&gt;r_info)];
-   <span class="hljs-comment">//将(reloc-&gt;r_info)&gt;&gt;32作为.dynsym下标，得到函数所对应的Elf64_Sym指针，记作sym</span></code></pre></div>
+   <span class="hljs-comment">//将(reloc-&gt;r_info)&gt;&gt;32作为.dynsym下标，得到函数所对应的Elf64_Sym指针，记作sym</span></code></pre>
 <p>而link_map结构体大致如下：</p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">link_map</span></span>
+<pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">link_map</span></span>
 <span class="hljs-class">  &#123;</span>
     ElfW(Addr) l_addr;                <span class="hljs-comment">/* Base address shared object is loaded at.  */</span>
     <span class="hljs-keyword">char</span> *l_name;                     <span class="hljs-comment">/* Absolute file name object was found in.  */</span>
     ElfW(Dyn) *l_ld;                  <span class="hljs-comment">/* Dynamic section of the shared object.  */</span>
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">link_map</span> *<span class="hljs-title">l_next</span>, *<span class="hljs-title">l_prev</span>;</span> <span class="hljs-comment">/* Chain of loaded objects.  */</span>
     <span class="hljs-comment">//......省略一大堆</span>
-  &#125;;</code></pre></div>
+  &#125;;</code></pre>
 <p>其实link_map是个超级大的结构体<img src="https://s1.ax1x.com/2020/06/11/tbs9ot.png" srcset="/img/loading.gif" alt=""></p>
 <hr>
 <p>但是当我们不知道system函数的地址时，可以采用以下方法：<strong>让sym-&gt;st_value等于某个got上已经解析了的函数的那一表项，然后l-&gt;l_addr设置为system与这个函数的偏移值</strong>，此外，伪造link_map我们还需要伪造：<em>位于link_map+0x70的DT_SYMTAB指针、link_map+0xf8的DT_JMPREL指针，另外strtab必须是个可读的地址，因此我们还需要伪造位于link_map+0x68的DT_STRTAB指针。之后就是伪造.dynamic中的DT_SYMTAB结构体和DT_JMPREL结构体以及函数所对应的Elf64_Rela结构体。为了方便，在构造的过程中一般将reloc_arg作为0来进行构造。</em></p>
 <ul>
 <li>已知link_map地址<em>0x7ffff7ffe168</em>，我们看一下link_map+0x70<img src="https://s1.ax1x.com/2020/06/11/tbqwNV.png" srcset="/img/loading.gif" alt=""></li>
 <li>再对照一下 <em>.dynamic</em>段中的内容,没问题：<img src="https://s1.ax1x.com/2020/06/11/tbqWAx.png" srcset="/img/loading.gif" alt=""></li>
-<li><em>通过跟踪dl_fixup 函数发现，dl_fixup引用了link_map+0x68/0x70/0xf8处的3个值来寻找STRTAB/SYMTAB/JMPREL这3个表。</em><h2 id="EXP编写"><a href="#EXP编写" class="headerlink" title="EXP编写"></a>EXP编写</h2><div class="hljs"><pre><code class="hljs py"><span class="hljs-comment"># encoding=utf-8</span>
+<li><em>通过跟踪dl_fixup 函数发现，dl_fixup引用了link_map+0x68/0x70/0xf8处的3个值来寻找STRTAB/SYMTAB/JMPREL这3个表。</em><h2 id="EXP编写"><a href="#EXP编写" class="headerlink" title="EXP编写"></a>EXP编写</h2><pre><code class="hljs py"><span class="hljs-comment"># encoding=utf-8</span>
 <span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *
 
 
@@ -687,7 +877,7 @@ stack_mig = flat(
 sleep(<span class="hljs-number">1</span>)
 io.sendline(stack_mig)
 
-io.interactive()</code></pre></div>
+io.interactive()</code></pre>
 <h2 id="后续奇怪的调试以及64位32位的一个差别"><a href="#后续奇怪的调试以及64位32位的一个差别" class="headerlink" title="后续奇怪的调试以及64位32位的一个差别"></a>后续奇怪的调试以及64位32位的一个差别</h2></li>
 <li>在编写exp的时候，遇到了一些诡异的问题，比如一开始想把他放在bss+0x500，结果。。<img src="https://s1.ax1x.com/2020/06/13/tvPj1g.jpg" srcset="/img/loading.gif" alt="">)出现了诡异的非法内存访问。。在64位下调用的是<code>_dl_runtime_resolve_xsavec</code>,这个函数起始是有写地址操作的。但是按理说我应该把他已经放上bss了而bss是可读可写的，看一下这个时候的rsp，确实落在一个不可写的区间，并且这个区间是相对bss有偏移的。<img src="https://s1.ax1x.com/2020/06/13/tviI8U.jpg" srcset="/img/loading.gif" alt=""></li>
 <li>leave之后确实栈被拉到了bss+0x500<img src="https://s1.ax1x.com/2020/06/13/tvF5dI.png" srcset="/img/loading.gif" alt=""></li>
@@ -698,257 +888,463 @@ io.interactive()</code></pre></div>
 </ul>
 <h2 id="主要参考文章"><a href="#主要参考文章" class="headerlink" title="主要参考文章"></a>主要参考文章</h2><p><a href="https://forum.90sec.com/t/topic/260" target="_blank" rel="noopener">1</a><br><a href="https://bbs.pediy.com/thread-253833.htm" target="_blank" rel="noopener">2</a></p>
 
-            </article>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/TaL%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%91%A8%E8%B5%9B/">TaL第一次周赛</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/ret2dl-resolve/">ret2dl_resolve</a>
-                    
-                  </div>
-                
-              </div>
-              
-                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
-              
-              
-                <div class="post-prevnext row">
-                  <div class="post-prev col-6">
-                    
-                    
-                  </div>
-                  <div class="post-next col-6">
-                    
-                    
-                      <a href="/2020/06/08/TaLpwn_UAF/">
-                        <span class="hidden-mobile">TaLpwn UAF</span>
-                        <span class="visible-mobile">Next</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </div>
-                </div>
-              
-            </div>
+      
+    </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ret2dl-resolve/" rel="tag"># ret2dl_resolve</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/08/TaLpwn_UAF/" rel="next" title="TaLpwn UAF">
+                <i class="fa fa-chevron-left"></i> TaLpwn UAF
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
           </div>
         </div>
-      </div>
-    </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
-  <div id="tocbot"></div>
-</div>
-
-      </div>
-    
-  </div>
-</div>
-
-<!-- Custom -->
-
-
-    
-  </main>
-
-  
-    <a id="scroll-top-button" href="#" role="button">
-      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-    </a>
-  
-
-  
-    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">keyword</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-  
-
-  
-
-  
-
-  <footer class="mt-5">
-  <div class="text-center py-3">
-    <div>
-      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
-      <i class="iconfont icon-love"></i>
-      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
-        <span>Fluid</span></a>
-    </div>
-    
-
-    
-
-    
-  </div>
-</footer>
-
-<!-- SCRIPTS -->
-<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="/js/debouncer.js" ></script>
-<script  src="/js/main.js" ></script>
-
-<!-- Plugins -->
-
-
-  
-    <script  src="/js/lazyload.js" ></script>
-  
-
-
-
-  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="/js/clipboard-use.js" ></script>
-
-
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-
-  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
-  <script>
-    $(document).ready(function () {
-      var boardCtn = $('#board-ctn');
-      var boardTop = boardCtn.offset().top;
-
-      tocbot.init({
-        tocSelector: '#tocbot',
-        contentSelector: 'article.markdown-body',
-        headingSelector: 'h1,h2,h3,h4,h5,h6',
-        linkClass: 'tocbot-link',
-        activeLinkClass: 'tocbot-active-link',
-        listClass: 'tocbot-list',
-        isCollapsedClass: 'tocbot-is-collapsed',
-        collapsibleClass: 'tocbot-is-collapsible',
-        collapseDepth: 0,
-        scrollSmooth: true,
-        headingsOffset: -boardTop
-      });
-      if ($('.toc-list-item').length > 0) {
-        $('#toc').css('visibility', 'visible');
-      }
-    });
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
-  <script>
-    var typed = new Typed('#subtitle', {
-      strings: [
-        '  ',
-        "TaLCTF ret2dl_resolve_x86-64&nbsp;",
-      ],
-      cursorChar: "_",
-      typeSpeed: 70,
-      loop: false,
-    });
-    typed.stop();
-    $(document).ready(function () {
-      $(".typed-cursor").addClass("h2");
-      typed.start();
-    });
-  </script>
-
-
-
-  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
-  <script>
-    anchors.options = {
-      placement: "right",
-      visible: "hover",
       
-    };
-    var el = "h1,h2,h3,h4,h5,h6".split(",");
-    var res = [];
-    for (item of el) {
-      res.push(".markdown-body > " + item)
-    }
-    anchors.add(res.join(", "))
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/48941180?s=460&u=c99ae53e7dd15c30c6283cc36edb2f8825ce8aec&v=4"
+               alt="Paxos" />
+          <p class="site-author-name" itemprop="name">Paxos</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/OrangeGzY" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:guoziyi114@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://stevelee477.github.io/" title="Stevelee477(全栈大佬)" target="_blank">Stevelee477(全栈大佬)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://minhal.me" title="Minhal(二进制爷爷👴)" target="_blank">Minhal(二进制爷爷👴)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://a2u13.com" title="A2u13(web爷爷👴)" target="_blank">A2u13(web爷爷👴)</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://zhiaowei.github.io/" title="uranus(web姐姐🧍)" target="_blank">uranus(web姐姐🧍)</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是ret2dl攻击"><span class="nav-number">1.</span> <span class="nav-text">什么是ret2dl攻击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整个调用过程梳理"><span class="nav-number">2.</span> <span class="nav-text">整个调用过程梳理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#dl-fixup之前"><span class="nav-number">2.1.</span> <span class="nav-text">_dl_fixup之前</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dl-fixup进入以后"><span class="nav-number">2.2.</span> <span class="nav-text">_dl_fixup进入以后</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dynamic"><span class="nav-number">2.2.1.</span> <span class="nav-text">.dynamic</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dynsym"><span class="nav-number">2.2.2.</span> <span class="nav-text">.dynsym</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dynstr"><span class="nav-number">2.2.3.</span> <span class="nav-text">.dynstr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rel-plt"><span class="nav-number">2.2.4.</span> <span class="nav-text">.rel.plt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#link-map结构"><span class="nav-number">2.2.5.</span> <span class="nav-text">link_map结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#D-PTR宏"><span class="nav-number">2.2.6.</span> <span class="nav-text">D_PTR宏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ELFW宏"><span class="nav-number">2.2.7.</span> <span class="nav-text">ELFW宏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DL-FIXUP-MAKE-VALUE宏"><span class="nav-number">2.2.8.</span> <span class="nav-text">DL_FIXUP_MAKE_VALUE宏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SYMBOL-ADDRESS宏"><span class="nav-number">2.2.9.</span> <span class="nav-text">SYMBOL_ADDRESS宏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LOOKUP-VALUE-ADDRESS宏"><span class="nav-number">2.2.10.</span> <span class="nav-text">LOOKUP_VALUE_ADDRESS宏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#elf-machine-fixup-plt函数"><span class="nav-number">2.2.11.</span> <span class="nav-text">elf_machine_fixup_plt函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#x86-64下对于reloc-arg的特殊define"><span class="nav-number">2.2.12.</span> <span class="nav-text">x86-64下对于reloc_arg的特殊define</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dl-fixup源码阅读"><span class="nav-number">2.2.13.</span> <span class="nav-text">_dl_fixup源码阅读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ret2dl-resolve-x86-64-重定向流程"><span class="nav-number">2.2.14.</span> <span class="nav-text">ret2dl_resolve_x86-64 重定向流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跟踪调试"><span class="nav-number">3.</span> <span class="nav-text">跟踪调试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时查看-dynamic"><span class="nav-number">3.1.</span> <span class="nav-text">运行时查看.dynamic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vmmap"><span class="nav-number">3.2.</span> <span class="nav-text">vmmap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进入-dl-fixup"><span class="nav-number">3.3.</span> <span class="nav-text">进入_dl_fixup</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#伪造link-map攻击"><span class="nav-number">4.</span> <span class="nav-text">伪造link_map攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#绕过检查"><span class="nav-number">4.1.</span> <span class="nav-text">绕过检查</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EXP编写"><span class="nav-number">5.</span> <span class="nav-text">EXP编写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后续奇怪的调试以及64位32位的一个差别"><span class="nav-number">6.</span> <span class="nav-text">后续奇怪的调试以及64位32位的一个差别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主要参考文章"><span class="nav-number">7.</span> <span class="nav-text">主要参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paxos</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: ,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
   </script>
 
 
+  
 
-  <script  src="/js/local-search.js" ></script>
-  <script>
-    var path = "/local-search.xml";
-    var inputArea = document.querySelector("#local-search-input");
-    inputArea.onclick = function () {
-      searchFunc(path, 'local-search-input', 'local-search-result');
-      this.onclick = null
-    }
-  </script>
+  
 
-
-
-  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-  <script>
-    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
-      function () {
-        var element = document.createElement('a');
-        $(element).attr('data-fancybox', 'images');
-        $(element).attr('href', $(this).attr('src'));
-        $(this).wrap(element);
-      }
-    );
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>
