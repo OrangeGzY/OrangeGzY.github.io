@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-15T16:49:56.113Z</updated>
+  <updated>2020-06-18T15:42:34.431Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>BUUoj-ciscn_final_2-IO_FILE</title>
+    <link href="http://yoursite.com/2020/06/18/BUUoj-ciscn-final-2-IO-FILE/"/>
+    <id>http://yoursite.com/2020/06/18/BUUoj-ciscn-final-2-IO-FILE/</id>
+    <published>2020-06-18T05:02:40.000Z</published>
+    <updated>2020-06-18T15:42:34.431Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;题目概览&quot;&gt;&lt;a href=&quot;#题目概览&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+      <category term="IO_FILE" scheme="http://yoursite.com/tags/IO-FILE/"/>
+    
+  </entry>
   
   <entry>
     <title>BUUoj-pwn5-easyfmtstr</title>
