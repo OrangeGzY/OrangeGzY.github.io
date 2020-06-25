@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-21T14:42:40.323Z</updated>
+  <updated>2020-06-25T18:05:25.214Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>操作系统相关概念整理与复习</title>
+    <link href="http://yoursite.com/2020/06/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86%E4%B8%8E%E5%A4%8D%E4%B9%A0/"/>
+    <id>http://yoursite.com/2020/06/26/操作系统相关概念整理与复习/</id>
+    <published>2020-06-25T18:02:56.000Z</published>
+    <updated>2020-06-25T18:05:25.214Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;选择题+名词解释+简答题+计算题&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;期末复习，基于《操作系统——精髓与设计原理》的总结&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&quot;第一章——计算机系统概述&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>BUUoj-rctf2018_babyheap-off-by-null</title>
