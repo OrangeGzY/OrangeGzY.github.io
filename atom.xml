@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-25T18:05:25.214Z</updated>
+  <updated>2020-07-14T03:30:23.694Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>linux 内核pwn (0)</title>
+    <link href="http://yoursite.com/2020/07/12/linux-%E5%86%85%E6%A0%B8pwn-0/"/>
+    <id>http://yoursite.com/2020/07/12/linux-内核pwn-0/</id>
+    <published>2020-07-12T05:31:38.000Z</published>
+    <updated>2020-07-14T03:30:23.694Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;前置知识&quot;&gt;&lt;a href=&quot;#前置知识&quot; class=&quot;headerlink&quot; title=&quot;前置知识&quot;&gt;&lt;/a&gt;前置知识&lt;/h1&gt;&lt;h2 id=&quot;内核保护相关&quot;&gt;&lt;a href=&quot;#内核保护相关&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="kernel" scheme="http://yoursite.com/categories/kernel/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>操作系统相关概念整理与复习</title>
