@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-07-19T10:02:33.154Z</updated>
+  <updated>2020-07-21T13:36:27.418Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SROP+栈迁移_VN2020公开赛pwn</title>
+    <link href="http://yoursite.com/2020/07/20/SROP-%E6%A0%88%E8%BF%81%E7%A7%BB-VN2020%E5%85%AC%E5%BC%80%E8%B5%9Bpwn/"/>
+    <id>http://yoursite.com/2020/07/20/SROP-栈迁移-VN2020公开赛pwn/</id>
+    <published>2020-07-20T05:03:39.000Z</published>
+    <updated>2020-07-21T13:36:27.418Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;题目概览&quot;&gt;&lt;a href=&quot;#题目概览&quot; class=&quot;headerlink&quot; title=&quot;题目概览&quot;&gt;&lt;/a&gt;题目概览&lt;/h1&gt;&lt;p&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+      <category term="SROP &amp;&amp; ORW" scheme="http://yoursite.com/tags/SROP-ORW/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux内核基础学习笔记</title>
