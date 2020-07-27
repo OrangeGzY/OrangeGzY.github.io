@@ -45,6 +45,34 @@
   </entry>
   
   <entry>
+    <title>栈迁移合集1</title>
+    <link href="http://yoursite.com/2020/07/26/%E6%A0%88%E8%BF%81%E7%A7%BB%E5%90%88%E9%9B%86/"/>
+    <id>http://yoursite.com/2020/07/26/栈迁移合集/</id>
+    <published>2020-07-26T03:00:25.000Z</published>
+    <updated>2020-07-27T12:52:22.844Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;del&gt;最近做题遇到的几个栈迁移，稍微整理了一下&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;leave;ret&lt;/p&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+      <category term="栈迁移" scheme="http://yoursite.com/tags/%E6%A0%88%E8%BF%81%E7%A7%BB/"/>
+    
+  </entry>
+  
+  <entry>
     <title>ciscn_final_3</title>
     <link href="http://yoursite.com/2020/07/25/ciscn-final-3%E5%8A%AB%E6%8C%81tcache%E7%BB%93%E6%9E%84%E4%BD%93etc/"/>
     <id>http://yoursite.com/2020/07/25/ciscn-final-3劫持tcache结构体etc/</id>
@@ -507,30 +535,6 @@
     </summary>
     
       <category term="Pwn" scheme="http://yoursite.com/categories/Pwn/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>从一次偷懒学习内联汇编</title>
-    <link href="http://yoursite.com/2020/04/03/%E4%BB%8E%E4%B8%80%E6%AC%A1%E5%81%B7%E6%87%92%E5%AD%A6%E4%B9%A0%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/"/>
-    <id>http://yoursite.com/2020/04/03/从一次偷懒学习内联汇编/</id>
-    <published>2020-04-02T17:15:34.000Z</published>
-    <updated>2020-04-03T02:51:46.825Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;从一次偷懒学习内联汇编&quot;&gt;&lt;a href=&quot;#从一次偷懒学习内联汇编&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Assembler" scheme="http://yoursite.com/categories/Assembler/"/>
     
     
   </entry>
