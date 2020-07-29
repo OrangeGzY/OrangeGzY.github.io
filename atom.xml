@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-07-28T06:02:44.675Z</updated>
+  <updated>2020-07-29T07:01:17.059Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>vn_pwn_warmup</title>
+    <link href="http://yoursite.com/2020/07/29/vn-pwn-warmup/"/>
+    <id>http://yoursite.com/2020/07/29/vn-pwn-warmup/</id>
+    <published>2020-07-29T05:59:37.000Z</published>
+    <updated>2020-07-29T07:01:17.059Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;题目概览&quot;&gt;&lt;a href=&quot;#题目概览&quot; class=&quot;headerlink&quot; title=&quot;题目概览&quot;&gt;&lt;/a&gt;题目概览&lt;/h1&gt;&lt;p&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+      <category term="ORW" scheme="http://yoursite.com/tags/ORW/"/>
+    
+  </entry>
   
   <entry>
     <title>栈迁移合集1</title>
@@ -509,32 +535,6 @@
     </summary>
     
       <category term="CTF" scheme="http://yoursite.com/categories/CTF/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>一道经典的ret2lib</title>
-    <link href="http://yoursite.com/2020/04/25/%E4%B8%80%E9%81%93%E7%BB%8F%E5%85%B8%E7%9A%84ret2lib/"/>
-    <id>http://yoursite.com/2020/04/25/一道经典的ret2lib/</id>
-    <published>2020-04-25T04:20:34.000Z</published>
-    <updated>2020-04-25T04:19:59.199Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;&lt;del&gt;最近心血来潮突然想整理一道经典的ret2libc&lt;/del&gt;  &lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;废话不多说，直接开始&lt;/strong&gt;&lt;/p&gt;
-&lt;h2 id=&quot;预备知识&quot;&gt;&lt;a href=&quot;#预备知识&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Pwn" scheme="http://yoursite.com/categories/Pwn/"/>
     
     
   </entry>
