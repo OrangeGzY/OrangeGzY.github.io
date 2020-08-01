@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-07-30T04:13:05.664Z</updated>
+  <updated>2020-08-01T09:29:55.309Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,54 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>seccomp相关1</title>
+    <link href="http://yoursite.com/2020/08/01/seccomp%E7%9B%B8%E5%85%B31/"/>
+    <id>http://yoursite.com/2020/08/01/seccomp相关1/</id>
+    <published>2020-08-01T09:27:58.000Z</published>
+    <updated>2020-08-01T09:29:55.309Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;seccomp相关的一些规则快速对应&quot;&gt;&lt;a href=&quot;#seccomp相关的一些规则快速对应&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>strfmt合集1</title>
+    <link href="http://yoursite.com/2020/08/01/strfmt%E5%90%88%E9%9B%861/"/>
+    <id>http://yoursite.com/2020/08/01/strfmt合集1/</id>
+    <published>2020-08-01T09:27:40.000Z</published>
+    <updated>2020-08-01T09:31:57.075Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;axb-2019-fmt64&quot;&gt;&lt;a href=&quot;#axb-2019-fmt64&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>abx_2019_heap_unlink</title>
@@ -484,58 +532,6 @@
     
     
       <category term="Canary &amp;&amp; argv[0]" scheme="http://yoursite.com/tags/Canary-argv-0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>从网鼎杯白虎组pwn（云盾）学习UAF与fastbin attack</title>
-    <link href="http://yoursite.com/2020/05/21/%E4%BB%8E%E7%BD%91%E9%BC%8E%E6%9D%AF%E7%99%BD%E8%99%8E%E7%BB%84pwn%EF%BC%88%E4%BA%91%E7%9B%BE%EF%BC%89%E5%AD%A6%E4%B9%A0UAF%E4%B8%8Efastbin-attack/"/>
-    <id>http://yoursite.com/2020/05/21/从网鼎杯白虎组pwn（云盾）学习UAF与fastbin-attack/</id>
-    <published>2020-05-21T15:07:43.000Z</published>
-    <updated>2020-05-22T03:21:48.996Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;0x00-知识点概览&quot;&gt;&lt;a href=&quot;#0x00-知识点概览&quot; class=&quot;headerlink&quot; title=&quot;0x00 知识点概览&quot;&gt;&lt;/a&gt;0x00
-        
-      
-    
-    </summary>
-    
-      <category term="CTF" scheme="http://yoursite.com/categories/CTF/"/>
-    
-    
-      <category term="网鼎杯 &amp;&amp; fastbin &amp;&amp; UAF" scheme="http://yoursite.com/tags/%E7%BD%91%E9%BC%8E%E6%9D%AF-fastbin-UAF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>canary绕过与ROP.md</title>
-    <link href="http://yoursite.com/2020/05/13/canary%E7%BB%95%E8%BF%87%E4%B8%8EROP-md/"/>
-    <id>http://yoursite.com/2020/05/13/canary绕过与ROP-md/</id>
-    <published>2020-05-12T16:32:14.000Z</published>
-    <updated>2020-05-12T18:30:10.741Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;0x01-考查知识点&quot;&gt;&lt;a href=&quot;#0x01-考查知识点&quot; class=&quot;headerlink&quot; title=&quot;0x01 考查知识点&quot;&gt;&lt;/a&gt;0x01
-        
-      
-    
-    </summary>
-    
-      <category term="CTF" scheme="http://yoursite.com/categories/CTF/"/>
-    
-    
-      <category term="Canary &amp;&amp; PIE" scheme="http://yoursite.com/tags/Canary-PIE/"/>
     
   </entry>
   
