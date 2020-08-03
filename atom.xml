@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-08-01T14:42:17.525Z</updated>
+  <updated>2020-08-03T07:58:00.114Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,54 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ciscn_2019_sw合集1</title>
+    <link href="http://yoursite.com/2020/08/03/ciscn-2019-sw%E5%90%88%E9%9B%861/"/>
+    <id>http://yoursite.com/2020/08/03/ciscn-2019-sw合集1/</id>
+    <published>2020-08-03T07:55:51.000Z</published>
+    <updated>2020-08-03T07:58:00.114Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;ciscn-sw-2019-1&quot;&gt;&lt;a href=&quot;#ciscn-sw-2019-1&quot; class=&quot;headerlink&quot; title=&quot;ciscn_sw_2019_1&quot;&gt;&lt;/a&gt;ciscn_sw_2019_1&lt;/h1&gt;&lt;h2 id=&quot;考点&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>ciscn_es_7_srop</title>
+    <link href="http://yoursite.com/2020/08/03/ciscn-es-7-srop/"/>
+    <id>http://yoursite.com/2020/08/03/ciscn-es-7-srop/</id>
+    <published>2020-08-03T07:55:34.000Z</published>
+    <updated>2020-08-03T07:57:03.407Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;题目概览&quot;&gt;&lt;a href=&quot;#题目概览&quot; class=&quot;headerlink&quot; title=&quot;题目概览&quot;&gt;&lt;/a&gt;题目概览&lt;/h1&gt;&lt;figure class=&quot;highlight angelscript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>ciscn_2019_es_1</title>
@@ -481,57 +529,6 @@
     
     
       <category term="ret2dl_resolve" scheme="http://yoursite.com/tags/ret2dl-resolve/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>TaLpwn UAF</title>
-    <link href="http://yoursite.com/2020/06/08/TaLpwn_UAF/"/>
-    <id>http://yoursite.com/2020/06/08/TaLpwn_UAF/</id>
-    <published>2020-06-08T14:28:27.000Z</published>
-    <updated>2020-06-09T08:19:36.866Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;&lt;del&gt;这次周赛真的学到许多，其中64位ret2dl还应当再研究一下（没做出来），这道经典的堆题整理一下思路&lt;/del&gt;&lt;/p&gt;
-&lt;h1 id=&quot;0x0-考察内容&quot;&gt;&lt;a href=&quot;#0x0-考察内容&quot; class=&quot;headerlink&quot; title=&quot;0x0
-        
-      
-    
-    </summary>
-    
-      <category term="TaL第一次周赛" scheme="http://yoursite.com/categories/TaL%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%91%A8%E8%B5%9B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>ptmalloc2学习_1</title>
-    <link href="http://yoursite.com/2020/06/02/ptmalloc2%E5%AD%A6%E4%B9%A0-1/"/>
-    <id>http://yoursite.com/2020/06/02/ptmalloc2学习-1/</id>
-    <published>2020-06-02T04:45:42.000Z</published>
-    <updated>2020-06-02T07:31:52.331Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;0x0-写在前面&quot;&gt;&lt;a href=&quot;#0x0-写在前面&quot; class=&quot;headerlink&quot; title=&quot;0x0 写在前面&quot;&gt;&lt;/a&gt;0x0
-        
-      
-    
-    </summary>
-    
-      <category term="ptmalloc" scheme="http://yoursite.com/categories/ptmalloc/"/>
-    
-    
-      <category term="ptmalloc2" scheme="http://yoursite.com/tags/ptmalloc2/"/>
     
   </entry>
   
