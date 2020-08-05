@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-08-04T08:52:21.159Z</updated>
+  <updated>2020-08-05T16:12:35.793Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>UNCTF2019-orwHeap</title>
+    <link href="http://yoursite.com/2020/08/06/UNCTF2019-orwHeap/"/>
+    <id>http://yoursite.com/2020/08/06/UNCTF2019-orwHeap/</id>
+    <published>2020-08-05T16:11:54.000Z</published>
+    <updated>2020-08-05T16:12:35.793Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;del&gt;这道题感觉是对于我这个菜鸡比较难的一道题，也考到了一些我之前不清楚，或者感觉很模糊的小点。所以认真总结一下（主要是跟着大师傅的exp学习一下思路）&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;突然萌生了想法好好总结一波house
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>buuoj栈练习合集1</title>
@@ -500,33 +525,6 @@
     
     
       <category term="IO_FILE" scheme="http://yoursite.com/tags/IO-FILE/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>BUUoj-pwn5-easyfmtstr</title>
-    <link href="http://yoursite.com/2020/06/15/BUUoj-pwn5-easyfmtstr/"/>
-    <id>http://yoursite.com/2020/06/15/BUUoj-pwn5-easyfmtstr/</id>
-    <published>2020-06-15T15:55:08.000Z</published>
-    <updated>2020-06-15T16:49:56.113Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;&lt;del&gt;日常刷题笔记&lt;/del&gt;&lt;/p&gt;
-&lt;h1 id=&quot;题目概览&quot;&gt;&lt;a href=&quot;#题目概览&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-      <category term="fmtstr" scheme="http://yoursite.com/tags/fmtstr/"/>
     
   </entry>
   
