@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-08-06T14:40:02.414Z</updated>
+  <updated>2020-08-07T14:43:57.679Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ciscn_2019复现_daily&amp;&amp;yourpwn</title>
+    <link href="http://yoursite.com/2020/08/07/ciscn-2019%E5%A4%8D%E7%8E%B0-daily-yourpwn/"/>
+    <id>http://yoursite.com/2020/08/07/ciscn-2019复现-daily-yourpwn/</id>
+    <published>2020-08-07T14:42:56.000Z</published>
+    <updated>2020-08-07T14:43:57.679Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;daily&quot;&gt;&lt;a href=&quot;#daily&quot; class=&quot;headerlink&quot; title=&quot;daily&quot;&gt;&lt;/a&gt;daily&lt;/h1&gt;&lt;h2 id=&quot;题目概览&quot;&gt;&lt;a href=&quot;#题目概览&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>ret2dl练习</title>
@@ -497,33 +521,6 @@
     
     </summary>
     
-    
-  </entry>
-  
-  <entry>
-    <title>BUUoj-rctf2018_babyheap-off-by-null</title>
-    <link href="http://yoursite.com/2020/06/21/BUUoj-rctf2018-babyheap-off-by-null/"/>
-    <id>http://yoursite.com/2020/06/21/BUUoj-rctf2018-babyheap-off-by-null/</id>
-    <published>2020-06-21T14:04:45.000Z</published>
-    <updated>2020-06-21T14:42:40.323Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;&lt;del&gt;这题本来都不想写题解了，太懒了，题目原本是glibc2.23，然后buu上变成glibc2.27，我这里按2.23做了&lt;/del&gt;&lt;br&gt;&lt;del&gt;有时间再研究2.27做法，咕咕咕&lt;/del&gt;&lt;/p&gt;
-&lt;h1 id=&quot;题目概览&quot;&gt;&lt;a href=&quot;#题目概览&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-      <category term="off-by-one" scheme="http://yoursite.com/tags/off-by-one/"/>
     
   </entry>
   
