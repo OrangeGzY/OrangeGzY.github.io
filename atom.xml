@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-08-09T17:25:46.064Z</updated>
+  <updated>2020-08-10T06:02:37.736Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,35 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>pwnable.seefile-伪造IO结构体</title>
+    <link href="http://yoursite.com/2020/08/10/pwnable-seefile-%E4%BC%AA%E9%80%A0IO%E7%BB%93%E6%9E%84%E4%BD%93/"/>
+    <id>http://yoursite.com/2020/08/10/pwnable-seefile-伪造IO结构体/</id>
+    <published>2020-08-10T06:00:56.000Z</published>
+    <updated>2020-08-10T06:02:37.736Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;seethefile&quot;&gt;&lt;a href=&quot;#seethefile&quot; class=&quot;headerlink&quot; title=&quot;seethefile&quot;&gt;&lt;/a&gt;seethefile&lt;/h1&gt;&lt;h2 id=&quot;题目概览&quot;&gt;&lt;a href=&quot;#题目概览&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>VM pwn初探&amp;&amp;ciscn_2019复现_virtual</title>
     <link href="http://yoursite.com/2020/08/10/VM-pwn%E5%88%9D%E6%8E%A2-ciscn-2019%E5%A4%8D%E7%8E%B0-virtual/"/>
     <id>http://yoursite.com/2020/08/10/VM-pwn初探-ciscn-2019复现-virtual/</id>
     <published>2020-08-09T17:19:49.000Z</published>
-    <updated>2020-08-09T17:25:46.064Z</updated>
+    <updated>2020-08-10T06:10:34.072Z</updated>
     
     <summary type="html">
     
@@ -500,30 +524,6 @@
     
     
       <category term="SROP &amp;&amp; ORW" scheme="http://yoursite.com/tags/SROP-ORW/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux内核基础学习笔记</title>
-    <link href="http://yoursite.com/2020/07/16/Linux%E5%86%85%E6%A0%B8%E5%9F%BA%E7%A1%80/"/>
-    <id>http://yoursite.com/2020/07/16/Linux内核基础/</id>
-    <published>2020-07-16T06:57:02.000Z</published>
-    <updated>2020-07-19T10:02:33.154Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;Booting阶段&quot;&gt;&lt;a href=&quot;#Booting阶段&quot; class=&quot;headerlink&quot; title=&quot;Booting阶段&quot;&gt;&lt;/a&gt;Booting阶段&lt;/h1&gt;&lt;h2 id=&quot;启动&quot;&gt;&lt;a href=&quot;#启动&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="kernel" scheme="http://yoursite.com/categories/kernel/"/>
-    
     
   </entry>
   
