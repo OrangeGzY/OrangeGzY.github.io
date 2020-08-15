@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-08-14T15:51:05.799Z</updated>
+  <updated>2020-08-15T17:26:27.163Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://yoursite.com/7777/08/14/Pax0s%E3%81%AE%E6%97%A5%E8%A8%98/"/>
     <id>http://yoursite.com/7777/08/14/Pax0sの日記/</id>
     <published>7777-08-14T15:34:27.000Z</published>
-    <updated>2020-08-14T15:51:05.799Z</updated>
+    <updated>2020-08-15T17:26:27.163Z</updated>
     
     <summary type="html">
     
@@ -39,6 +39,59 @@
     
     
       <category term="生活" scheme="http://yoursite.com/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>第五空间pwnme（arm堆）</title>
+    <link href="http://yoursite.com/2020/08/16/%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4pwnme%EF%BC%88arm%E5%A0%86%EF%BC%89/"/>
+    <id>http://yoursite.com/2020/08/16/第五空间pwnme（arm堆）/</id>
+    <published>2020-08-15T17:28:07.000Z</published>
+    <updated>2020-08-15T17:32:14.905Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;第五空间pwnme&quot;&gt;&lt;a href=&quot;#第五空间pwnme&quot; class=&quot;headerlink&quot; title=&quot;第五空间pwnme&quot;&gt;&lt;/a&gt;第五空间pwnme&lt;/h1&gt;&lt;p&gt;第一次调试arm堆题，感谢队里的两位大师傅指导&lt;/p&gt;
+&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+      <category term="arm heap" scheme="http://yoursite.com/tags/arm-heap/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>强网杯拟态 &amp;&amp; typo（arm）</title>
+    <link href="http://yoursite.com/2020/08/16/%E5%BC%BA%E7%BD%91%E6%9D%AF%E6%8B%9F%E6%80%81-typo%EF%BC%88arm%EF%BC%89/"/>
+    <id>http://yoursite.com/2020/08/16/强网杯拟态-typo（arm）/</id>
+    <published>2020-08-15T17:27:25.000Z</published>
+    <updated>2020-08-15T17:32:42.640Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;强网杯2019-STKOF拟态&quot;&gt;&lt;a href=&quot;#强网杯2019-STKOF拟态&quot; class=&quot;headerlink&quot; title=&quot;强网杯2019 STKOF拟态&quot;&gt;&lt;/a&gt;强网杯2019
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+      <category term="拟态" scheme="http://yoursite.com/tags/%E6%8B%9F%E6%80%81/"/>
     
   </entry>
   
@@ -466,60 +519,6 @@
     
       <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>vn_pwn_warmup</title>
-    <link href="http://yoursite.com/2020/07/29/vn-pwn-warmup/"/>
-    <id>http://yoursite.com/2020/07/29/vn-pwn-warmup/</id>
-    <published>2020-07-29T05:59:37.000Z</published>
-    <updated>2020-07-29T07:01:17.059Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;题目概览&quot;&gt;&lt;a href=&quot;#题目概览&quot; class=&quot;headerlink&quot; title=&quot;题目概览&quot;&gt;&lt;/a&gt;题目概览&lt;/h1&gt;&lt;p&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-      <category term="ORW" scheme="http://yoursite.com/tags/ORW/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>栈迁移合集1</title>
-    <link href="http://yoursite.com/2020/07/28/%E6%A0%88%E8%BF%81%E7%A7%BB%E5%90%88%E9%9B%86/"/>
-    <id>http://yoursite.com/2020/07/28/栈迁移合集/</id>
-    <published>2020-07-28T06:00:25.000Z</published>
-    <updated>2020-07-28T06:02:44.675Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;&lt;del&gt;最近做题遇到的几个栈迁移，稍微整理了一下&lt;/del&gt;&lt;/p&gt;
-&lt;p&gt;leave;ret&lt;/p&gt;
-&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-      <category term="栈迁移" scheme="http://yoursite.com/tags/%E6%A0%88%E8%BF%81%E7%A7%BB/"/>
     
   </entry>
   
