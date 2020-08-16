@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-08-15T17:26:27.163Z</updated>
+  <updated>2020-08-16T17:22:06.789Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://yoursite.com/7777/08/14/Pax0s%E3%81%AE%E6%97%A5%E8%A8%98/"/>
     <id>http://yoursite.com/7777/08/14/Pax0sの日記/</id>
     <published>7777-08-14T15:34:27.000Z</published>
-    <updated>2020-08-15T17:26:27.163Z</updated>
+    <updated>2020-08-16T17:22:06.789Z</updated>
     
     <summary type="html">
     
@@ -39,6 +39,58 @@
     
     
       <category term="生活" scheme="http://yoursite.com/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>rctf_2019_syscall_interface</title>
+    <link href="http://yoursite.com/2020/08/17/rctf-2019-syscall-interface/"/>
+    <id>http://yoursite.com/2020/08/17/rctf-2019-syscall-interface/</id>
+    <published>2020-08-16T17:23:25.000Z</published>
+    <updated>2020-08-16T17:26:40.716Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;rctf-2019-syscall-interface&quot;&gt;&lt;a href=&quot;#rctf-2019-syscall-interface&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+      <category term="syscall" scheme="http://yoursite.com/tags/syscall/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>bamboobox(unlink模版题)</title>
+    <link href="http://yoursite.com/2020/08/17/bamboobox-unlink%E6%A8%A1%E7%89%88%E9%A2%98/"/>
+    <id>http://yoursite.com/2020/08/17/bamboobox-unlink模版题/</id>
+    <published>2020-08-16T17:23:07.000Z</published>
+    <updated>2020-08-16T17:27:57.224Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;bamboobox&quot;&gt;&lt;a href=&quot;#bamboobox&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+      <category term="unlink" scheme="http://yoursite.com/tags/unlink/"/>
     
   </entry>
   
@@ -462,56 +514,6 @@
         
         
           &lt;h1 id=&quot;axb-2019-fmt64&quot;&gt;&lt;a href=&quot;#axb-2019-fmt64&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>abx_2019_heap_unlink</title>
-    <link href="http://yoursite.com/2020/07/30/abx-2019-heap-unlink/"/>
-    <id>http://yoursite.com/2020/07/30/abx-2019-heap-unlink/</id>
-    <published>2020-07-30T04:10:52.000Z</published>
-    <updated>2020-07-30T04:13:05.664Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;&lt;del&gt;一道unlink模版题&lt;/del&gt;&lt;/p&gt;
-&lt;h1 id=&quot;题目概览&quot;&gt;&lt;a href=&quot;#题目概览&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>pwnable_uaf</title>
-    <link href="http://yoursite.com/2020/07/29/pwnable-uaf/"/>
-    <id>http://yoursite.com/2020/07/29/pwnable-uaf/</id>
-    <published>2020-07-29T14:40:37.000Z</published>
-    <updated>2020-07-29T14:48:17.151Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;题目概览&quot;&gt;&lt;a href=&quot;#题目概览&quot; class=&quot;headerlink&quot; title=&quot;题目概览&quot;&gt;&lt;/a&gt;题目概览&lt;/h1&gt;&lt;p&gt;1.一道c++题，考察的是c++继承中的对象内存布局。源码如下：&lt;/p&gt;
-&lt;figure class=&quot;highlight
         
       
     
