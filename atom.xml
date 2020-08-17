@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-08-16T17:22:06.789Z</updated>
+  <updated>2020-08-17T05:37:28.188Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://yoursite.com/7777/08/14/Pax0s%E3%81%AE%E6%97%A5%E8%A8%98/"/>
     <id>http://yoursite.com/7777/08/14/Pax0sの日記/</id>
     <published>7777-08-14T15:34:27.000Z</published>
-    <updated>2020-08-16T17:22:06.789Z</updated>
+    <updated>2020-08-17T05:37:28.188Z</updated>
     
     <summary type="html">
     
@@ -39,6 +39,32 @@
     
     
       <category term="生活" scheme="http://yoursite.com/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ciscn2019_s_3(SROP+rbp与rsp重合）</title>
+    <link href="http://yoursite.com/2020/08/17/ciscn2019-s-3-SROP-rbp%E4%B8%8Ersp%E9%87%8D%E5%90%88%EF%BC%89/"/>
+    <id>http://yoursite.com/2020/08/17/ciscn2019-s-3-SROP-rbp与rsp重合）/</id>
+    <published>2020-08-17T03:15:55.000Z</published>
+    <updated>2020-08-17T03:18:44.318Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;ciscn2019-s-3-SROP-rbp与rsp重合）&quot;&gt;&lt;a href=&quot;#ciscn2019-s-3-SROP-rbp与rsp重合）&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+      <category term="srop ret2csu syscall" scheme="http://yoursite.com/tags/srop-ret2csu-syscall/"/>
     
   </entry>
   
@@ -490,30 +516,6 @@
         
         
           &lt;h1 id=&quot;seccomp相关的一些规则快速对应&quot;&gt;&lt;a href=&quot;#seccomp相关的一些规则快速对应&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>strfmt合集1</title>
-    <link href="http://yoursite.com/2020/08/01/strfmt%E5%90%88%E9%9B%861/"/>
-    <id>http://yoursite.com/2020/08/01/strfmt合集1/</id>
-    <published>2020-08-01T09:27:40.000Z</published>
-    <updated>2020-08-01T09:31:57.075Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;axb-2019-fmt64&quot;&gt;&lt;a href=&quot;#axb-2019-fmt64&quot; class=&quot;headerlink&quot;
         
       
     
