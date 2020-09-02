@@ -43,6 +43,30 @@
   </entry>
   
   <entry>
+    <title>浅谈多线程中的堆问题</title>
+    <link href="http://yoursite.com/2020/09/03/%E6%B5%85%E8%B0%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%A0%86%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2020/09/03/浅谈多线程中的堆问题/</id>
+    <published>2020-09-02T17:18:26.000Z</published>
+    <updated>2020-09-02T17:22:06.749Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;浅谈多线程中的堆问题&quot;&gt;&lt;a href=&quot;#浅谈多线程中的堆问题&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="学习笔记📒" scheme="http://yoursite.com/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%F0%9F%93%92/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>note_sys（Multithreading+Race condition）</title>
     <link href="http://yoursite.com/2020/09/02/note-sys%EF%BC%88Multithreading-Race-condition%EF%BC%89/"/>
     <id>http://yoursite.com/2020/09/02/note-sys（Multithreading-Race-condition）/</id>
@@ -503,30 +527,6 @@
     
     
       <category term="tcache stdout" scheme="http://yoursite.com/tags/tcache-stdout/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ciscn_2019复现_daily&amp;&amp;yourpwn</title>
-    <link href="http://yoursite.com/2020/08/07/ciscn-2019%E5%A4%8D%E7%8E%B0-daily-yourpwn/"/>
-    <id>http://yoursite.com/2020/08/07/ciscn-2019复现-daily-yourpwn/</id>
-    <published>2020-08-07T14:42:56.000Z</published>
-    <updated>2020-08-07T14:43:57.679Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;daily&quot;&gt;&lt;a href=&quot;#daily&quot; class=&quot;headerlink&quot; title=&quot;daily&quot;&gt;&lt;/a&gt;daily&lt;/h1&gt;&lt;h2 id=&quot;题目概览&quot;&gt;&lt;a href=&quot;#题目概览&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
     
   </entry>
   
