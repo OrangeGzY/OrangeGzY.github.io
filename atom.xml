@@ -47,7 +47,7 @@
     <link href="http://yoursite.com/2020/09/04/test/"/>
     <id>http://yoursite.com/2020/09/04/test/</id>
     <published>2020-09-03T16:51:05.000Z</published>
-    <updated>2020-09-03T17:04:03.125Z</updated>
+    <updated>2020-09-03T17:08:55.608Z</updated>
     
     <summary type="html">
     
@@ -55,9 +55,8 @@
       
         
         
-          &lt;ul&gt;
-&lt;li&gt;将图片放在与文章同名的文件夹下:&lt;em&gt;~/blog/blog/source/_posts/test&lt;/em&gt;，测试引用：&lt;br&gt;&lt;img src=&quot;/2020/09/04/test/IMG_6759.JPG&quot; alt&gt;&lt;/li&gt;
-&lt;/ul&gt;
+          &lt;ol&gt;
+&lt;li&gt;&lt;p&gt;将图片放在与文章同名的文件夹下:&lt;em&gt;~/blog/blog/source/_posts/test&lt;/em&gt;，测试引用：&lt;br&gt;&lt;img src=&quot;/2020/09/04/test/IMG_6759.JPG&quot; alt&gt;&lt;/p&gt;
 &lt;figure
         
       
