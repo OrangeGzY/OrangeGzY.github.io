@@ -43,6 +43,32 @@
   </entry>
   
   <entry>
+    <title>glibc2.29 New Protection</title>
+    <link href="http://yoursite.com/2020/09/07/glibc2-29-New-Protection/"/>
+    <id>http://yoursite.com/2020/09/07/glibc2-29-New-Protection/</id>
+    <published>2020-09-07T09:38:45.000Z</published>
+    <updated>2020-09-07T09:42:40.533Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Glibc2-29-New-Protection&quot;&gt;&lt;a href=&quot;#Glibc2-29-New-Protection&quot; class=&quot;headerlink&quot; title=&quot;Glibc2.29 New Protection&quot;&gt;&lt;/a&gt;Glibc2.29 New
+        
+      
+    
+    </summary>
+    
+      <category term="学习笔记📒" scheme="http://yoursite.com/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%F0%9F%93%92/"/>
+    
+    
+      <category term="glibc2.29" scheme="http://yoursite.com/tags/glibc2-29/"/>
+    
+  </entry>
+  
+  <entry>
     <title>test insert picture</title>
     <link href="http://yoursite.com/2020/09/04/test/"/>
     <id>http://yoursite.com/2020/09/04/test/</id>
@@ -499,32 +525,6 @@
     
       <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>VM pwn初探&amp;&amp;ciscn_2019复现_virtual</title>
-    <link href="http://yoursite.com/2020/08/10/VM-pwn%E5%88%9D%E6%8E%A2-ciscn-2019%E5%A4%8D%E7%8E%B0-virtual/"/>
-    <id>http://yoursite.com/2020/08/10/VM-pwn初探-ciscn-2019复现-virtual/</id>
-    <published>2020-08-09T17:19:49.000Z</published>
-    <updated>2020-08-10T06:10:34.072Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;ciscn-2019-virtual&quot;&gt;&lt;a href=&quot;#ciscn-2019-virtual&quot; class=&quot;headerlink&quot; title=&quot;ciscn 2019 virtual&quot;&gt;&lt;/a&gt;ciscn 2019
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-      <category term="VM pwn" scheme="http://yoursite.com/tags/VM-pwn/"/>
     
   </entry>
   
