@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-09-11T07:14:32.636Z</updated>
+  <updated>2020-09-13T05:47:47.329Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://yoursite.com/7777/08/14/Pax0s%E3%81%AE%E6%97%A5%E8%A8%98/"/>
     <id>http://yoursite.com/7777/08/14/Pax0sの日記/</id>
     <published>7777-08-14T15:34:27.000Z</published>
-    <updated>2020-09-11T07:14:32.636Z</updated>
+    <updated>2020-09-13T05:47:47.329Z</updated>
     
     <summary type="html">
     
@@ -39,6 +39,30 @@
     
     
       <category term="生活" scheme="http://yoursite.com/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>rctf2018_rnote4（no relro下劫持str tab执行任意函数）</title>
+    <link href="http://yoursite.com/2020/09/13/rctf2018-rnote4%EF%BC%88no-relro%E4%B8%8B%E5%8A%AB%E6%8C%81str-tab%E6%89%A7%E8%A1%8C%E4%BB%BB%E6%84%8F%E5%87%BD%E6%95%B0%EF%BC%89/"/>
+    <id>http://yoursite.com/2020/09/13/rctf2018-rnote4（no-relro下劫持str-tab执行任意函数）/</id>
+    <published>2020-09-13T05:48:06.000Z</published>
+    <updated>2020-09-13T05:50:49.264Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;rctf2018-rnote4（no-relro下劫持str-tab执行任意函数）&quot;&gt;&lt;a href=&quot;#rctf2018-rnote4（no-relro下劫持str-tab执行任意函数）&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
     
   </entry>
   
@@ -496,33 +520,6 @@
     
     
       <category term="unlink" scheme="http://yoursite.com/tags/unlink/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>第五空间pwnme（arm堆）</title>
-    <link href="http://yoursite.com/2020/08/16/%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4pwnme%EF%BC%88arm%E5%A0%86%EF%BC%89/"/>
-    <id>http://yoursite.com/2020/08/16/第五空间pwnme（arm堆）/</id>
-    <published>2020-08-15T17:28:07.000Z</published>
-    <updated>2020-08-15T17:32:14.905Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;第五空间pwnme&quot;&gt;&lt;a href=&quot;#第五空间pwnme&quot; class=&quot;headerlink&quot; title=&quot;第五空间pwnme&quot;&gt;&lt;/a&gt;第五空间pwnme&lt;/h1&gt;&lt;p&gt;第一次调试arm堆题，感谢队里的两位大师傅指导&lt;/p&gt;
-&lt;h2
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-      <category term="arm heap" scheme="http://yoursite.com/tags/arm-heap/"/>
     
   </entry>
   
