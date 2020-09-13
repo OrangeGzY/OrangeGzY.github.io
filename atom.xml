@@ -43,6 +43,30 @@
   </entry>
   
   <entry>
+    <title>CISCN2020 CTF 半决赛赛前patch学习.</title>
+    <link href="http://yoursite.com/2020/09/13/CISCN2020-CTF-%E5%8D%8A%E5%86%B3%E8%B5%9B%E8%B5%9B%E5%89%8Dpatch%E5%AD%A6%E4%B9%A0/"/>
+    <id>http://yoursite.com/2020/09/13/CISCN2020-CTF-半决赛赛前patch学习/</id>
+    <published>2020-09-13T14:41:47.000Z</published>
+    <updated>2020-09-13T14:43:11.308Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;CISCN2020-CTF-半决赛赛前patch学习&quot;&gt;&lt;a href=&quot;#CISCN2020-CTF-半决赛赛前patch学习&quot; class=&quot;headerlink&quot; title=&quot;CISCN2020 CTF
+        
+      
+    
+    </summary>
+    
+      <category term="学习笔记📒" scheme="http://yoursite.com/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%F0%9F%93%92/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>rctf2018_rnote4（no relro下劫持str tab执行任意函数）</title>
     <link href="http://yoursite.com/2020/09/13/rctf2018-rnote4%EF%BC%88no-relro%E4%B8%8B%E5%8A%AB%E6%8C%81str-tab%E6%89%A7%E8%A1%8C%E4%BB%BB%E6%84%8F%E5%87%BD%E6%95%B0%EF%BC%89/"/>
     <id>http://yoursite.com/2020/09/13/rctf2018-rnote4（no-relro下劫持str-tab执行任意函数）/</id>
@@ -494,32 +518,6 @@
     
     
       <category term="syscall" scheme="http://yoursite.com/tags/syscall/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>bamboobox(unlink模版题)</title>
-    <link href="http://yoursite.com/2020/08/17/bamboobox-unlink%E6%A8%A1%E7%89%88%E9%A2%98/"/>
-    <id>http://yoursite.com/2020/08/17/bamboobox-unlink模版题/</id>
-    <published>2020-08-16T17:23:07.000Z</published>
-    <updated>2020-08-16T17:27:57.224Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;bamboobox&quot;&gt;&lt;a href=&quot;#bamboobox&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-      <category term="unlink" scheme="http://yoursite.com/tags/unlink/"/>
     
   </entry>
   
