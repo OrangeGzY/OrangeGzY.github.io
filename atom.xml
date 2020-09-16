@@ -43,6 +43,30 @@
   </entry>
   
   <entry>
+    <title>hitcon_ctf_2019_one_punch</title>
+    <link href="http://yoursite.com/2020/09/17/hitcon-ctf-2019-one-punch/"/>
+    <id>http://yoursite.com/2020/09/17/hitcon-ctf-2019-one-punch/</id>
+    <published>2020-09-16T16:41:32.000Z</published>
+    <updated>2020-09-16T16:43:06.907Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;hitcon-ctf-2019-one-punch&quot;&gt;&lt;a href=&quot;#hitcon-ctf-2019-one-punch&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>CISCN2020 CTF 半决赛赛前patch学习.</title>
     <link href="http://yoursite.com/2020/09/13/CISCN2020-CTF-%E5%8D%8A%E5%86%B3%E8%B5%9B%E8%B5%9B%E5%89%8Dpatch%E5%AD%A6%E4%B9%A0/"/>
     <id>http://yoursite.com/2020/09/13/CISCN2020-CTF-半决赛赛前patch学习/</id>
@@ -492,32 +516,6 @@
     
     
       <category term="srop ret2csu syscall" scheme="http://yoursite.com/tags/srop-ret2csu-syscall/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>rctf_2019_syscall_interface</title>
-    <link href="http://yoursite.com/2020/08/17/rctf-2019-syscall-interface/"/>
-    <id>http://yoursite.com/2020/08/17/rctf-2019-syscall-interface/</id>
-    <published>2020-08-16T17:23:25.000Z</published>
-    <updated>2020-08-16T17:26:40.716Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;rctf-2019-syscall-interface&quot;&gt;&lt;a href=&quot;#rctf-2019-syscall-interface&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-      <category term="syscall" scheme="http://yoursite.com/tags/syscall/"/>
     
   </entry>
   
