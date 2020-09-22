@@ -43,6 +43,30 @@
   </entry>
   
   <entry>
+    <title>BCTF_2018_bugstore（打TLS劫持canary)</title>
+    <link href="http://yoursite.com/2020/09/23/BCTF-2018-bugstore%EF%BC%88%E6%89%93TLS%E5%8A%AB%E6%8C%81canary/"/>
+    <id>http://yoursite.com/2020/09/23/BCTF-2018-bugstore（打TLS劫持canary/</id>
+    <published>2020-09-22T17:34:28.000Z</published>
+    <updated>2020-09-22T17:37:00.551Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;BCTF-2018-bugstore（打TLS劫持canary）&quot;&gt;&lt;a href=&quot;#BCTF-2018-bugstore（打TLS劫持canary）&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>hitcon_ctf_2019_one_punch</title>
     <link href="http://yoursite.com/2020/09/17/hitcon-ctf-2019-one-punch/"/>
     <id>http://yoursite.com/2020/09/17/hitcon-ctf-2019-one-punch/</id>
@@ -490,32 +514,6 @@
     
     
       <category term="unsortedbin &amp;&amp; top chunk" scheme="http://yoursite.com/tags/unsortedbin-top-chunk/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ciscn2019_s_3(SROP+rbp与rsp重合）</title>
-    <link href="http://yoursite.com/2020/08/17/ciscn2019-s-3-SROP-rbp%E4%B8%8Ersp%E9%87%8D%E5%90%88%EF%BC%89/"/>
-    <id>http://yoursite.com/2020/08/17/ciscn2019-s-3-SROP-rbp与rsp重合）/</id>
-    <published>2020-08-17T03:15:55.000Z</published>
-    <updated>2020-08-17T03:18:44.318Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;ciscn2019-s-3-SROP-rbp与rsp重合）&quot;&gt;&lt;a href=&quot;#ciscn2019-s-3-SROP-rbp与rsp重合）&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-      <category term="srop ret2csu syscall" scheme="http://yoursite.com/tags/srop-ret2csu-syscall/"/>
     
   </entry>
   
