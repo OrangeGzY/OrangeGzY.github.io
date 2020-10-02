@@ -43,6 +43,30 @@
   </entry>
   
   <entry>
+    <title>Linux Kernel pwn(2)——Kernel UAF</title>
+    <link href="http://yoursite.com/2020/10/02/Linux-Kernel-pwn-2-%E2%80%94%E2%80%94Kernel-UAF/"/>
+    <id>http://yoursite.com/2020/10/02/Linux-Kernel-pwn-2-——Kernel-UAF/</id>
+    <published>2020-10-02T11:19:07.000Z</published>
+    <updated>2020-10-02T11:23:27.849Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Linux-Kernel-pwn-2-——Kernel-UAF&quot;&gt;&lt;a href=&quot;#Linux-Kernel-pwn-2-——Kernel-UAF&quot; class=&quot;headerlink&quot; title=&quot;Linux Kernel pwn(2)——Kernel
+        
+      
+    
+    </summary>
+    
+      <category term="Kernel" scheme="http://yoursite.com/categories/Kernel/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Hitcon_CTF_2019_LazyHouse</title>
     <link href="http://yoursite.com/2020/09/26/Hitcon-CTF-2019-LazyHouse/"/>
     <id>http://yoursite.com/2020/09/26/Hitcon-CTF-2019-LazyHouse/</id>
@@ -486,32 +510,6 @@
     
     
       <category term="strfmt" scheme="http://yoursite.com/tags/strfmt/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>houseoforange_hitcon_2016 &amp;&amp; FSOP</title>
-    <link href="http://yoursite.com/2020/08/18/houseoforange-hitcon-2016-FSOP/"/>
-    <id>http://yoursite.com/2020/08/18/houseoforange-hitcon-2016-FSOP/</id>
-    <published>2020-08-18T15:04:10.000Z</published>
-    <updated>2020-08-18T16:17:06.920Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;houseoforange-hitcon-2016-amp-amp-FSOP&quot;&gt;&lt;a href=&quot;#houseoforange-hitcon-2016-amp-amp-FSOP&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="学习笔记📒" scheme="http://yoursite.com/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%F0%9F%93%92/"/>
-    
-    
-      <category term="FSOP" scheme="http://yoursite.com/tags/FSOP/"/>
     
   </entry>
   
