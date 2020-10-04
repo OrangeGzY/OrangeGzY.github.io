@@ -43,6 +43,30 @@
   </entry>
   
   <entry>
+    <title>你站在瞬息间，仿佛即刻消失于无形</title>
+    <link href="http://yoursite.com/2020/10/04/%E4%BD%A0%E7%AB%99%E5%9C%A8%E7%9E%AC%E6%81%AF%E9%97%B4%EF%BC%8C%E4%BB%BF%E4%BD%9B%E5%8D%B3%E5%88%BB%E6%B6%88%E5%A4%B1%E4%BA%8E%E6%97%A0%E5%BD%A2/"/>
+    <id>http://yoursite.com/2020/10/04/你站在瞬息间，仿佛即刻消失于无形/</id>
+    <published>2020-10-04T12:43:16.000Z</published>
+    <updated>2020-10-04T12:46:35.555Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;本博客技术类文章无限期停更。&quot;&gt;&lt;a href=&quot;#本博客技术类文章无限期停更。&quot; class=&quot;headerlink&quot; title=&quot;本博客技术类文章无限期停更。&quot;&gt;&lt;/a&gt;本博客技术类文章无限期停更。&lt;/h2&gt;&lt;p&gt;以后所有技术类文章均发表在看雪：&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="冷却后的夜空燃烧着我的美梦" scheme="http://yoursite.com/categories/%E5%86%B7%E5%8D%B4%E5%90%8E%E7%9A%84%E5%A4%9C%E7%A9%BA%E7%87%83%E7%83%A7%E7%9D%80%E6%88%91%E7%9A%84%E7%BE%8E%E6%A2%A6/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Linux Kernel pwn(2)——Kernel UAF</title>
     <link href="http://yoursite.com/2020/10/02/Linux-Kernel-pwn-2-%E2%80%94%E2%80%94Kernel-UAF/"/>
     <id>http://yoursite.com/2020/10/02/Linux-Kernel-pwn-2-——Kernel-UAF/</id>
@@ -484,32 +508,6 @@
     
       <category term="比赛" scheme="http://yoursite.com/categories/%E6%AF%94%E8%B5%9B/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>strfmt合集2</title>
-    <link href="http://yoursite.com/2020/08/21/strfmt%E5%90%88%E9%9B%862/"/>
-    <id>http://yoursite.com/2020/08/21/strfmt合集2/</id>
-    <published>2020-08-20T16:32:24.000Z</published>
-    <updated>2020-08-20T16:38:02.686Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;xman-2019-format&quot;&gt;&lt;a href=&quot;#xman-2019-format&quot; class=&quot;headerlink&quot; title=&quot;xman_2019_format&quot;&gt;&lt;/a&gt;xman_2019_format&lt;/h1&gt;&lt;h2 id=&quot;题目概览&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-      <category term="strfmt" scheme="http://yoursite.com/tags/strfmt/"/>
     
   </entry>
   
