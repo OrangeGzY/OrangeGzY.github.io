@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-09-25T16:33:28.571Z</updated>
+  <updated>2020-10-04T12:46:35.555Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,32 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>我与自由而无用的艺术🎨</title>
-    <link href="http://yoursite.com/7777/08/14/Pax0s%E3%81%AE%E6%97%A5%E8%A8%98/"/>
-    <id>http://yoursite.com/7777/08/14/Pax0sの日記/</id>
-    <published>7777-08-14T15:34:27.000Z</published>
-    <updated>2020-09-25T16:33:28.571Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;2020-8-14&quot;&gt;&lt;a href=&quot;#2020-8-14&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="生活" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB/"/>
-    
-    
-      <category term="生活" scheme="http://yoursite.com/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-  </entry>
   
   <entry>
     <title>你站在瞬息间，仿佛即刻消失于无形</title>
@@ -508,6 +482,32 @@
     
       <category term="比赛" scheme="http://yoursite.com/categories/%E6%AF%94%E8%B5%9B/"/>
     
+    
+  </entry>
+  
+  <entry>
+    <title>strfmt合集2</title>
+    <link href="http://yoursite.com/2020/08/21/strfmt%E5%90%88%E9%9B%862/"/>
+    <id>http://yoursite.com/2020/08/21/strfmt合集2/</id>
+    <published>2020-08-20T16:32:24.000Z</published>
+    <updated>2020-08-20T16:38:02.686Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;xman-2019-format&quot;&gt;&lt;a href=&quot;#xman-2019-format&quot; class=&quot;headerlink&quot; title=&quot;xman_2019_format&quot;&gt;&lt;/a&gt;xman_2019_format&lt;/h1&gt;&lt;h2 id=&quot;题目概览&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
+    
+    
+      <category term="strfmt" scheme="http://yoursite.com/tags/strfmt/"/>
     
   </entry>
   
