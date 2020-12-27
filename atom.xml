@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-10-04T12:46:35.555Z</updated>
+  <updated>2020-12-27T16:52:52.656Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2020年终总结</title>
+    <link href="http://yoursite.com/2020/12/27/lost-in-2020/"/>
+    <id>http://yoursite.com/2020/12/27/lost-in-2020/</id>
+    <published>2020-12-27T00:45:16.000Z</published>
+    <updated>2020-12-27T16:52:52.656Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;写年中总结仿佛还在昨天，一抬头却到了2020的尾巴。&lt;/p&gt;
+&lt;p&gt;八月份回学校搬宿舍，换到了新地方，u1s1确实方便，下楼就是餐厅（虽然我从来都不去），还有 🚩
+        
+      
+    
+    </summary>
+    
+      <category term="生活" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+    
+      <category term="杂谈" scheme="http://yoursite.com/tags/%E6%9D%82%E8%B0%88/"/>
+    
+  </entry>
   
   <entry>
     <title>你站在瞬息间，仿佛即刻消失于无形</title>
@@ -482,32 +509,6 @@
     
       <category term="比赛" scheme="http://yoursite.com/categories/%E6%AF%94%E8%B5%9B/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>strfmt合集2</title>
-    <link href="http://yoursite.com/2020/08/21/strfmt%E5%90%88%E9%9B%862/"/>
-    <id>http://yoursite.com/2020/08/21/strfmt合集2/</id>
-    <published>2020-08-20T16:32:24.000Z</published>
-    <updated>2020-08-20T16:38:02.686Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;xman-2019-format&quot;&gt;&lt;a href=&quot;#xman-2019-format&quot; class=&quot;headerlink&quot; title=&quot;xman_2019_format&quot;&gt;&lt;/a&gt;xman_2019_format&lt;/h1&gt;&lt;h2 id=&quot;题目概览&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-      <category term="strfmt" scheme="http://yoursite.com/tags/strfmt/"/>
     
   </entry>
   
