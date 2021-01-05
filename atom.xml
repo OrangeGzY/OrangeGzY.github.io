@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-12-28T03:31:37.715Z</updated>
+  <updated>2021-01-05T16:24:29.335Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>从期末考试说开去</title>
+    <link href="http://yoursite.com/2021/01/05/%E4%BB%8E%E6%9C%9F%E6%9C%AB%E8%80%83%E8%AF%95%E8%AF%B4%E5%BC%80%E5%8E%BB/"/>
+    <id>http://yoursite.com/2021/01/05/从期末考试说开去/</id>
+    <published>2021-01-05T15:51:42.000Z</published>
+    <updated>2021-01-05T16:24:29.335Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;今天考完了数论。我想我大抵很难称得上是一个 “喜欢” 或者 “热爱” 数学的人——至少我一直对外声称如此。 但是实际上在复习中我又确实感到数学是 “美” 的。尤其是群论与数论之间相互的转换与结合，无一不让我觉得非常的奇妙。但是遗憾的是，倘若不是 “有目的”
+        
+      
+    
+    </summary>
+    
+      <category term="生活" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+    
+      <category term="杂谈" scheme="http://yoursite.com/tags/%E6%9D%82%E8%B0%88/"/>
+    
+  </entry>
   
   <entry>
     <title>2020年终总结</title>
@@ -485,30 +511,6 @@
     
     
       <category term="largebin" scheme="http://yoursite.com/tags/largebin/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ciscnCTF2020-pwn</title>
-    <link href="http://yoursite.com/2020/08/21/ciscnCTF2020-pwn/"/>
-    <id>http://yoursite.com/2020/08/21/ciscnCTF2020-pwn/</id>
-    <published>2020-08-21T06:44:27.000Z</published>
-    <updated>2020-08-21T12:48:23.648Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;pwn&quot;&gt;&lt;a href=&quot;#pwn&quot; class=&quot;headerlink&quot; title=&quot;pwn&quot;&gt;&lt;/a&gt;pwn&lt;/h1&gt;&lt;h2 id=&quot;babayjsc&quot;&gt;&lt;a href=&quot;#babayjsc&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="比赛" scheme="http://yoursite.com/categories/%E6%AF%94%E8%B5%9B/"/>
-    
     
   </entry>
   
