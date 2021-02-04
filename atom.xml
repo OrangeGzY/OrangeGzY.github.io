@@ -43,6 +43,34 @@
   </entry>
   
   <entry>
+    <title>随便说点什么，关于CTF入门这些事情</title>
+    <link href="http://yoursite.com/2021/02/04/lost-in-books/"/>
+    <id>http://yoursite.com/2021/02/04/lost-in-books/</id>
+    <published>2021-02-04T13:37:50.000Z</published>
+    <updated>2021-02-04T14:48:32.224Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;ul&gt;
+&lt;li&gt;今晚又不想看代码了，顺便聊一些别的东西。&lt;/li&gt;
+&lt;li&gt;从2020年的下半年到2021年至今，CTF竞赛相关的书籍就像井喷一样的在市面上出现。就我所看到的，有专门讲Pwn的，也有各个方向都有的，但整体给我的感觉，从最近几个月的入门的同学那里来看，反倒是更迷茫
+        
+      
+    
+    </summary>
+    
+      <category term="生活" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+    
+      <category term="杂谈" scheme="http://yoursite.com/tags/%E6%9D%82%E8%B0%88/"/>
+    
+  </entry>
+  
+  <entry>
     <title>从期末考试说开去</title>
     <link href="http://yoursite.com/2021/01/05/%E4%BB%8E%E6%9C%9F%E6%9C%AB%E8%80%83%E8%AF%95%E8%AF%B4%E5%BC%80%E5%8E%BB/"/>
     <id>http://yoursite.com/2021/01/05/从期末考试说开去/</id>
@@ -485,32 +513,6 @@
     
     
       <category term="Multithreading &amp;&amp; Race condition" scheme="http://yoursite.com/tags/Multithreading-Race-condition/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>bctf2018_baby_arena（FSOP+global_max_fast）</title>
-    <link href="http://yoursite.com/2020/09/02/bctf2018-baby-arena%EF%BC%88FSOP-global-max-fast%EF%BC%89/"/>
-    <id>http://yoursite.com/2020/09/02/bctf2018-baby-arena（FSOP-global-max-fast）/</id>
-    <published>2020-09-01T16:49:30.000Z</published>
-    <updated>2020-09-01T17:06:40.687Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;bctf2018-baby-arena（FSOP-global-max-fast）&quot;&gt;&lt;a href=&quot;#bctf2018-baby-arena（FSOP-global-max-fast）&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Buuoj" scheme="http://yoursite.com/categories/Buuoj/"/>
-    
-    
-      <category term="FSOP global_max_fast" scheme="http://yoursite.com/tags/FSOP-global-max-fast/"/>
     
   </entry>
   
